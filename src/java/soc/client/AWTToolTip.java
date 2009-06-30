@@ -1,5 +1,5 @@
 /*
- * $Id: AWTToolTip.java,v 1.1 2008/09/16 05:21:01 emcgowan Exp $
+ * $Id: AWTToolTip.java,v 1.2 2009/06/30 13:38:28 jdmonin Exp $
  *
  * (c)2000 IoS Gesellschaft fr innovative Softwareentwicklung mbH
  * http://www.IoS-Online.de    mailto:info@IoS-Online.de
@@ -450,8 +450,8 @@ public class AWTToolTip
 
 /*
  * $Log: AWTToolTip.java,v $
- * Revision 1.1  2008/09/16 05:21:01  emcgowan
- * version 1.1.05 from http://nand.net/jsettlers/devel/
+ * Revision 1.2  2009/06/30 13:38:28  jdmonin
+ * add debug dir,remove lib, for 1.1.04 revert
  *
  * Revision 1.1.1.1  2001/02/07 15:23:49  rtfm
  * initial
