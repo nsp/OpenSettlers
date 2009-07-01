@@ -1,5 +1,5 @@
 /*
- * $Id: AWTToolTip.java,v 1.3 2009/06/30 14:16:20 jdmonin Exp $
+ * $Id: AWTToolTip.java,v 1.4 2009/07/01 03:35:03 jdmonin Exp $
  *
  * (c)2000 IoS Gesellschaft fr innovative Softwareentwicklung mbH
  * http://www.IoS-Online.de    mailto:info@IoS-Online.de
@@ -450,8 +450,8 @@ public class AWTToolTip
 
 /*
  * $Log: AWTToolTip.java,v $
- * Revision 1.3  2009/06/30 14:16:20  jdmonin
- * 1.1.06 from http://nand.net/jsettlers/devel/
+ * Revision 1.4  2009/07/01 03:35:03  jdmonin
+ * latest devel code, to become 1.1.07
  *
  * Revision 1.1.1.1  2001/02/07 15:23:49  rtfm
  * initial

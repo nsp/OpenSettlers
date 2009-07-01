@@ -27,7 +27,7 @@ import java.util.Vector;
  * DOCUMENT ME!
  *
  * @author $author$
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class SOCLRPathData
 {
