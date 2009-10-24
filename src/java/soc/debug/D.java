@@ -27,7 +27,7 @@ package soc.debug;
  * debug on and off per class.
  *
  * @author $author$
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class D
 {
@@ -122,7 +122,8 @@ public class D
             try
             {
                 int x = 0;
-                int y = x / 0;                
+                int y = x / 0;
+                System.out.print(y);
             } catch (Throwable th)
             {
                 ex = th;
