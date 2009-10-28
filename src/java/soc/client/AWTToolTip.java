@@ -1,5 +1,5 @@
 /*
- * $Id: AWTToolTip.java,v 1.5 2009/08/01 11:58:51 jdmonin Exp $
+ * $Id: AWTToolTip.java,v 1.6 2009/10/28 22:30:06 jdmonin Exp $
  *
  * (c)2000 IoS Gesellschaft fr innovative Softwareentwicklung mbH
  * http://www.IoS-Online.de    mailto:info@IoS-Online.de
@@ -450,6 +450,9 @@ public class AWTToolTip
 
 /*
  * $Log: AWTToolTip.java,v $
+ * Revision 1.6  2009/10/28 22:30:06  jdmonin
+ * line-encoding to CRLF to match rest of project
+ *
  * Revision 1.5  2009/08/01 11:58:51  jdmonin
  * fix src line endings
  *
