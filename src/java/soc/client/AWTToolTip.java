@@ -1,5 +1,5 @@
 /*
- * $Id: AWTToolTip.java,v 1.6 2009/10/28 22:30:06 jdmonin Exp $
+ * $Id: AWTToolTip.java,v 1.7 2009/12/06 17:27:06 jdmonin Exp $
  *
  * (c)2000 IoS Gesellschaft fr innovative Softwareentwicklung mbH
  * http://www.IoS-Online.de    mailto:info@IoS-Online.de
@@ -448,8 +448,12 @@ public class AWTToolTip
 
 }  /* public class AWTToolTip */
 
-/*
- * $Log: AWTToolTip.java,v $
+/**
+ * Former cvs Log: AWTToolTip.java - log discontinued on 2009/12/06, see CVS for changes since then.
+ *
+ * Revision 1.7  2009/10/28 22:30:06  jdmonin
+ * discontinue cvs log within file; line-encoding of cvs-log comment to CRLF to match rest of project
+ *
  * Revision 1.6  2009/10/28 22:30:06  jdmonin
  * line-encoding to CRLF to match rest of project
  *
