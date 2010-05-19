@@ -16,11 +16,10 @@ information (details below).  A client applet to create user accounts
 is also provided.
 
 JSettlers is an open-source project licensed under the GPL. The
-software is hosted at http://sourceforge.net/projects/jsettlers2
-and at http://nand.net/jsettlers/devel/ .  Questions, bugs, and
-patches can be posted at the sourceforge page.
+software is hosted at http://github.com/nsp/JSettlers-CU .  Questions, 
+bugs, and patches can be directed there.
 
-                          -- The JSettlers Development Team
+                          -- The JSettlers-CU Development Team
 
 
 Contents

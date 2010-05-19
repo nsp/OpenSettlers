@@ -369,7 +369,7 @@
                doctitle="${Name}, v ${version}, API Specification"
                windowtitle="${Name} v${version} API"
                access="package"
-               source="1.4" 
+               source="1.6" 
                additionalparam="-breakiterator">
         <packageset dir="${java.src}" />
         <header><![CDATA[<b><a target="_blank" href="${url}">${Name} v${version} API</a></b><br><font size="-2">Built ${date}</font>]]></header>
