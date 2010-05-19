@@ -73,6 +73,21 @@ public class SOCResourceSet implements Serializable, Cloneable
         resources[SOCResourceConstants.WOOD]    = wo;
         resources[SOCResourceConstants.UNKNOWN] = uk;
     }
+    
+    public int pickResource()
+    {
+        if (resources[SOCResourceConstants.CLAY]>0)
+            return SOCResourceConstants.CLAY;
+        if (resources[SOCResourceConstants.ORE]>0)
+            return SOCResourceConstants.ORE;
+        if (resources[SOCResourceConstants.SHEEP]>0)
+            return SOCResourceConstants.SHEEP;
+        if (resources[SOCResourceConstants.WHEAT]>0)
+            return SOCResourceConstants.WHEAT;
+        if (resources[SOCResourceConstants.WOOD]>0)
+            return SOCResourceConstants.WOOD;
+        return -1;
+    }
 
     /**
      * Make a resource set from an array

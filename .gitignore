@@ -1,0 +1,6 @@
+bin
+bin/*
+deploy
+deploy/*
+target/lib
+target/lib/*

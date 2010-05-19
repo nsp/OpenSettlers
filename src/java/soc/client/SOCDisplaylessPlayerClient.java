@@ -1790,7 +1790,9 @@ public class SOCDisplaylessPlayerClient implements Runnable
         /**
          * send the command
          */
-        put(SOCPutPiece.toCmd(ga.getName(), pp.getPlayer().getPlayerNumber(), pp.getType(), pp.getCoordinates()));
+		String cmd = SOCPutPiece.toCmd(ga.getName(), pp.getPlayer().getPlayerNumber(), pp.getType(), pp.getCoordinates());
+        System.out.printf("Message Sent: %s \n", cmd);
+        put(cmd);
     }
 
     /**
@@ -2017,6 +2019,11 @@ public class SOCDisplaylessPlayerClient implements Runnable
         disconnect();
     }
 
+    public boolean isSmartSettlersAgent()
+    {
+        return false;
+    }
+    
     /**
      * for stand-alones
      */

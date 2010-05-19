@@ -491,7 +491,7 @@ public class SOCBoard implements Serializable, Cloneable
      * @see #numToHexID
      * @see #nodeIDtoPortType
      */
-    private int[] hexIDtoNum;
+    public int[] hexIDtoNum;
 
     /**
      * translate node ID (node coordinate) to a port's type ({@link #MISC_PORT} to {@link #WOOD_PORT}).
@@ -2354,6 +2354,113 @@ public class SOCBoard implements Serializable, Cloneable
         return null;
     }
 
+    /**
+     * @return the NODEs adjacent to this hex
+     */
+    public static Vector getAdjacentNodesToHex(int coord)
+    {
+        Vector nodes = new Vector(6);
+        int tmp;
+
+        tmp = coord + 0x12;
+
+        if ((tmp >= MINNODE) && (tmp <= MAXNODE))
+        {
+            nodes.addElement(new Integer(tmp));
+        }
+
+        tmp = coord + 0x01;
+
+        if ((tmp >= MINNODE) && (tmp <= MAXNODE))
+        {
+            nodes.addElement(new Integer(tmp));
+        }
+
+        tmp = coord - 0x10;
+
+        if ((tmp >= MINNODE) && (tmp <= MAXNODE))
+        {
+            nodes.addElement(new Integer(tmp));
+        }
+
+        tmp = coord - 0x01;
+
+        if ((tmp >= MINNODE) && (tmp <= MAXNODE))
+        {
+            nodes.addElement(new Integer(tmp));
+        }
+
+        tmp = coord + 0x10;
+
+        if ((tmp >= MINNODE) && (tmp <= MAXNODE))
+        {
+            nodes.addElement(new Integer(tmp));
+        }
+
+        tmp = coord + 0x21;
+
+        if ((tmp >= MINNODE) && (tmp <= MAXNODE))
+        {
+            nodes.addElement(new Integer(tmp));
+        }
+
+
+        return nodes;
+    }
+
+    /**
+     * @return the edges touching this Hex
+     */
+    public static Vector getAdjacentEdgesToHex(int coord)
+    {
+        Vector edges = new Vector(6);
+        int tmp;
+
+        tmp = coord + 0x11;
+
+        if ((tmp >= MINEDGE) && (tmp <= MAXEDGE))
+        {
+            edges.addElement(new Integer(tmp));
+        }
+
+        tmp = coord + 0x01;
+
+        if ((tmp >= MINEDGE) && (tmp <= MAXEDGE))
+        {
+            edges.addElement(new Integer(tmp));
+        }
+
+        tmp = coord - 0x10;
+
+        if ((tmp >= MINEDGE) && (tmp <= MAXEDGE))
+        {
+            edges.addElement(new Integer(tmp));
+        }
+
+        tmp = coord - 0x11;
+
+        if ((tmp >= MINEDGE) && (tmp <= MAXEDGE))
+        {
+            edges.addElement(new Integer(tmp));
+        }
+
+        tmp = coord - 0x01;
+
+        if ((tmp >= MINEDGE) && (tmp <= MAXEDGE))
+        {
+            edges.addElement(new Integer(tmp));
+        }
+
+        tmp = coord + 0x10;
+
+        if ((tmp >= MINEDGE) && (tmp <= MAXEDGE))
+        {
+            edges.addElement(new Integer(tmp));
+        }
+
+        return edges;
+    }
+    
     /**
      * @return true if the node is on the land of the board (not water)
      * @param node Node coordinate
