@@ -1440,7 +1440,7 @@ public class SOCRobotBrain extends Thread
                        }
                        }
                      */
-                    yield();
+                    Thread.yield();
                 }
             }
             catch (Throwable e)
@@ -3272,8 +3272,8 @@ public class SOCRobotBrain extends Thread
 
         try
         {
-            yield();
-            sleep(msec);
+            Thread.yield();
+            Thread.sleep(msec);
         }
         catch (InterruptedException exc) {}
     }
