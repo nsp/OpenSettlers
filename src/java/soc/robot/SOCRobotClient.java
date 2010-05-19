@@ -110,27 +110,27 @@ public class SOCRobotClient extends SOCDisplaylessPlayerClient
     /**
      * the thread the reads incoming messages
      */
-    private Thread reader;
+    protected Thread reader;
 
     /**
      * the current robot parameters for robot brains
      */
-    private SOCRobotParameters currentRobotParameters;
+    protected SOCRobotParameters currentRobotParameters;
 
     /**
      * the robot's "brains" for different games
      */
-    private Hashtable robotBrains = new Hashtable();
+    public Hashtable robotBrains = new Hashtable();
 
     /**
      * the message queues for the different brains
      */
-    private Hashtable brainQs = new Hashtable();
+    protected Hashtable brainQs = new Hashtable();
 
     /**
      * a table of requests from the server to sit at games
      */
-    private Hashtable seatRequests = new Hashtable();
+    protected Hashtable seatRequests = new Hashtable();
 
     /**
      * options for all games on the server we've been asked to join.
@@ -295,6 +295,7 @@ public class SOCRobotClient extends SOCDisplaylessPlayerClient
      *
      * @param mes    the message
      */
+    @Override
     public void treat(SOCMessage mes)
     {
         if (mes == null)
@@ -755,6 +756,7 @@ public class SOCRobotClient extends SOCDisplaylessPlayerClient
      * handle the "join game authorization" message
      * @param mes  the message
      */
+    @Override
     protected void handleJOINGAMEAUTH(SOCJoinGameAuth mes)
     {
         gamesPlayed++;
@@ -775,6 +777,7 @@ public class SOCRobotClient extends SOCDisplaylessPlayerClient
      * handle the "join game" message
      * @param mes  the message
      */
+    @Override
     protected void handleJOINGAME(SOCJoinGame mes) {}
 
     /**

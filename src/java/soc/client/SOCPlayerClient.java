@@ -195,9 +195,9 @@ public class SOCPlayerClient extends Applet implements Runnable, ActionListener,
     /**
      * Hostname we're connected to, or null; set in constructor or {@link #init()}
      */
-    protected String host;
-    protected int port;
-    protected Socket s;
+    public String host;
+    public int port;
+    public Socket s;
     protected DataInputStream in;
     protected DataOutputStream out;
     protected Thread reader = null;
@@ -321,7 +321,7 @@ public class SOCPlayerClient extends Applet implements Runnable, ActionListener,
      * the nickname; null until validated and set by
      * {@link #getValidNickname(boolean) getValidNickname(true)}
      */
-    protected String nickname = null;
+    public String nickname = null;
 
     /**
      * the password
@@ -346,7 +346,7 @@ public class SOCPlayerClient extends Applet implements Runnable, ActionListener,
     /**
      * the games we're currently playing
      */
-    protected Hashtable games = new Hashtable();
+    public Hashtable games = new Hashtable();
 
     /**
      * all announced game names on the remote server, including games which we can't
@@ -376,7 +376,7 @@ public class SOCPlayerClient extends Applet implements Runnable, ActionListener,
     /**
      * the player interfaces for the games
      */
-    protected Hashtable playerInterfaces = new Hashtable();
+    public Hashtable playerInterfaces = new Hashtable();
 
     /**
      * the ignore list
@@ -467,7 +467,7 @@ public class SOCPlayerClient extends Applet implements Runnable, ActionListener,
     /**
      * init the visual elements
      */
-    protected void initVisualElements()
+    public void initVisualElements()
     {
         setFont(new Font("SansSerif", Font.PLAIN, 12));
         
@@ -836,7 +836,7 @@ public class SOCPlayerClient extends Applet implements Runnable, ActionListener,
         }
                 
         System.out.println("Connecting to " + hostString);
-        messageLabel.setText("Connecting to server...");
+//        messageLabel.setText("Connecting to server...");
         
         try
         {

@@ -212,6 +212,8 @@ public abstract class SOCMessage implements Serializable, Cloneable
 
     public static final int SERVERPING = 9999;  // available in all versions
 
+    public static final int IMSMARTSETTLERS = 1072;
+    
     /**
      * Token separators. At most one SEP per message; multiple SEP2 are allowed after SEP.
      * For multi-messages, multiple SEP are allowed; see {@link SOCMessageMulti}.
@@ -738,4 +740,13 @@ public abstract class SOCMessage implements Serializable, Cloneable
             return null;
         }
     }
+    
+     /**
+     * @return the name of the game
+     */
+    public String getGame()
+    {
+        return null;
+    }
+
 }

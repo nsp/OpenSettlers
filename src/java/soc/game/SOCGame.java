@@ -700,7 +700,7 @@ public class SOCGame implements Serializable, Cloneable
      */
     public synchronized void takeMonitor()
     {
-        //D.ebugPrintln("TAKE MONITOR");
+        D.ebugPrintln("TAKE MONITOR");
         while (inUse)
         {
             try
@@ -721,7 +721,7 @@ public class SOCGame implements Serializable, Cloneable
      */
     public synchronized void releaseMonitor()
     {
-        //D.ebugPrintln("RELEASE MONITOR");
+        D.ebugPrintln("RELEASE MONITOR");
         inUse = false;
         this.notify();
     }
@@ -818,7 +818,7 @@ public class SOCGame implements Serializable, Cloneable
         pl.setName(null);
         seats[pl.getPlayerNumber()] = VACANT;
 
-        //D.ebugPrintln("seats["+pl.getPlayerNumber()+"] = VACANT");
+        D.ebugPrintln("seats["+pl.getPlayerNumber()+"] = VACANT");
     }
 
     /**
@@ -1895,7 +1895,7 @@ public class SOCGame implements Serializable, Cloneable
      */
     public void putTempPiece(SOCPlayingPiece pp)
     {
-        //D.ebugPrintln("@@@ putTempPiece "+pp);
+        D.ebugPrintln("@@@ putTempPiece "+pp);
 
         /**
          * save who the last lr player was
@@ -3763,16 +3763,19 @@ public class SOCGame implements Serializable, Cloneable
     {
         if (!((gameState == PLAY) || (gameState == PLAY1)))
         {
+            D.ebugPrintln("cannot play Knight: Not PLAY or PLAY1 state.");
             return false;
         }
 
         if (players[pn].hasPlayedDevCard())
         {
+            D.ebugPrintln("cannot play Knight: already played something.");
             return false;
         }
 
         if (players[pn].getDevCards().getAmount(SOCDevCardSet.OLD, SOCDevCardConstants.KNIGHT) == 0)
         {
+            D.ebugPrintln("cannot play Knight: do not have the card.");
             return false;
         }
 
@@ -3796,6 +3799,7 @@ public class SOCGame implements Serializable, Cloneable
     {
         if (!((gameState == PLAY) || (gameState == PLAY1)))
         {
+            D.ebugPrintln("cannot play RoadBuilding: Not PLAY or PLAY1 state.");
             return false;
         }
 
@@ -3806,11 +3810,13 @@ public class SOCGame implements Serializable, Cloneable
 
         if (players[pn].getDevCards().getAmount(SOCDevCardSet.OLD, SOCDevCardConstants.ROADS) == 0)
         {
+            D.ebugPrintln("cannot play RoadBuilding: already played something.");
             return false;
         }
 
         if (players[pn].getNumPieces(SOCPlayingPiece.ROAD) < 1)
         {
+            D.ebugPrintln("cannot play RoadBuilding: do not have the card.");
             return false;
         }
 
@@ -3826,16 +3832,19 @@ public class SOCGame implements Serializable, Cloneable
     {
         if (!((gameState == PLAY) || (gameState == PLAY1)))
         {
+            D.ebugPrintln("cannot play Discovery: Not PLAY or PLAY1 state.");
             return false;
         }
 
         if (players[pn].hasPlayedDevCard())
         {
+            D.ebugPrintln("cannot play Discovery: already played something.");
             return false;
         }
 
         if (players[pn].getDevCards().getAmount(SOCDevCardSet.OLD, SOCDevCardConstants.DISC) == 0)
         {
+            D.ebugPrintln("cannot play Discovery: do not have the card.");
             return false;
         }
 
@@ -3851,16 +3860,19 @@ public class SOCGame implements Serializable, Cloneable
     {
         if (!((gameState == PLAY) || (gameState == PLAY1)))
         {
+            D.ebugPrintln("cannot play Monopoly: Not PLAY or PLAY1 state.");
             return false;
         }
 
         if (players[pn].hasPlayedDevCard())
         {
+            D.ebugPrintln("cannot play Monopoly: already played something.");
             return false;
         }
 
         if (players[pn].getDevCards().getAmount(SOCDevCardSet.OLD, SOCDevCardConstants.MONO) == 0)
         {
+            D.ebugPrintln("cannot play Monopoly: do not have the card.");
             return false;
         }
 
@@ -4076,7 +4088,7 @@ public class SOCGame implements Serializable, Cloneable
      */
     public void updateLongestRoad(int pn)
     {
-        //D.ebugPrintln("## updateLongestRoad("+pn+")");
+        D.ebugPrintln("## updateLongestRoad("+pn+")");
         int longestLength;
         int playerLength;
         int tmpPlayerWithLR = -1;
@@ -4088,7 +4100,7 @@ public class SOCGame implements Serializable, Cloneable
         {
             playerLength = players[i].getLongestRoadLength();
 
-            //D.ebugPrintln("----- LR length for player "+i+" is "+playerLength);
+            D.ebugPrintln("----- LR length for player "+i+" is "+playerLength);
             if (playerLength > longestLength)
             {
                 longestLength = playerLength;
@@ -4127,7 +4139,7 @@ public class SOCGame implements Serializable, Cloneable
             }
         }
 
-        //D.ebugPrintln("----- player "+playerWithLongestRoad+" has LR");
+        D.ebugPrintln("----- player "+playerWithLongestRoad+" has LR");
     }
 
     /**

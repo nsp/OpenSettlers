@@ -1081,7 +1081,7 @@ public class SOCRobotBrain extends Thread
                                 waitingForGameState = true;
                                 expectPLAY1 = true;
                                 counter = 0;
-                                client.discoveryPick(game, resourceChoices);
+                                client.discoveryPick(game, resourceChoices); //!!!
                                 pause(1500);
                             }
                         }
@@ -1098,7 +1098,7 @@ public class SOCRobotBrain extends Thread
                                 waitingForGameState = true;
                                 expectPLAY1 = true;
                                 counter = 0;
-                                client.monopolyPick(game, monopolyChoice);
+                                client.monopolyPick(game, monopolyChoice); //!!!
                                 pause(1500);
                             }
                         }
@@ -5332,7 +5332,7 @@ public class SOCRobotBrain extends Thread
     /**
      * this is for debugging
      */
-    private void debugInfo()
+    protected void debugInfo()
     {
         /*
            if (D.ebugOn) {

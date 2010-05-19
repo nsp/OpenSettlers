@@ -22,24 +22,6 @@
  **/
 package soc.server;
 
-import soc.debug.D;  // JM
-
-import soc.game.*;
-import soc.message.*;
-
-import soc.robot.SOCRobotClient;
-import soc.server.database.SOCDBHelper;
-
-import soc.server.genericServer.LocalStringConnection;
-import soc.server.genericServer.Server;
-import soc.server.genericServer.StringConnection;
-
-import soc.util.IntPair;
-import soc.util.SOCGameBoardReset;
-import soc.util.SOCGameList;  // used in javadoc
-import soc.util.SOCRobotParameters;
-import soc.util.Version;
-
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.Enumeration;
@@ -48,6 +30,118 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.Vector;
+
+import soc.debug.D;
+import soc.game.SOCBoard;
+import soc.game.SOCCity;
+import soc.game.SOCDevCardConstants;
+import soc.game.SOCDevCardSet;
+import soc.game.SOCForceEndTurnResult;
+import soc.game.SOCGame;
+import soc.game.SOCGameOption;
+import soc.game.SOCGameOptionVersionException;
+import soc.game.SOCMoveRobberResult;
+import soc.game.SOCPlayer;
+import soc.game.SOCPlayingPiece;
+import soc.game.SOCResourceConstants;
+import soc.game.SOCResourceSet;
+import soc.game.SOCRoad;
+import soc.game.SOCSettlement;
+import soc.game.SOCTradeOffer;
+import soc.message.SOCAcceptOffer;
+import soc.message.SOCAdminPing;
+import soc.message.SOCAdminReset;
+import soc.message.SOCBCastTextMsg;
+import soc.message.SOCBankTrade;
+import soc.message.SOCBoardLayout;
+import soc.message.SOCBoardLayout2;
+import soc.message.SOCBuildRequest;
+import soc.message.SOCBuyCardRequest;
+import soc.message.SOCCancelBuildRequest;
+import soc.message.SOCChangeFace;
+import soc.message.SOCChannels;
+import soc.message.SOCChoosePlayer;
+import soc.message.SOCChoosePlayerRequest;
+import soc.message.SOCClearOffer;
+import soc.message.SOCClearTradeMsg;
+import soc.message.SOCCreateAccount;
+import soc.message.SOCDeleteChannel;
+import soc.message.SOCDeleteGame;
+import soc.message.SOCDevCard;
+import soc.message.SOCDevCardCount;
+import soc.message.SOCDiceResult;
+import soc.message.SOCDiscard;
+import soc.message.SOCDiscardRequest;
+import soc.message.SOCDiscoveryPick;
+import soc.message.SOCEndTurn;
+import soc.message.SOCFirstPlayer;
+import soc.message.SOCGameMembers;
+import soc.message.SOCGameOptionGetDefaults;
+import soc.message.SOCGameOptionGetInfos;
+import soc.message.SOCGameOptionInfo;
+import soc.message.SOCGameState;
+import soc.message.SOCGameStats;
+import soc.message.SOCGameTextMsg;
+import soc.message.SOCGames;
+import soc.message.SOCGamesWithOptions;
+import soc.message.SOCImARobot;
+import soc.message.SOCJoin;
+import soc.message.SOCJoinAuth;
+import soc.message.SOCJoinGame;
+import soc.message.SOCJoinGameAuth;
+import soc.message.SOCJoinGameRequest;
+import soc.message.SOCLargestArmy;
+import soc.message.SOCLastSettlement;
+import soc.message.SOCLeave;
+import soc.message.SOCLeaveGame;
+import soc.message.SOCLongestRoad;
+import soc.message.SOCMakeOffer;
+import soc.message.SOCMembers;
+import soc.message.SOCMessage;
+import soc.message.SOCMonopolyPick;
+import soc.message.SOCMoveRobber;
+import soc.message.SOCNewChannel;
+import soc.message.SOCNewGame;
+import soc.message.SOCNewGameWithOptions;
+import soc.message.SOCNewGameWithOptionsRequest;
+import soc.message.SOCPlayDevCardRequest;
+import soc.message.SOCPlayerElement;
+import soc.message.SOCPlayerStats;
+import soc.message.SOCPotentialSettlements;
+import soc.message.SOCPutPiece;
+import soc.message.SOCRejectConnection;
+import soc.message.SOCRejectOffer;
+import soc.message.SOCResetBoardAuth;
+import soc.message.SOCResetBoardReject;
+import soc.message.SOCResetBoardRequest;
+import soc.message.SOCResetBoardVote;
+import soc.message.SOCResetBoardVoteRequest;
+import soc.message.SOCResourceCount;
+import soc.message.SOCRobotDismiss;
+import soc.message.SOCRollDice;
+import soc.message.SOCRollDicePrompt;
+import soc.message.SOCServerPing;
+import soc.message.SOCSetPlayedDevCard;
+import soc.message.SOCSetSeatLock;
+import soc.message.SOCSetTurn;
+import soc.message.SOCSitDown;
+import soc.message.SOCStartGame;
+import soc.message.SOCStatusMessage;
+import soc.message.SOCTextMsg;
+import soc.message.SOCTurn;
+import soc.message.SOCUpdateRobotParams;
+import soc.message.SOCVersion;
+import soc.robot.SOCRobotClient;
+import soc.robot.SSRobotClient;
+import soc.server.database.SOCDBHelper;
+import soc.server.genericServer.LocalStringConnection;
+import soc.server.genericServer.Server;
+import soc.server.genericServer.StringConnection;
+import soc.util.IntPair;
+import soc.util.SOCGameBoardReset;
+import soc.util.SOCGameList;
+import soc.util.SOCRobotParameters;
+import soc.util.Version;
 
 /**
  * A server for Settlers of Catan
@@ -387,6 +481,8 @@ public class SOCServer extends Server
     SOCGameTimeoutChecker gameTimeoutChecker;
     String databaseUserName;
     String databasePassword;
+    
+    SSRobotClient loggerClient;
 
     /**
      * Create a Settlers of Catan server listening on TCP port p.
@@ -889,7 +985,7 @@ public class SOCServer extends Server
         }
 
         boolean gameHasHumanPlayer = false;
-        boolean gameHasObserver = false;
+        boolean gameHasObserver = true; // Changed by Monte Carlo
         boolean gameVotingActiveDuringStart = false;
 
         final int gameState = ga.getGameState();
@@ -938,7 +1034,7 @@ public class SOCServer extends Server
 
         SOCLeaveGame leaveMessage = new SOCLeaveGame(plName, c.host(), gm);
         messageToGameWithMon(gm, leaveMessage);
-        recordGameEvent(gm, leaveMessage.toCmd());
+        recordGameEvent(gm, leaveMessage.toCmd()); // Commented out in Monte Carlo
 
         D.ebugPrintln("*** " + plName + " left the game " + gm);
         messageToGameWithMon(gm, new SOCGameTextMsg(gm, SERVERNAME, plName + " left the game"));
@@ -1393,6 +1489,7 @@ public class SOCServer extends Server
         //D.ebugPrintln("***** destroyGame("+gm+")");
         SOCGame cg = null;
 
+        //recordGameEvent(mes, mes.getGame(), mes.toCmd()); //!!!
         cg = gameList.getGameData(gm);
 
         if (cg != null)
@@ -1953,6 +2050,7 @@ public class SOCServer extends Server
      *
      * @param c  the connection
      */
+    @Override
     public void leaveConnection(StringConnection c)
     {
         if ((c != null) && (c.getData() != null))
@@ -4129,6 +4227,7 @@ public class SOCServer extends Server
     {
         if (c != null)
         {
+            recordGameEvent(mes, mes.getGame(), mes.toCmd());
             boolean isMember = false;
             final String gaName = mes.getGame();
             if (! gameList.takeMonitorForGame(gaName))
@@ -4459,6 +4558,7 @@ public class SOCServer extends Server
                             gameList.releaseMonitorForGame(gaName);
                             boolean toldRoll = sendGameState(ga, false);
                             broadcastGameStats(ga);
+                            recordGameEvent(mes, mes.getGame(), mes.toCmd());
 
                             if (!checkTurn(c, ga))
                             {
@@ -4498,6 +4598,7 @@ public class SOCServer extends Server
                         if (player.isPotentialSettlement(coord))
                         {
                             ga.putPiece(se);   // Changes game state and (if game start) player
+                            recordGameEvent(mes, mes.getGame(), mes.toCmd());
                             gameList.takeMonitorForGame(gaName);
                             messageToGameWithMon(gaName, new SOCGameTextMsg(gaName, SERVERNAME, plName + " built a settlement."));
                             messageToGameWithMon(gaName, new SOCPutPiece(gaName, player.getPlayerNumber(), SOCPlayingPiece.SETTLEMENT, coord));
@@ -4534,6 +4635,7 @@ public class SOCServer extends Server
                         if (player.isPotentialCity(coord))
                         {
                             ga.putPiece(ci);  // changes game state and maybe player
+                            recordGameEvent(mes, mes.getGame(), mes.toCmd());
                             gameList.takeMonitorForGame(gaName);
                             messageToGameWithMon(gaName, new SOCGameTextMsg(gaName, SERVERNAME, plName + " built a city."));
                             messageToGameWithMon(gaName, new SOCPutPiece(gaName, player.getPlayerNumber(), SOCPlayingPiece.CITY, coord));
@@ -4609,6 +4711,7 @@ public class SOCServer extends Server
                     if (ga.canMoveRobber(player.getPlayerNumber(), mes.getCoordinates()))
                     {
                         SOCMoveRobberResult result = ga.moveRobber(player.getPlayerNumber(), mes.getCoordinates());
+                        recordGameEvent(mes, mes.getGame(), mes.toCmd());
                         messageToGame(gaName, new SOCMoveRobber(gaName, player.getPlayerNumber(), mes.getCoordinates()));
 
                         Vector victims = result.getVictims();
@@ -4621,6 +4724,8 @@ public class SOCServer extends Server
                              */
                             SOCPlayer victim = (SOCPlayer) victims.firstElement();
                             reportRobbery(ga, player, victim, result.getLoot());
+                            SOCChoosePlayer robmes = new SOCChoosePlayer(gn, victim.getPlayerNumber());
+                            recordGameEvent(robmes, robmes.getGame(), robmes.toCmd());
                         }
                         /** no victim */
                         else if (victims.size() == 0)
@@ -4935,6 +5040,7 @@ public class SOCServer extends Server
                          * Roll dice, distribute resources in game
                          */
                         IntPair dice = ga.rollDice();
+                        recordGameEvent(mes, mes.getGame(), mes.toCmd());
 
                         /**
                          * Send roll results and then text to client.
@@ -5097,6 +5203,7 @@ public class SOCServer extends Server
                     if (ga.canDiscard(pn, mes.getResources()))
                     {
                         ga.discard(pn, mes.getResources());
+                        recordGameEvent(mes, mes.getGame(), mes.toCmd());
 
                         /**
                          * tell the player client that the player discarded the resources
@@ -5410,6 +5517,7 @@ public class SOCServer extends Server
                         if (ga.canChoosePlayer(mes.getChoice()))
                         {
                             int rsrc = ga.stealFromPlayer(mes.getChoice());
+                            recordGameEvent(mes, mes.getGame(), mes.toCmd());
                             reportRobbery(ga, ga.getPlayer((String) c.getData()), ga.getPlayer(mes.getChoice()), rsrc);
                             sendGameState(ga);
                         }
@@ -5680,6 +5788,8 @@ public class SOCServer extends Server
                         {
                             ga.makeBankTrade(mes.getGiveSet(), mes.getGetSet());
                             reportBankTrade(ga, mes.getGiveSet(), mes.getGetSet());
+
+                            recordGameEvent(mes, mes.getGame(), mes.toCmd());
                         }
                         else
                         {
@@ -6079,6 +6189,7 @@ public class SOCServer extends Server
                             if (ga.canPlayKnight(player.getPlayerNumber()))
                             {
                                 ga.playKnight();
+                                recordGameEvent(mes, mes.getGame(), mes.toCmd());
                                 gameList.takeMonitorForGame(gaName);
                                 messageToGameWithMon(gaName, new SOCGameTextMsg(gaName, SERVERNAME, player.getName() + " played a Soldier card."));
                                 messageToGameWithMon(gaName, new SOCDevCard(gaName, player.getPlayerNumber(), SOCDevCard.PLAY, SOCDevCardConstants.KNIGHT));
@@ -6214,6 +6325,7 @@ public class SOCServer extends Server
                         if (ga.canDoDiscoveryAction(mes.getResources()))
                         {
                             ga.doDiscoveryAction(mes.getResources());
+                            recordGameEvent(mes, mes.getGame(), mes.toCmd());
 
                             StringBuffer message = new StringBuffer((String) c.getData());
                             message.append(" received ");
@@ -6267,6 +6379,7 @@ public class SOCServer extends Server
                         if (ga.canDoMonopolyAction())
                         {
                             int[] monoPicks = ga.doMonopolyAction(mes.getResource());
+                            recordGameEvent(mes, mes.getGame(), mes.toCmd());
 
                             final String monoPlayerName = (String) c.getData();
                             final String resName
@@ -7489,6 +7602,15 @@ public class SOCServer extends Server
                 }  // for each devcard type
 
                 messageToGame(gname, msg);
+                /* From Monte Carlo, still necessary?
+                sleep(2000);
+                messageToGame(ga.getName(), new SOCDeleteGame(ga.getName() ));
+                sleep(8000);
+                System.out.println("Clean exit.");
+                System.exit(0);
+                */
+                
+                break;
 
             }  // if devcards
         }  // for each player
@@ -8176,6 +8298,20 @@ public class SOCServer extends Server
          */
     }
 
+        /**
+     * record events that happen during the game
+     *
+     * @param gameName   the name of the game
+     * @param event      the event
+     */
+    protected void recordGameEvent(SOCMessage mes, String gameName, String event)
+    {
+      
+        System.out.println("log:  " + event);
+        if (loggerClient != null)
+            loggerClient.recordGameEvent(mes,gameName,event);
+    }
+
     /**
      * this is a debugging command that gives resources to a player.
      * Format: rsrcs: #cl #or #sh #wh #wo playername
@@ -8365,6 +8501,11 @@ public class SOCServer extends Server
         messageToGame(game.getName(), outMes);
     }
 
+    public void setLoggerClient(SSRobotClient cl)
+    {
+        loggerClient = cl;
+    }
+    
     /**
      * Quick-and-dirty command line parsing of game options.
      * Calls {@link SOCGameOption#setKnownOptionCurrentValue(SOCGameOption)}.
