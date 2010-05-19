@@ -1,0 +1,7 @@
+# Project info template
+# Copied to resources with a filter to set the proper values
+project.version=@VERSION@
+project.copyright=@COPYRIGHT@
+project.jre.min.major=1
+project.jre.min.minor=1
+project.jre.min.edit=0

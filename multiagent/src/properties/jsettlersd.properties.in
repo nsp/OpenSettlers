@@ -1,0 +1,66 @@
+#
+# JSettlers Server properties, generated at install time
+# 
+
+######################################################################
+#
+# Basic properties
+#
+
+# Port the JSettlers server listens for connections on
+jsettlers.port=8880
+
+# Maximum connections allowed
+jsettlers.connections=10
+
+
+######################################################################
+#
+# SQL database properties
+#
+
+# By Default no SQL database is used, however properties used are
+# documented here.
+
+# If this is not 'true' then database access is not even attempted
+jsettlers.db.enabled=${jsettlers.db.enabled}
+
+# SQL user name used by server
+jsettlers.db.user=${jsettlers.db.user}
+
+# SQL user's password
+jsettlers.db.pass=${jsettlers.db.user}
+
+#######
+# Driver and url are dependant on SQL server used, so listed in tandem
+
+jsettlers.db.driver=${jsettlers.db.driver}
+jsettlers.db.url=${jsettlers.db.url}
+
+# Default is MySQL http://www.mysql.com/products/connector/j/
+#jsettlers.db.driver=com.mysql.jdbc.Driver
+#jsettlers.db.url=jdbc:mysql://localhost/socdata
+
+# MM.MySQL http://www.mysql.com/products/connector/j/
+#jsettlers.db.driver=org.gjt.mm.mysql.Driver
+#jsettlers.db.url=jdbc:mysql://localhost/socdata
+
+# Minimal support: know to have worked, though irregularly tested.
+
+# Postgress http://www.postgresql.org/
+#jsettlers.db.driver=org.postgresql.Driver
+#jsettlers.db.url=jdbc:postgresql://localhost/socdata
+
+# Unknown support: The following DBMS and drivers are untested with
+#   JSettlers, but provided as a start for those that wish to try
+#   them. Please provide feedback on your experiences at
+#   https://sourceforge.net/forum/forum.php?forum_id=357693
+
+# Mini SQL (mSQL) http://www.imaginary.com/Java/
+#jsettlers.db.driver=com.imaginary.sql.msql.MsqlDriver
+#jsettlers.db.url=jdbc:msql://localhost/socdata
+
+# MS SQL http://support.microsoft.com/default.aspx?scid=kb;en-us;313100
+#jsettlers.db.driver=com.microsoft.jdbc.sqlserver.SQLServerDriver
+#jsettlers.db.url=jdbc:microsoft:sqlserver://localhost;DatabaseName=socdata
+

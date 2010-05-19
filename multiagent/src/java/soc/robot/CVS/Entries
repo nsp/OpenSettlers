@@ -1,0 +1,21 @@
+/BoardNodeScorePair.java/1.1/Sun Mar 14 09:39:53 2004//
+/SOCBuildPossibility.java/1.1/Sun Mar 14 09:39:53 2004//
+/SOCBuildingSpeedEstimate.java/1.1/Sun Mar 14 09:39:53 2004//
+/SOCNumberProbabilities.java/1.1/Sun Mar 14 09:39:53 2004//
+/SOCPlayerAction.java/1.1/Sun Mar 14 09:39:53 2004//
+/SOCPlayerTracker.java/1.1/Sun Mar 14 09:39:53 2004//
+/SOCPossibleCard.java/1.1/Sun Mar 14 09:39:53 2004//
+/SOCPossibleCity.java/1.1/Sun Mar 14 09:39:53 2004//
+/SOCPossiblePiece.java/1.1/Sun Mar 14 09:39:53 2004//
+/SOCPossibleRoad.java/1.1/Sun Mar 14 09:39:53 2004//
+/SOCPossibleSettlement.java/1.1/Sun Mar 14 09:39:53 2004//
+/SOCResSetBuildTimePair.java/1.1/Sun Mar 14 09:39:53 2004//
+/SOCResSetBuildTypePair.java/1.1/Sun Mar 14 09:39:53 2004//
+/SOCRobotBrain.java/1.3/Mon Nov 15 02:18:56 2004//
+/SOCRobotClient.java/1.3/Mon Nov 15 02:18:56 2004//
+/SOCRobotDM.java/1.2/Mon Nov 15 22:40:16 2004//
+/SOCRobotNegotiator.java/1.1/Sun Mar 14 09:39:53 2004//
+/SOCRobotPinger.java/1.1/Sun Mar 14 09:39:53 2004//
+/SOCRobotResetThread.java/1.1/Sun Mar 14 09:39:53 2004//
+/SOCTradeTree.java/1.1/Sun Mar 14 09:39:53 2004//
+D

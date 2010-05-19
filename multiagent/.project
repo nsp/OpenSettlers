@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>jsettlers</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>classes</name>
+			<type>2</type>
+			<location>C:/jsettlers/target/classes</location>
+		</link>
+		<link>
+			<name>java</name>
+			<type>2</type>
+			<location>C:/JBuilder2007/workspace/jsettlers/src/java</location>
+		</link>
+	</linkedResources>
+</projectDescription>
