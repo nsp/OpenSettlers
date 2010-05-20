@@ -62,6 +62,15 @@ public class InterfaceAgent extends SOCDisplaylessPlayerClient
      */
     public static final String CURRENT_PLANS = "CURRENT_PLANS";
     public static final String CURRENT_RESOURCES = "RESOURCES";
+    /**
+     * Name of built-in robot brain class.
+     * This robot is the original robot, distributed with the JSettlers server,
+     * which permits some optimized communications.
+     * Other (3rd-party) robots must use a different class in their IMAROBOT messages.
+     * See the class javadoc for more details.
+     * @since 1.1.09
+     */
+    public static final String RBCLASS = "soc.robot.InterfaceAgent";
 
     /**
      * the thread the reads incomming messages
@@ -188,7 +197,7 @@ public class InterfaceAgent extends SOCDisplaylessPlayerClient
 
             //resetThread = new SOCRobotResetThread(this);
             //resetThread.start();
-            put(SOCImARobot.toCmd(nickname));
+            put(SOCImARobot.toCmd(nickname, RBCLASS));
             
             
             
@@ -276,7 +285,7 @@ public class InterfaceAgent extends SOCDisplaylessPlayerClient
 
             //resetThread = new SOCRobotResetThread(this);
             //resetThread.start();
-            put(SOCImARobot.toCmd(nickname));
+            put(SOCImARobot.toCmd(nickname, RBCLASS));
         }
         catch (Exception e)
         {
@@ -1290,7 +1299,7 @@ public class InterfaceAgent extends SOCDisplaylessPlayerClient
             /**
              * set the robot flag
              */
-            ga.getPlayer(mes.getPlayerNumber()).setRobotFlag(mes.isRobot());
+            ga.getPlayer(mes.getPlayerNumber()).setRobotFlag(mes.isRobot(), false);
 
             /**
              * let the robot brain find our player object if we sat down
@@ -1548,7 +1557,7 @@ public class InterfaceAgent extends SOCDisplaylessPlayerClient
         
     	//SOCBoard board = game.getBoard();
     	
-    	Vector adj = SOCBoard.getAdjacentEdgesToNode(0xC7);
+    	Vector adj = game.getBoard().getAdjacentEdgesToNode(0xC7);
     	
     	System.out.println(adj);
     	
@@ -2135,10 +2144,10 @@ public class InterfaceAgent extends SOCDisplaylessPlayerClient
         {
         case SOCPlayingPiece.ROAD:
 
-            SOCRoad rd = new SOCRoad(pl, ((SOCPutPiece) mes).getCoordinates());
+            SOCRoad rd = new SOCRoad(pl, ((SOCPutPiece) mes).getCoordinates(), null);
             game.putPiece(rd);
             	
-            pl.updatePotentials(new SOCRoad(pl, mes.getCoordinates()));
+            pl.updatePotentials(new SOCRoad(pl, mes.getCoordinates(), null));
             
             if(pl.getName().equals(nickname))
             	PA.setPlayer(pl);
@@ -2148,12 +2157,12 @@ public class InterfaceAgent extends SOCDisplaylessPlayerClient
         case SOCPlayingPiece.SETTLEMENT:
         	
         	
-            SOCSettlement se = new SOCSettlement(pl, ((SOCPutPiece) mes).getCoordinates());
+            SOCSettlement se = new SOCSettlement(pl, ((SOCPutPiece) mes).getCoordinates(), null);
             //System.out.println("put piece :: settlement1");
             game.putPiece(se);
             //System.out.println("put piece :: settlement2");
 
-            pl.updatePotentials(new SOCSettlement(pl, mes.getCoordinates()));
+            pl.updatePotentials(new SOCSettlement(pl, mes.getCoordinates(), null));
 
             if(pl.getName().equals(nickname))
             	PA.setPlayer(pl);
@@ -2162,10 +2171,10 @@ public class InterfaceAgent extends SOCDisplaylessPlayerClient
 
         case SOCPlayingPiece.CITY:
 
-            SOCCity ci = new SOCCity(pl, ((SOCPutPiece) mes).getCoordinates());
+            SOCCity ci = new SOCCity(pl, ((SOCPutPiece) mes).getCoordinates(), null);
             game.putPiece(ci);
             
-            pl.updatePotentials(new SOCCity(pl, mes.getCoordinates()));
+            pl.updatePotentials(new SOCCity(pl, mes.getCoordinates(), null));
            
             if(pl.getName().equals(nickname))
             	PA.setPlayer(pl);

@@ -21,18 +21,22 @@
  **/
 package soc.server.database;
 
-import soc.util.SOCRobotParameters;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
-
 import java.util.Calendar;
 import java.util.Properties;
+import java.util.Vector;
+
+import soc.game.SOCGame;
+import soc.game.SOCPlayer;
+import soc.util.SOCPlayerInfo;
+import soc.util.SOCRobotParameters;
 
 
 /**
@@ -65,6 +69,11 @@ public class SOCDBHelper
 {
     // If a new property is added, please add a PROP_JSETTLERS_DB_ constant
     // and also add it to SOCServer.PROPS_LIST.
+
+    /** Property to specify the SQL database server. 
+	 * @since 1.1.10
+	 */
+    public static final String PROP_JSETTLERS_DB_ENABLED = "jsettlers.db.enabled";
 
 	/** Property <tt>jsettlers.db.user</tt> to specify the server's SQL database username.
      * @since 1.1.09
@@ -100,6 +109,9 @@ public class SOCDBHelper
      */
     private static String dbURL = null;
 
+    /** Cached url used when reconnecting on error */
+    private static String url;
+	
     /**
      * This flag indicates that the connection should be valid, yet the last
      * operation failed. Methods will attempt to reconnect prior to their
@@ -113,14 +125,34 @@ public class SOCDBHelper
     /** Cached password used when reconnecting on error */
     private static String password;
 
-    private static String CREATE_ACCOUNT_COMMAND = "INSERT INTO users VALUES (?,?,?,?,?);";
-    private static String RECORD_LOGIN_COMMAND = "INSERT INTO logins VALUES (?,?,?);";
-    private static String USER_PASSWORD_QUERY = "SELECT password FROM users WHERE ( users.nickname = ? );";
-    private static String HOST_QUERY = "SELECT nickname FROM users WHERE ( users.host = ? );";
-    private static String LASTLOGIN_UPDATE = "UPDATE users SET lastlogin = ?  WHERE nickname = ? ;";
-    private static String SAVE_GAME_COMMAND = "INSERT INTO games VALUES (?,?,?,?,?,?,?,?,?,?);";
-    private static String ROBOT_PARAMS_QUERY = "SELECT * FROM robotparams WHERE robotname = ?;";
+    private static String CREATE_ACCOUNT_COMMAND =  "INSERT INTO users VALUES (?,?,?,?,?,?,?,?,?);";
 
+    private static String RECORD_LOGIN_COMMAND =    "INSERT INTO logins VALUES (?,?,?);";
+
+    private static String USER_PASSWORD_QUERY =     "SELECT password FROM users WHERE ( users.nickname = ? );";
+	
+    private static String HOST_QUERY =              "SELECT nickname FROM users WHERE ( users.host = ? );";
+
+    private static String LASTLOGIN_UPDATE =        "UPDATE users SET lastlogin = ? WHERE nickname = ? ;";
+
+    private static String SAVE_GAME_COMMAND =       "INSERT INTO games VALUES (?,?,?,?,?,?,?,?,?,?);";
+	
+    private static String ROBOT_PARAMS_QUERY =      "SELECT * FROM robotparams WHERE robotname = ?;";
+    
+    private static String ROBOT_STATS_QUERY =       "SELECT robotname, wins, losses, totalpoints, totalpoints/(wins+losses) AS avg, (100*(wins/(wins+losses))) AS pct FROM robotparams WHERE (wins+losses) > 0 ORDER BY pct desc, avg desc, totalpoints desc;";
+    
+    private static String HUMAN_STATS_QUERY =       "SELECT nickname, wins, losses, totalpoints, totalpoints/(wins+losses) AS avg, 100 * (wins/(wins+losses)) AS pct FROM users WHERE (wins+losses) > 0 ORDER BY pct desc, avg desc, totalpoints desc;";
+
+    private static String RESET_HUMAN_STATS =       "UPDATE users SET wins = 0, losses = 0, totalpoints = 0 WHERE nickname = ?;";
+
+    private static String UPDATE_ROBOT_STATS =      "UPDATE robotparams SET wins = wins + ?, losses = losses + ?, totalpoints = totalpoints + ? WHERE robotname = ?;";
+    
+    private static String UPDATE_USER_STATS =       "UPDATE users SET wins = wins + ?, losses = losses + ?, totalpoints = totalpoints + ? WHERE nickname = ?;";
+    
+    private static String USER_FACE_QUERY =         "SELECT face FROM users WHERE users.nickname = ?;";
+    
+    private static String USER_FACE_UPDATE =        "UPDATE users SET face = ? WHERE nickname = ?;";
+    
     private static PreparedStatement createAccountCommand = null;
     private static PreparedStatement recordLoginCommand = null;
     private static PreparedStatement userPasswordQuery = null;
@@ -128,6 +160,11 @@ public class SOCDBHelper
     private static PreparedStatement lastloginUpdate = null;
     private static PreparedStatement saveGameCommand = null;
     private static PreparedStatement robotParamsQuery = null;
+    private static PreparedStatement resetHumanStats = null;
+    private static PreparedStatement updateRobotStats = null;
+    private static PreparedStatement updateUserStats = null;
+    private static PreparedStatement userFaceQuery = null;
+    private static PreparedStatement userFaceUpdate = null;
 
     /**
      * This makes a connection to the database
@@ -136,9 +173,8 @@ public class SOCDBHelper
      * The default URL is "jdbc:mysql://localhost/socdata".
      * The default driver is "com.mysql.jdbc.Driver".
      * These can be changed by supplying <code>props</code>.
+     * If props = null, we behave as though db.enabled=false;
      *
-     * @param user  the user name for accessing the database
-     * @param pswd  the password for the user
      * @param props  null, or properties containing {@link #PROP_JSETTLERS_DB_USER},
      *       {@link #PROP_JSETTLERS_DB_URL}, and any other desired properties.
      * @throws SQLException if an SQL command fails, or the db couldn't be
@@ -146,57 +182,70 @@ public class SOCDBHelper
      *         or if the {@link #PROP_JSETTLERS_DB_DRIVER} property is not mysql, not sqlite, not postgres,
      *         but the {@link #PROP_JSETTLERS_DB_URL} property is not provided.
      */
-    public static void initialize(String user, String pswd, Properties props) throws SQLException
+    public static boolean initialize(Properties props) throws SQLException
     {
+        if (isConnected())
+            throw new IllegalStateException("Database already initialized");
+
     	String driverclass = "com.mysql.jdbc.Driver";
     	dbURL = "jdbc:mysql://localhost/socdata";
+        boolean enabled = false;
     	if (props != null)
     	{
-    	    String prop_dbURL = props.getProperty(PROP_JSETTLERS_DB_URL);
-    	    String prop_driverclass = props.getProperty(PROP_JSETTLERS_DB_DRIVER);
-    	    if (prop_dbURL != null)
-    	    {
-    	        dbURL = prop_dbURL;
-    	        if (prop_driverclass != null)
-    	            driverclass = prop_driverclass;
-    	        else if (prop_dbURL.startsWith("jdbc:postgresql"))
-    	            driverclass = "org.postgresql.Driver";
-    	        else if (prop_dbURL.startsWith("jdbc:sqlite:"))
-    	            driverclass = "org.sqlite.JDBC";
-    	        else if (! prop_dbURL.startsWith("jdbc:mysql"))
-    	        {
-    	            throw new SQLException("JDBC: URL property is set, but driver property is not: ("
-    	                + PROP_JSETTLERS_DB_URL + ", " + PROP_JSETTLERS_DB_DRIVER + ")");
-    	        }
-    	    } else {
-    	        if (prop_driverclass != null)
-    	            driverclass = prop_driverclass;
-
-                // if it's mysql, use the mysql default url above.
-                // if it's postgres or sqlite, use that.
-                // otherwise, not sure what they have.
-                if (driverclass.contains("postgresql"))
-                {
-                    dbURL = "jdbc:postgresql://localhost/socdata";
-                }
-                else if (driverclass.contains("sqlite"))
-                {
-                    dbURL = "jdbc:sqlite:socdata.sqlite";
-                }
-                else if (! driverclass.contains("mysql"))
-    	        {
-    	            throw new SQLException("JDBC: Driver property is set, but URL property is not: ("
-    	                + PROP_JSETTLERS_DB_DRIVER + ", " + PROP_JSETTLERS_DB_URL + ")");
-    	        }
-    	    }
+		    enabled = Boolean.parseBoolean(props.getProperty(PROP_JSETTLERS_DB_ENABLED));
+		}
+        if (! enabled) return false;
+	    String prop_dbURL = props.getProperty(PROP_JSETTLERS_DB_URL);
+	    String prop_driverclass = props.getProperty(PROP_JSETTLERS_DB_DRIVER);
+	    if (prop_dbURL != null)
+	    {
+	        dbURL = prop_dbURL;
+	        if (prop_driverclass != null)
+	            driverclass = prop_driverclass;
+	        else if (prop_dbURL.startsWith("jdbc:postgresql"))
+	            driverclass = "org.postgresql.Driver";
+	        else if (prop_dbURL.startsWith("jdbc:sqlite:"))
+	            driverclass = "org.sqlite.JDBC";
+	        else if (! prop_dbURL.startsWith("jdbc:mysql"))
+	        {
+	            throw new SQLException("JDBC: URL property is set, but driver property is not: ("
+	                + PROP_JSETTLERS_DB_URL + ", " + PROP_JSETTLERS_DB_DRIVER + ")");
+	        }
+	    } else {
+	        if (prop_driverclass != null)
+	            driverclass = prop_driverclass;
+            // if it's mysql, use the mysql default url above.
+            // if it's postgres or sqlite, use that.
+            // otherwise, not sure what they have.
+            if (driverclass.contains("postgresql"))
+            {
+                dbURL = "jdbc:postgresql://localhost/socdata";
+            }
+            else if (driverclass.contains("sqlite"))
+            {
+                dbURL = "jdbc:sqlite:socdata.sqlite";
+            }
+            else if (! driverclass.contains("mysql"))
+	        {
+	            throw new SQLException("JDBC: Driver property is set, but URL property is not: ("
+	                + PROP_JSETTLERS_DB_DRIVER + ", " + PROP_JSETTLERS_DB_URL + ")");
+	        }
     	}
+        userName = props.getProperty(PROP_JSETTLERS_DB_USER);
+        password = props.getProperty(PROP_JSETTLERS_DB_PASS);
+        url = props.getProperty(PROP_JSETTLERS_DB_URL);
+        String driver = props.getProperty(PROP_JSETTLERS_DB_DRIVER);
+
+        if (driver == null)
+            throw new SQLException("SQL driver not specified");
+        if (url == null)
+            throw new SQLException("SQL url not specified");
 
     	try
         {
             // Load the JDBC driver. Revisit exceptions when /any/ JDBC allowed.
             Class.forName(driverclass).newInstance();
-
-            connect(user, pswd);
+            connect();
         }
         catch (ClassNotFoundException x)
         {
@@ -210,10 +259,12 @@ public class SOCDBHelper
             // InstantiationException & IllegalAccessException
             // should not be possible  for org.gjt.mm.mysql.Driver
             // ClassNotFound
-            SQLException sx = new SQLException("Unable to initialize user database");
+            SQLException sx = new SQLException("Unable to initialize user database: " + url);
             sx.initCause(x);
             throw sx;
         }
+        
+        return isConnected();
     }
 
     /**
@@ -227,7 +278,7 @@ public class SOCDBHelper
     {
         if (connection != null)
         {
-            return (! errorCondition) || connect(userName, password);
+            return (! errorCondition) || connect();
         }
 
         return false;
@@ -236,14 +287,12 @@ public class SOCDBHelper
     /**
      * initialize and checkConnection use this to get ready.
      */
-    private static boolean connect(String user, String pswd)
+    private static boolean connect()
         throws SQLException
     {
-        connection = DriverManager.getConnection(dbURL, user, pswd);
+        connection = DriverManager.getConnection(dbURL, userName, password);
 
         errorCondition = false;
-        userName = user;
-        password = pswd;
         
         // prepare PreparedStatements for queries
         createAccountCommand = connection.prepareStatement(CREATE_ACCOUNT_COMMAND);
@@ -254,6 +303,12 @@ public class SOCDBHelper
         saveGameCommand = connection.prepareStatement(SAVE_GAME_COMMAND);
         robotParamsQuery = connection.prepareStatement(ROBOT_PARAMS_QUERY);
 
+        resetHumanStats = connection.prepareStatement(RESET_HUMAN_STATS);
+        userFaceQuery = connection.prepareStatement(USER_FACE_QUERY);
+        userFaceUpdate = connection.prepareStatement(USER_FACE_UPDATE);
+        updateRobotStats = connection.prepareStatement(UPDATE_ROBOT_STATS);
+        updateUserStats = connection.prepareStatement(UPDATE_USER_STATS);
+        
         return true;
     }
     
@@ -291,13 +346,108 @@ public class SOCDBHelper
             }
             catch (SQLException sqlE)
             {
-                errorCondition = true;
-                sqlE.printStackTrace();
-                throw sqlE;
+                handleSQLException(sqlE);
             }
         }
 
         return password;
+    }
+
+    /**
+     * Authenticate a user with the specified password. If authentication is
+     * successful, the users lastlogin is updated and Auth.PASS is returned. If
+     * the username is unknown, or the database is inaccessable,
+     * Auth.UNKNOWN, and finally Auth.FAIL for an incorrect password.
+     *
+     * @param userName name of player
+     * @param password password of player
+     *
+     * @return <code>Auth.PASS</code>, <code>Auth.FAIL</code>, or
+     * <code>Auth.UNKNOWN</code>
+     * @throws SQLException on db error
+     * @throws NullPointerException if either parameter is null
+     */
+    public static Auth authenticate(String userName, String password, String host) throws SQLException
+    {
+        Auth result = Auth.UNKNOWN;
+        
+        // ensure that the JDBC connection is still valid
+        if (checkConnection())
+        {
+            try
+            {
+                // fill in the data values to the Prepared statement
+                userPasswordQuery.setString(1, userName);
+
+                // execute the Query
+                ResultSet resultSet = userPasswordQuery.executeQuery();
+
+                // if no results, user is not authenticated
+                if (resultSet.next())
+                {
+                    String dbPass = resultSet.getString(1);
+                    if (password != null && password.equals(dbPass))
+                    {
+                        recordLogin(userName, host, System.currentTimeMillis());
+                        result = Auth.PASS;
+                    }
+                    else
+                    {
+                        result = Auth.FAIL;
+                    }
+                }
+
+                resultSet.close();
+            }
+            catch (SQLException sqlE)
+            {
+                handleSQLException(sqlE);
+            }
+        }
+
+        return result;
+    }
+    
+
+    /**
+     * returns default face for player
+     *
+     * @param sUserName username of player
+     *
+     * @return 1 if user account doesn't exist
+     *
+     * @throws SQLException if database is horked
+     */
+    public static int getUserFace(String sUserName) throws SQLException
+    {
+        int face = 1;
+
+        // ensure that the JDBC connection is still valid
+        if (checkConnection())
+        {
+            try
+            {
+                // fill in the data values to the Prepared statement
+                userFaceQuery.setString(1, sUserName);
+
+                // execute the Query
+                ResultSet resultSet = userFaceQuery.executeQuery();
+
+                // if no results, user is not authenticated
+                if (resultSet.next())
+                {
+                    face = resultSet.getInt(1);
+                }
+
+                resultSet.close();
+            }
+            catch (SQLException sqlE)
+            {
+                handleSQLException(sqlE);
+            }
+        }
+
+        return face;
     }
 
     /**
@@ -334,9 +484,7 @@ public class SOCDBHelper
             }
             catch (SQLException sqlE)
             {
-                errorCondition = true;
-                sqlE.printStackTrace();
-                throw sqlE;
+                handleSQLException(sqlE);
             }
         }
 
@@ -372,6 +520,10 @@ public class SOCDBHelper
                 createAccountCommand.setString(3, password);
                 createAccountCommand.setString(4, email);
                 createAccountCommand.setDate(5, sqlDate, cal);
+                createAccountCommand.setInt(6, 0); // wins
+                createAccountCommand.setInt(7, 0); // losses
+                createAccountCommand.setInt(8, 1); // face
+                createAccountCommand.setInt(9, 0); // totalpoints
 
                 // execute the Command
                 createAccountCommand.executeUpdate();
@@ -380,9 +532,7 @@ public class SOCDBHelper
             }
             catch (SQLException sqlE)
             {
-                errorCondition = true;
-                sqlE.printStackTrace();
-                throw sqlE;
+                handleSQLException(sqlE);
             }
         }
 
@@ -418,13 +568,13 @@ public class SOCDBHelper
                 // execute the Command
                 recordLoginCommand.executeUpdate();
 
+                // update the last login time
+                updateLastlogin(userName, time);
                 return true;
             }
             catch (SQLException sqlE)
             {
-                errorCondition = true;
-                sqlE.printStackTrace();
-                throw sqlE;
+                handleSQLException(sqlE);
             }
         }
 
@@ -462,9 +612,7 @@ public class SOCDBHelper
             }
             catch (SQLException sqlE)
             {
-                errorCondition = true;
-                sqlE.printStackTrace();
-                throw sqlE;
+                handleSQLException(sqlE);
             }
         }
 
@@ -472,25 +620,59 @@ public class SOCDBHelper
     }
 
     /**
-     * DOCUMENT ME!
+     * Saves faceId to the database 
      *
-     * @param gameName DOCUMENT ME!
-     * @param player1 DOCUMENT ME!
-     * @param player2 DOCUMENT ME!
-     * @param player3 DOCUMENT ME!
-     * @param player4 DOCUMENT ME!
-     * @param score1 DOCUMENT ME!
-     * @param score2 DOCUMENT ME!
-     * @param score3 DOCUMENT ME!
-     * @param score4 DOCUMENT ME!
-     * @param startTime DOCUMENT ME!
+     * @param ga game to be saved
      *
      * @return true if the save succeeded
      *
-     * @throws SQLException DOCUMENT ME!
+     * @throws SQLException if the database isn't available
      */
-    public static boolean saveGameScores(String gameName, String player1, String player2, String player3, String player4, short score1, short score2, short score3, short score4, java.util.Date startTime) throws SQLException
+    public static boolean saveFaces(SOCGame ga) throws SQLException
     {
+        // Insure that the JDBC connection is still valid
+        if (checkConnection())
+        {
+            try
+            {
+                // Record face for humans
+                for (int i = 0; i < SOCGame.MAXPLAYERS; i++)
+                {
+                    SOCPlayer pl = ga.getPlayer(i);
+                    
+                    // If the player is human
+                    if (!pl.isRobot())
+                    {
+                        // Store the faceId in the database
+                        userFaceUpdate.setInt(1, pl.getFaceId());
+                        userFaceUpdate.setString(2, pl.getName());
+                        userFaceUpdate.executeUpdate();
+                    }
+                }
+                
+                return true;
+            }
+            catch (SQLException sqlE)
+            {
+                handleSQLException(sqlE);
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Saves game scores to the database (both user and games tables)
+     *
+     * @param ga game to be saved
+     *
+     * @return true if the save succeeded
+     *
+     * @throws SQLException if the database isn't available
+     */
+    public static boolean saveGameScores(SOCGame ga) throws SQLException
+    {
+        int sGCindex = 1;
         // TODO 6-player: save their scores too, if
         // those fields are in the database.
 
@@ -500,27 +682,60 @@ public class SOCDBHelper
             try
             {
                 // fill in the data values to the Prepared statement
-                saveGameCommand.setString(1, gameName);
-                saveGameCommand.setString(2, player1);
-                saveGameCommand.setString(3, player2);
-                saveGameCommand.setString(4, player3);
-                saveGameCommand.setString(5, player4);
-                saveGameCommand.setShort(6, score1);
-                saveGameCommand.setShort(7, score2);
-                saveGameCommand.setShort(8, score3);
-                saveGameCommand.setShort(9, score4);
-                saveGameCommand.setTimestamp(10, new Timestamp(startTime.getTime()));
+                saveGameCommand.setString(sGCindex++, ga.getName());
+
+                // iterate through the players
+                for (int i = 0; i < SOCGame.MAXPLAYERS; i++)
+                {
+                    SOCPlayer pl = ga.getPlayer(i);
+
+	                saveGameCommand.setString(sGCindex++, pl.getName());
+                }
+                for (int i = 0; i < SOCGame.MAXPLAYERS; i++)
+                {
+                    SOCPlayer pl = ga.getPlayer(i);
+                    
+                    saveGameCommand.setInt(sGCindex++, pl.getTotalVP());
+                }
+                
+                saveGameCommand.setTimestamp(sGCindex++, new Timestamp(ga.getStartTime().getTime()));
 
                 // execute the Command
                 saveGameCommand.executeUpdate();
 
+                // iterate through the players
+                for (int i = 0; i < SOCGame.MAXPLAYERS; i++)
+                {
+                    SOCPlayer pl = ga.getPlayer(i);
+                    int points = pl.getTotalVP();
+                    boolean isWinner = points >= 10;
+                    
+                    // Choose the table to update
+                    if (pl.isRobot())
+                    {
+                        updateRobotStats.setInt(1, (isWinner ? 1 : 0)); // wins
+                        updateRobotStats.setInt(2, (isWinner ? 0 : 1)); // losses
+                        updateRobotStats.setInt(3, points); // totalpoints
+                        updateRobotStats.setString(4, pl.getName());
+
+                        updateRobotStats.executeUpdate();
+                    }
+                    else // The player is human
+                    {
+                        updateUserStats.setInt(1, (isWinner ? 1 : 0)); // wins
+                        updateUserStats.setInt(2, (isWinner ? 0 : 1)); // losses
+                        updateUserStats.setInt(3, points); // totalpoints
+                        updateUserStats.setString(4, pl.getName());
+
+                        updateUserStats.executeUpdate();
+                    }
+                }
+                
                 return true;
             }
             catch (SQLException sqlE)
             {
-                errorCondition = true;
-                sqlE.printStackTrace();
-                throw sqlE;
+                handleSQLException(sqlE);
             }
         }
 
@@ -571,13 +786,115 @@ public class SOCDBHelper
             }
             catch (SQLException sqlE)
             {
-                errorCondition = true;
-                sqlE.printStackTrace();
-                throw sqlE;
+                handleSQLException(sqlE);
             }
         }
 
         return robotParams;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param type either SOCPlayerInfo.HUMAN or SOCPlayerInfo.ROBOT
+     *
+     * @return array of robot data
+     *
+     * @throws SQLException DOCUMENT ME!
+     */
+    public static Vector getStatistics(String type) throws SQLException
+    {
+        Vector statistics = new Vector();
+        Statement stmt = null;
+        
+        // ensure that the JDBC connection is still valid
+        if (checkConnection())
+        {
+            try
+            {
+                ResultSet resultSet = null;
+                stmt = connection.createStatement();
+
+                // Execute the appropriate query
+                if (type.equals(SOCPlayerInfo.ROBOT))
+                {
+                    resultSet = stmt.executeQuery(ROBOT_STATS_QUERY);
+                }
+                else // default, even if garbled
+                {
+                    resultSet = stmt.executeQuery(HUMAN_STATS_QUERY);
+                }
+
+                while (resultSet.next())
+                {
+                    SOCPlayerInfo info = new SOCPlayerInfo();
+
+                    info.setName(resultSet.getString(1));
+                    info.setRank(resultSet.getRow());
+                    info.setWins(resultSet.getInt(2));
+                    info.setLosses(resultSet.getInt(3));
+                    info.setTotalPoints(resultSet.getInt(4));
+                    info.setAveragePoints(resultSet.getFloat(5));
+                    info.setWinRatio(resultSet.getFloat(6));
+
+                    statistics.add(info);
+                }
+                resultSet.close();
+            }
+            catch (SQLException sqlE)
+            {
+                handleSQLException(sqlE);
+            }
+            finally
+            {
+                try
+                {
+                    if (stmt != null)
+                        stmt.close();
+                }
+                catch (SQLException sqlE)
+                {
+                    handleSQLException(sqlE);
+                }
+            }
+        }
+        return statistics;
+    }
+    
+    /**
+     * DOCUMENT ME!
+     *
+     * @param userName for account to be reset
+     *
+     * @return true if the account was reset, false if not connected
+     *
+     * @throws SQLException DOCUMENT ME!
+     */
+    public static boolean resetStatistics(String userName) throws SQLException
+    {
+        boolean result = false;
+        
+        // ensure that the JDBC connection is still valid
+        if (checkConnection())
+        {
+            try
+            {
+                // Server will have authenticated (may be admin)
+                
+                // Fill in the data values to the Prepared statement
+                resetHumanStats.setString(1, userName);
+                
+                // execute the Command
+                resetHumanStats.executeUpdate();
+
+                result = true;
+            }
+            catch (SQLException sqlE)
+            {
+                handleSQLException(sqlE);
+            }
+        }
+        return result; // failure only on error
     }
 
     /**
@@ -596,12 +913,16 @@ public class SOCDBHelper
                 saveGameCommand.close();
                 robotParamsQuery.close();
                 connection.close();
+                updateRobotStats.close();
+                updateUserStats.close();
+                userFaceQuery.close();
+                recordLoginCommand.close();
+                resetHumanStats.close();
+                connection = null;
             }
             catch (SQLException sqlE)
             {
-                errorCondition = true;
-                sqlE.printStackTrace();
-                throw sqlE;
+                handleSQLException(sqlE);
             }
         }
     }
@@ -657,6 +978,48 @@ public class SOCDBHelper
 
             // Fetch the next result set row
             more = rs.next();
+        }
+    }
+	
+    /**
+     * Common behavior for SQL Exceptions.
+     */
+    protected static void handleSQLException(SQLException x) throws SQLException
+    {
+        errorCondition = true;
+        x.printStackTrace();
+        throw x;
+    }
+
+    /**
+     * Returns true if connection has been made. Does not attempt to reconnect
+     * if an error has occured.
+     *
+     * @return true if the connection has been made
+     */
+    public static boolean isConnected() throws SQLException
+    {
+        return connection != null;
+    }
+
+    /**
+     * Constant results for authorization requests.
+     */
+    public static class Auth
+    {
+        public static final Auth PASS = new Auth("PASS");
+        public static final Auth FAIL = new Auth("FAIL");
+        public static final Auth UNKNOWN = new Auth("UNKNOWN");
+
+        private String type;
+        /** time to switch to java1.5 code for enums? */
+        private Auth(String type)
+        {
+            this.type = type;
+        }
+        public String toString()
+        {
+            return type;
         }
     }
 }

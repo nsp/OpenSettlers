@@ -25,7 +25,9 @@ package soc.server;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
 import java.util.StringTokenizer;
@@ -84,6 +86,7 @@ import soc.message.SOCGameStats;
 import soc.message.SOCGameTextMsg;
 import soc.message.SOCGames;
 import soc.message.SOCGamesWithOptions;
+import soc.message.SOCGetStatistics;
 import soc.message.SOCImARobot;
 import soc.message.SOCJoin;
 import soc.message.SOCJoinAuth;
@@ -116,6 +119,7 @@ import soc.message.SOCResetBoardReject;
 import soc.message.SOCResetBoardRequest;
 import soc.message.SOCResetBoardVote;
 import soc.message.SOCResetBoardVoteRequest;
+import soc.message.SOCResetStatistics;
 import soc.message.SOCResourceCount;
 import soc.message.SOCRobotDismiss;
 import soc.message.SOCRollDice;
@@ -124,6 +128,7 @@ import soc.message.SOCServerPing;
 import soc.message.SOCSetPlayedDevCard;
 import soc.message.SOCSetSeatLock;
 import soc.message.SOCSetTurn;
+import soc.message.SOCShowStatistics;
 import soc.message.SOCSitDown;
 import soc.message.SOCStartGame;
 import soc.message.SOCStatusMessage;
@@ -140,6 +145,7 @@ import soc.server.genericServer.StringConnection;
 import soc.util.IntPair;
 import soc.util.SOCGameBoardReset;
 import soc.util.SOCGameList;
+import soc.util.SOCPlayerInfo;
 import soc.util.SOCRobotParameters;
 import soc.util.Version;
 
@@ -181,6 +187,27 @@ import soc.util.Version;
  */
 public class SOCServer extends Server
 {
+    /** Default port server listens on. */
+    public static final int DEFAULT_PORT = 8880;
+    
+    /** Default maximum number of connections allowed. */
+    public static final int DEFAULT_CONNECTIONS = 10;
+    
+    /** Default thread priority. */
+    public static final int DEFAULT_NICE = 5;
+    
+    /** Property to specify the port the server listens on. */
+    public static final String JSETTLERS_PORT = "jsettlers.port";
+
+    /** Property to specify the maximum number of connections allowed. */
+    public static final String JSETTLERS_CONNECTIONS = "jsettlers.connections";
+
+    /** Property to turn on debug mode. */
+    public static final String JSETTLERS_DEBUG = "jsettlers.debug";
+
+    /** Property to specify the server thread priority. */
+    public static final String JSETTLERS_NICE = "jsettlers.nice";
+
     /**
      * Default tcp port number 8880 to listen, and for client to connect to remote server.
      * Should match SOCPlayerClient.SOC_PORT_DEFAULT.
@@ -325,7 +352,7 @@ public class SOCServer extends Server
     /**
      * A list of robots connected to this server
      */
-    protected Vector robots = new Vector();
+    private Vector robots = new Vector();
 
     /**
      * Robot default parameters; copied for each newly connecting robot.
@@ -423,7 +450,7 @@ public class SOCServer extends Server
     /**
      * list of chat channels
      */
-    protected SOCChannelList channelList = new SOCChannelList();
+    private SOCChannelList channelList = new SOCChannelList();
 
     /**
      * list of soc games
@@ -431,55 +458,56 @@ public class SOCServer extends Server
     protected SOCGameListAtServer gameList = new SOCGameListAtServer();
 
     /**
-     * table of requests for robots to join games
+     * table of requests for robots to join games. No need to use synchronized
+     * Hashtable since access is only made when we have game lock anyway.
      */
-    protected Hashtable robotJoinRequests = new Hashtable();
+    private Map robotJoinRequests = new HashMap();
 
     /**
-     * table of requestst for robots to leave games
+     * table of requests for robots to leave games. No need to use synchronized
+     * Hashtable since access is only made when we have game lock anyway.
      */
-    protected Hashtable robotDismissRequests = new Hashtable();
+    private Map robotDismissals = new HashMap();
 
     /**
      * table of game data files
      */
-    protected Hashtable gameDataFiles = new Hashtable();
+    private Map gameDataFiles = new HashMap();
 
     /**
      * the current game event record
      */
-
     //protected SOCGameEventRecord currentGameEventRecord;
 
     /**
      * the time that this server was started
      */
-    protected long startTime;
+    private long startTime;
 
     /**
      * the total number of games that have been started
      */
-    protected int numberOfGamesStarted;
+    private int numberOfGamesStarted;
 
     /**
      * the total number of games finished
      */
-    protected int numberOfGamesFinished;
+    private int numberOfGamesFinished;
 
     /**
      * total number of users
      */
-    protected int numberOfUsers;
+    private int numberOfUsers;
 
     /**
      * server robot pinger
      */
-    SOCServerRobotPinger serverRobotPinger;
+    private SOCServerRobotPinger serverRobotPinger;
 
     /**
      * game timeout checker
      */
-    SOCGameTimeoutChecker gameTimeoutChecker;
+    private SOCGameTimeoutChecker gameTimeoutChecker;
     String databaseUserName;
     String databasePassword;
     
@@ -596,8 +624,11 @@ public class SOCServer extends Server
 
         try
         {
-            SOCDBHelper.initialize(databaseUserName, databasePassword, props);
-            System.err.println("User database initialized.");
+            // false indicates no connection for valid reason (e.g. disabled)
+            if (SOCDBHelper.initialize(props))
+                System.err.println("User database initialized.");
+            else
+                System.err.println("User database disabled.");
         }
         catch (SQLException x) // just a warning
         {
@@ -617,8 +648,10 @@ public class SOCServer extends Server
         numberOfGamesFinished = 0;
         numberOfUsers = 0;
         serverRobotPinger = new SOCServerRobotPinger(robots);
+        serverRobotPinger.setDaemon(true);
         serverRobotPinger.start();
         gameTimeoutChecker = new SOCGameTimeoutChecker(this);
+        gameTimeoutChecker.setDaemon(true);
         gameTimeoutChecker.start();
         this.databaseUserName = databaseUserName;
         this.databasePassword = databasePassword;
@@ -634,6 +667,12 @@ public class SOCServer extends Server
 
             printGameOptions();
         }
+    }
+
+    /** Get the version number string. */
+    public static String getVersion()
+    {
+        return "Java Settlers Server " + Version.version();
     }
 
     /**
@@ -1485,17 +1524,14 @@ public class SOCServer extends Server
      *
      * @param gm  the name of the game
      */
-    public void destroyGame(String gm)
+    private void destroyGame(String gm)
     {
         //D.ebugPrintln("***** destroyGame("+gm+")");
-        SOCGame cg = null;
+        SOCGame game = gameList.getGameData(gm);
 
-        //recordGameEvent(mes, mes.getGame(), mes.toCmd()); //!!!
-        cg = gameList.getGameData(gm);
-
-        if (cg != null)
+        if (game != null)
         {
-            if (cg.getGameState() == SOCGame.OVER)
+            if (game.getGameState() == SOCGame.OVER)
             {
                 numberOfGamesFinished++;
             }
@@ -1505,13 +1541,12 @@ public class SOCServer extends Server
             ///
 
             /*
-               currentGameEventRecord.setSnapshot(cg);
-               saveCurrentGameEventRecord(gm);
-               SOCGameRecord gr = (SOCGameRecord)gameRecords.get(gm);
+               saveCurrentGameEventRecord(game);
+               SOCGameRecord gr = (SOCGameRecord)gameRecords.get(game);
                writeGameRecord(gm, gr);
              */
 
-            //storeGameScores(cg);
+            //storeGameScores(game);
             ///
             /// tell all robots to leave
             ///
@@ -1718,7 +1753,7 @@ public class SOCServer extends Server
      * @param ch  the name of the channel
      * @param mes the message to send
      */
-    public void messageToChannel(String ch, SOCMessage mes)
+    private void messageToChannel(String ch, SOCMessage mes)
     {
         channelList.takeMonitorForChannel(ch);
 
@@ -1758,7 +1793,7 @@ public class SOCServer extends Server
      * @param ch  the name of the channel
      * @param mes the message to send
      */
-    public void messageToChannelWithMon(String ch, SOCMessage mes)
+    private void messageToChannelWithMon(String ch, SOCMessage mes)
     {
         Vector v = channelList.getMembers(ch);
 
@@ -1821,7 +1856,7 @@ public class SOCServer extends Server
      * @see #messageToGame(String, String)
      * @see #messageToGameWithMon(String, SOCMessage)
      */
-    public void messageToGame(String ga, SOCMessage mes)
+    private void messageToGame(String ga, SOCMessage mes)
     {
         gameList.takeMonitorForGame(ga);
 
@@ -1912,7 +1947,7 @@ public class SOCServer extends Server
      * @param mes the message to send
      * @see #messageToGame(String, SOCMessage)
      */
-    public void messageToGameWithMon(String ga, SOCMessage mes)
+    private void messageToGameWithMon(String ga, SOCMessage mes)
     {
         Vector v = gameList.getMembers(ga);
 
@@ -2067,7 +2102,7 @@ public class SOCServer extends Server
     }
 
     /**
-     * Things to do when a new connection comes.
+     * Things to do when a new connection comes. Called only by superclass.
      * If the connection is accepted, it's added to {@link #unnamedConns} until the
      * player "names" it by joining or creating a game under their player name.
      * Other communication is then done, in {@link #newConnection2(StringConnection)}.
@@ -2099,6 +2134,7 @@ public class SOCServer extends Server
              */
             try
             {
+            // see if we are under the connection limit
                 if (this.connectionCount() >= maxConnections)
                 {
                     SOCRejectConnection rcCommand = new SOCRejectConnection("Too many connections, please try another server.");
@@ -2119,7 +2155,7 @@ public class SOCServer extends Server
                  */
                 boolean hostMatch = false;
                 /*
-                Enumeration allConnections = this.getConnections();
+                   Enumeration allConnections = getConnections();
 
                    while(allConnections.hasMoreElements()) {
                    StringConnection tempCon = (StringConnection)allConnections.nextElement();
@@ -2493,7 +2529,7 @@ public class SOCServer extends Server
      */
     private int checkNickname(String n, StringConnection newc, final boolean withPassword)
     {
-        if (n.equals(SERVERNAME))
+        if (n.equalsIgnoreCase(SERVERNAME))
         {
             return -2;
         }
@@ -2673,6 +2709,9 @@ public class SOCServer extends Server
         {
             SOCMessage mes = (SOCMessage) SOCMessage.toMsg(s);
 
+            // TODO: use a login message and check for it first, all others
+            // verify that (c.data != null)
+            
             // D.ebugPrintln(c.getData()+" - "+mes);
             if (mes != null)
             {
@@ -3053,7 +3092,14 @@ public class SOCServer extends Server
 
                 case SOCMessage.CREATEACCOUNT:
                     handleCREATEACCOUNT(c, (SOCCreateAccount) mes);
-
+                    break;
+                    
+                case SOCMessage.GETSTATISTICS:
+                    handleGETSTATISTICS(c, (SOCGetStatistics) mes);
+                    break;
+                
+                case SOCMessage.RESETSTATS:
+                    handleRESETSTATS(c, (SOCResetStatistics) mes);
                     break;
 
                 /**
@@ -3281,69 +3327,56 @@ public class SOCServer extends Server
     }
 
     /**
-     * authenticate the user:
-     * see if the user is in the db, if so then check the password.
-     * if they're not in the db, but they supplied a password,
-     * then send a message (not OK).
-     * if they're not in the db, and no password, then ok.
+     * Authenticate the user. If the user is in the db, the password is
+     * validated. If the user is <i>not</i> in the db, and requireDB is true,
+     * or a non empty password was supplied, <code>false</code> is
+     * returned. Finally, all other calls return <code>true</code>.
      *
      * @param c         the user's connection
      * @param userName  the user's nickname
      * @param password  the user's password; trim before calling
+     * @param requireDB true if database authentication is required
      * @return true if the user has been authenticated
      */
-    private boolean authenticateUser(StringConnection c, String userName, String password)
+    private boolean authenticateUser(StringConnection c, String userName, String password, boolean requireDB)
     {
-        String userPassword = null;
-
+        boolean result = false;
+        
         try
         {
-            userPassword = SOCDBHelper.getUserPassword(userName);
-        }
-        catch (SQLException sqle)
-        {
-            // Indicates a db problem: don't authenticate empty password
+            SOCDBHelper.Auth auth = SOCDBHelper.authenticate(userName, password, c.host());
+
+            if (auth == SOCDBHelper.Auth.PASS)
+            {
+                result = true;
+            }
+            else if (auth == SOCDBHelper.Auth.FAIL)
+            {
             c.put(SOCStatusMessage.toCmd
                     (SOCStatusMessage.SV_PROBLEM_WITH_DB, c.getVersion(),
                     "Problem connecting to database, please try again later."));
-            return false;
-        }
-
-        if (userPassword != null)
-        {
-            if (!userPassword.equals(password))
+            }
+            else // auth == SOCDBHelper.Auth.UNKNOWN
             {
+                if (! password.equals("")) // no such user, but gave password
+                {
                 c.put(SOCStatusMessage.toCmd
                         (SOCStatusMessage.SV_PW_WRONG, c.getVersion(),
                          "Incorrect password for '" + userName + "'."));
-
-                return false;
+                }
+                else // no db in use, or no such user, but check if db required
+                {
+                    result = ! requireDB;
+                }
             }
         }
-        else if (!password.equals(""))
+        catch (SQLException sqle)
         {
-            // No password found in database.
-            // (Or, no database connected.)
-            // If they supplied a password, it won't work here.
-
-            c.put(SOCStatusMessage.toCmd
-                    (SOCStatusMessage.SV_NAME_NOT_FOUND, c.getVersion(),
-                     "No user with the nickname '" + userName + "' is registered with the system."));
-
-            return false;
+            // Indicates a db problem
+            c.put(SOCStatusMessage.toCmd(SOCStatusMessage.SV_PROBLEM_WITH_DB, "Problem connecting to database, please try again later."));
         }
 
-        //
-        // Update the last login time
-        //
-        //Date currentTime = new Date();
-
-        //SOCDBHelper.updateLastlogin(userName, currentTime.getTime());
-        //
-        // Record the login info for this user
-        //
-        //SOCDBHelper.recordLogin(userName, c.host(), currentTime.getTime());
-        return true;
+        return result;
     }
 
     /**
@@ -3533,21 +3566,12 @@ public class SOCServer extends Server
                     return;
                 }
             }
-
-            if ((c.getData() == null) && (!authenticateUser(c, msgUser, msgPass)))
+            // authenticate, sending message
+            if (! authenticateUser(c, mes.getNickname(), mes.getPassword(), false))
             {
                 return;
             }
-
-            /**
-             * Check that the channel name is ok
-             */
-
-            /*
-               if (!checkChannelName(mes.getChannel())) {
-               return;
-               }
-             */
+                
             final String ch = mes.getChannel().trim();
             if (! SOCMessage.isSingleLineAndSafe(ch))
             {
@@ -3890,6 +3914,10 @@ public class SOCServer extends Server
             {
                 giveDevCard(cmdText, ga);
             }
+            else if (gameTextMsgMes.getText().startsWith("*STARTGAME*"))
+            {
+                handleSTARTGAME(c, new SOCStartGame(ga.getName()));
+            }
             else if (cmdText.charAt(0) == '*')
             {
                 processDebugCommand(c, ga.getName(), msgText);
@@ -4085,7 +4113,7 @@ public class SOCServer extends Server
         /**
          * password check new connection from database, if possible
          */
-        if ((c.getData() == null) && (!authenticateUser(c, msgUser, msgPass)))
+        if ((c.getData() == null) && (!authenticateUser(c, msgUser, msgPass, true)))
         {
             return;  // <---- Early return: Password auth failed ----
         }
@@ -4249,7 +4277,7 @@ public class SOCServer extends Server
 
             if (isMember)
             {
-                handleLEAVEGAME_member(c, gaName);
+                handleLEAVEGAME_member(c, gaName, mes);
             }
             else if (((SOCClientData) c.getAppData()).isRobot)
             {
@@ -4268,7 +4296,7 @@ public class SOCServer extends Server
      * Handle a member leaving the game, from {@link #handleLEAVEGAME(StringConnection, SOCLeaveGame)}.
      * @since 1.1.07
      */
-    private void handleLEAVEGAME_member(StringConnection c, final String gaName)
+    private void handleLEAVEGAME_member(StringConnection c, final String gaName, SOCLeaveGame mes)
     {
         boolean gameDestroyed = false;
         if (! gameList.takeMonitorForGame(gaName))
@@ -4300,42 +4328,22 @@ public class SOCServer extends Server
              */
         }
 
-        /**
-         * if it's a robot, remove it from the request list
-         */
-        Vector requests = (Vector) robotDismissRequests.get(gaName);
+        // if a robot is leaving, it's likely that a real player
+        // requested it.  If this connection is the leaving robot, get
+        // the sit request from the player, and fulfill it
+        Map dismissals = (Map) robotDismissals.get(mes.getGame());
 
-        if (requests != null)
+        if (dismissals != null)
         {
-            Enumeration reqEnum = requests.elements();
-            SOCReplaceRequest req = null;
-
-            while (reqEnum.hasMoreElements())
-            {
-                SOCReplaceRequest tempReq = (SOCReplaceRequest) reqEnum.nextElement();
-
-                if (tempReq.getLeaving() == c)
-                {
-                    req = tempReq;
-                    break;
-                }
-            }
-
+            SOCReplaceRequest req = (SOCReplaceRequest) dismissals.remove(c);
             if (req != null)
             {
-                requests.removeElement(req);
-
-                /**
-                 * Taking over a robot spot: let the person replacing the robot sit down
-                 */
-                SOCGame ga = gameList.getGameData(gaName);
-                final int pn = req.getSitDownMessage().getPlayerNumber();
-                final boolean isRobot = req.getSitDownMessage().isRobot();
-                if (! isRobot)
+                SOCSitDown msg = req.getSitDownMessage();
+                SOCGame game = gameList.getGameData(mes.getGame());
+                if (game != null)
                 {
-                    ga.getPlayer(pn).setFaceId(1);  // Don't keep the robot face icon
+                    sitDown(game, req.getArriving(), msg.getPlayerNumber(), msg.isRobot(), false);
                 }
-                sitDown(ga, req.getArriving(), pn, isRobot, false);
             }
         }
     }
@@ -4427,19 +4435,15 @@ public class SOCServer extends Server
                              * this connection has to wait for the robot to leave
                              * and then it can sit down
                              */
-                            Vector disRequests = (Vector) robotDismissRequests.get(gaName);
+                            Map dismissals = (Map) robotDismissals.get(mes.getGame());
                             SOCReplaceRequest req = new SOCReplaceRequest(c, robotCon, mes);
 
-                            if (disRequests == null)
+                            if (dismissals == null)
                             {
-                                disRequests = new Vector();
-                                disRequests.addElement(req);
-                                robotDismissRequests.put(gaName, disRequests);
+                                dismissals = new HashMap();
+                                robotDismissals.put(mes.getGame(), dismissals);
                             }
-                            else
-                            {
-                                disRequests.addElement(req);
-                            }
+                            dismissals.put(robotCon, req);
                         }
 
                         canSit = false;
@@ -6888,6 +6892,60 @@ public class SOCServer extends Server
     }
 
     /**
+     * Handle "get statistics" message
+     *
+     * @param c  the connection
+     * @param mes  the message
+     */
+    private void handleGETSTATISTICS(StringConnection c, SOCGetStatistics mes)
+    {
+        try
+        {
+            Vector statistics = SOCDBHelper.getStatistics(mes.getStype());
+            
+            c.put(SOCShowStatistics.toCmd(mes.getStype(), statistics));
+        }
+        catch (SQLException sqle)
+        {
+            c.put(SOCStatusMessage.toCmd(SOCStatusMessage.SV_NOT_OK_GENERIC, "Error retrieving statistics."));
+        }
+    }
+
+    /**
+     * handle "create account" message
+     *
+     * @param c  the connection
+     * @param mes  the message
+     */
+    private void handleRESETSTATS(StringConnection c, SOCResetStatistics mes)
+    {
+        // always verify password for resetting stats (currently not expected
+        //   to have already authenticated yet)
+        // ok, if logged in via other client (gui or other)
+        // authenticate User will tell them if they're not allowed in
+        if (authenticateUser(c, mes.getNickname(), mes.getPassword(), true))
+        {
+            try
+            {
+                if (SOCDBHelper.resetStatistics(mes.getNickname()))
+                {
+                    c.put(SOCStatusMessage.toCmd(SOCStatusMessage.SV_OK, "Statistics have been successfully reset "));
+                    
+                    handleGETSTATISTICS(c, new SOCGetStatistics(SOCPlayerInfo.HUMAN));
+                }
+                else 
+                    c.put(SOCStatusMessage.toCmd(SOCStatusMessage.SV_PROBLEM_WITH_DB, "Not connected to database. Statistics not reset."));
+            }
+            catch (SQLException sqle)
+            {
+                // Indicates a db problem: don't continue
+                c.put(SOCStatusMessage.toCmd(SOCStatusMessage.SV_PROBLEM_WITH_DB, "Problem connecting to database, please try again later."));
+            }
+        }
+    }
+
+    
+    /**
      * Client has been approved to join game; send the entire state of the game to client.
      * Unless <tt>isTakingOver</tt>, send client join event to other players.
      * Assumes NEWGAME (or NEWGAMEWITHOPTIONS) has already been sent out.
@@ -7099,16 +7157,20 @@ public class SOCServer extends Server
      * @param pn     which seat the player is taking
      * @param robot  true if this player is a robot
      * @param isReset Game is a board-reset of an existing game
+     * @throws NullPointerExceptioin if ga or c are null
      */
     private void sitDown(SOCGame ga, StringConnection c, int pn, boolean robot, boolean isReset)
     {
-        if ((c != null) && (ga != null))
+        if (c == null) throw new NullPointerException("c");
+		if (ga == null) throw new NullPointerException("ga");
+        else
         {
+            int face = 1;
+            String gaName = ga.getName();
             ga.takeMonitor();
 
             try
             {
-                final String gaName = ga.getName();
                 if (! isReset)
                 {
                     // If reset, player is already added and knows if robot.
@@ -7117,6 +7179,8 @@ public class SOCServer extends Server
                         SOCClientData cd = (SOCClientData) c.getAppData();
                         ga.addPlayer((String) c.getData(), pn);
                         ga.getPlayer(pn).setRobotFlag(robot, (cd != null) && cd.isBuiltInRobot);
+
+                        face = SOCDBHelper.getUserFace(ga.getPlayer(pn).getName());
                     }
                     catch (IllegalStateException e)
                     {
@@ -7126,7 +7190,14 @@ public class SOCServer extends Server
                         ga.releaseMonitor();
                         return;  // <---- Early return: cannot sit down ----
                     }
-                }
+	                catch (Exception e)
+	                {
+	                    D.ebugPrintln(e.toString());
+	                    D.ebugPrintln("Error retrieving player face.");
+	                }
+				}
+                  
+	            ga.getPlayer(pn).setFaceId(face);
 
                 /**
                  * if the player can sit, then tell the other clients in the game
@@ -7267,10 +7338,12 @@ public class SOCServer extends Server
      * @param pe  the perpetrator
      * @param vi  the the victim
      * @param rsrc  type of resource stolen, as in SOCResourceConstants
+     * @throws NullPointerExceptioin if ga is null
      */
-    protected void reportRobbery(SOCGame ga, SOCPlayer pe, SOCPlayer vi, int rsrc)
+    private void reportRobbery(SOCGame ga, SOCPlayer pe, SOCPlayer vi, int rsrc)
     {
-        if (ga != null)
+        if (ga == null) throw new NullPointerException("ga");
+		else
         {
             final String gaName = ga.getName();
             final String peName = pe.getName();
@@ -7292,9 +7365,7 @@ public class SOCServer extends Server
 
             mes.append(" resource from "); 
 
-            /**
-             * send the game messages
-             */
+            // send the game messages
             StringConnection peCon = getConnection(peName);
             StringConnection viCon = getConnection(viName);
             messageToPlayer(peCon, gainRsrc);
@@ -7310,8 +7381,8 @@ public class SOCServer extends Server
             messageToGameExcept(gaName, exceptions, gainUnknown, true);
             messageToGameExcept(gaName, exceptions, loseUnknown, true);
 
-            /**
-             * send the text messages:
+            /*
+             * send the text messages
              * "You stole a sheep resource from viName."
              * "peName stole a sheep resource from you."
              * "peName stole a resource from viName."
@@ -7611,6 +7682,9 @@ public class SOCServer extends Server
                 System.exit(0);
                 */
                 
+                storeGameScores(ga);
+                storePlayerFaces(ga);
+
                 break;
 
             }  // if devcards
@@ -7890,36 +7964,19 @@ public class SOCServer extends Server
      */
     protected boolean checkTurn(StringConnection c, SOCGame ga)
     {
-        if ((c != null) && (ga != null))
-        {
-            try
-            {
-                if (ga.getCurrentPlayerNumber() != ga.getPlayer((String) c.getData()).getPlayerNumber())
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }
-            catch (Exception e)
-            {
-                return false;
-            }
-        }
-        else
-        {
-            return false;
-        }
+        boolean result = false;
+        SOCPlayer player = ga.getPlayer((String) c.getData());
+
+        return (player != null && ga.getCurrentPlayerNumber() == player.getPlayerNumber());
     }
 
     /**
      * do the stuff you need to do to start a game
      *
      * @param ga  the game
+     * @throws NullPointerExceptioin if ga is null
      */
-    protected void startGame(SOCGame ga)
+    private void startGame(SOCGame ga)
     {
         if (ga != null)
         {
@@ -8172,6 +8229,7 @@ public class SOCServer extends Server
      *
      * @param  ga   the game
      * @return   a board layout message
+     * @throws NullPointerExceptioin if ga is null
      */
     private SOCMessage getBoardLayoutMessage(SOCGame ga)
     {
@@ -8193,30 +8251,6 @@ public class SOCServer extends Server
         }
     }
 
-    /**
-     * create a new game event record
-     */
-    // private void createNewGameEventRecord()
-    // {
-        /*
-           currentGameEventRecord = new SOCGameEventRecord();
-           currentGameEventRecord.setTimestamp(new Date());
-         */
-    // }
-
-    /**
-     * save the current game event record in the game record
-     *
-     * @param gn  the name of the game
-     */
-    // private void saveCurrentGameEventRecord(String gn)
-    // {
-        /*
-           SOCGameRecord gr = (SOCGameRecord)gameRecords.get(gn);
-           SOCGameEventRecord ger = currentGameEventRecord.myClone();
-           gr.addEvent(ger);
-         */
-    // }
 
     /**
      * write a gameRecord out to disk
@@ -8254,25 +8288,47 @@ public class SOCServer extends Server
      * record the scores in the database
      *
      * @param ga  the game
+     * @throws NullPointerExceptioin if ga is null
      */
-    protected void storeGameScores(SOCGame ga)
+    private void storeGameScores(SOCGame ga)
     {
-        if (ga != null)
+        //D.ebugPrintln("allOriginalPlayers for "+ga.getName()+" : "+ga.allOriginalPlayers());
+        if ((ga.getGameState() == SOCGame.OVER) && (ga.allOriginalPlayers()))
         {
-            //D.ebugPrintln("allOriginalPlayers for "+ga.getName()+" : "+ga.allOriginalPlayers());
-            if ((ga.getGameState() == SOCGame.OVER) && (ga.allOriginalPlayers()))
+            //if (ga.allOriginalPlayers()) {
+            try
             {
-                //if (ga.allOriginalPlayers()) {
-                try
-                {
-                    // TODO 6-player: save their scores too, if
-                    // those fields are in the database.
-                    SOCDBHelper.saveGameScores(ga.getName(), ga.getPlayer(0).getName(), ga.getPlayer(1).getName(), ga.getPlayer(2).getName(), ga.getPlayer(3).getName(), (short) ga.getPlayer(0).getTotalVP(), (short) ga.getPlayer(1).getTotalVP(), (short) ga.getPlayer(2).getTotalVP(), (short) ga.getPlayer(3).getTotalVP(), ga.getStartTime());
-                }
-                catch (SQLException sqle)
-                {
-                    System.err.println("Error saving game scores in db.");
-                }
+                // TODO 6-player: save their scores too, if
+                // those fields are in the database.
+                SOCDBHelper.saveGameScores(ga);
+            }
+            catch (SQLException sqle)
+            {
+                D.ebugPrintln(sqle.toString());
+                D.ebugPrintln("Error saving player face in db.");
+            }
+        }
+    }
+
+    /**
+     * if all the players stayed for the whole game,
+     * record the scores in the database
+     *
+     * @param ga  the game
+     * @throws NullPointerExceptioin if ga is null
+     */
+    private void storePlayerFaces(SOCGame ga)
+    {
+        if (ga.getGameState() == SOCGame.OVER)
+        {
+            try
+            {
+                SOCDBHelper.saveFaces(ga);
+            }
+            catch (SQLException sqle)
+            {
+                D.ebugPrintln(sqle.toString());
+                D.ebugPrintln("Error saving player face in db.");
             }
         }
     }
@@ -8316,6 +8372,7 @@ public class SOCServer extends Server
     /**
      * this is a debugging command that gives resources to a player.
      * Format: rsrcs: #cl #or #sh #wh #wo playername
+     * @throws NullPointerExceptioin if game or mes are null
      */
     protected void giveResources(String mes, SOCGame game)
     {
@@ -8776,6 +8833,7 @@ public class SOCServer extends Server
      *
      * @param args  arguments: port number, etc
      * @see #printUsage(boolean)
+     * @deprecated Use the Main class instead.
      */
     static public void main(String[] args)
     {

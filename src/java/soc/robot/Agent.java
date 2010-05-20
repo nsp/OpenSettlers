@@ -8,9 +8,12 @@ package soc.robot;
 
 import java.util.Vector;
 
-import soc.game.*;
+import org.apache.log4j.Logger;
+
+import soc.game.SOCGame;
+import soc.game.SOCPlayer;
+import soc.game.SOCResourceSet;
 import soc.message.Message;
-import org.apache.log4j.*;
 
 public class Agent {
 	

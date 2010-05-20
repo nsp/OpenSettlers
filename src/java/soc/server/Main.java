@@ -34,7 +34,7 @@ public class Main
     private static final String DEFAULT_PROPERTIES_NAME = "jsettlersd.properties";
     
     /** Server port, which must be passed to constructor of server. */
-    private static int port = SOCServer.DEFAULT_PORT;
+    private static int port = SOCServer.SOC_PORT_DEFAULT;
     
     /**
      * Starting the server from the command line
@@ -45,7 +45,7 @@ public class Main
     {
     	//System.out.println("i am in main");
     	
-        port = SOCServer.DEFAULT_PORT;
+        port = SOCServer.SOC_PORT_DEFAULT;
         
         //System.out.println("i am after port");
         
@@ -177,13 +177,13 @@ public class Main
 
         // old style command line arguments are deprecated, but take precidence
         if (i < args.length)
-            cmdProps.setProperty(SOCServer.JSETTLERS_PORT, args[i++]);
+            cmdProps.setProperty(SOCServer.PROP_JSETTLERS_PORT, args[i++]);
         if (i < args.length)
-            cmdProps.setProperty(SOCServer.JSETTLERS_CONNECTIONS, args[i++]);
+            cmdProps.setProperty(SOCServer.PROP_JSETTLERS_CONNECTIONS, args[i++]);
         if (i < args.length)
-            cmdProps.setProperty(SOCDBHelper.JSETTLERS_DB_USER, args[i++]);
+            cmdProps.setProperty(SOCDBHelper.PROP_JSETTLERS_DB_USER, args[i++]);
         if (i < args.length)
-            cmdProps.setProperty(SOCDBHelper.JSETTLERS_DB_PASS, args[i++]);
+            cmdProps.setProperty(SOCDBHelper.PROP_JSETTLERS_DB_PASS, args[i++]);
 
         // read propertyfile into props, which is shadowed by command line args
         readProperties(props, propertyFile);

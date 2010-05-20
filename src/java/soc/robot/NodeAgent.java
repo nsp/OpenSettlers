@@ -6,19 +6,24 @@
 
 package soc.robot;
 
-import java.util.*;
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Random;
+import java.util.Vector;
+
+import soc.game.SOCBoard;
+import soc.game.SOCCity;
+import soc.game.SOCGame;
+import soc.game.SOCPlayer;
+import soc.game.SOCPlayingPiece;
+import soc.game.SOCResourceSet;
+import soc.game.SOCRoad;
+import soc.game.SOCSettlement;
 import soc.message.Message;
 import soc.message.NodeMessage;
-import soc.game.*;
-
-import java.io.*;
-import soc.util.Loggers;
 import soc.util.ApplicationConstants;
-import soc.util.ApplicationConstants.Game;
-
-import org.apache.log4j.*;
-
-
+import soc.util.Loggers;
 
 public class NodeAgent extends Agent implements Runnable {
 	
@@ -252,27 +257,21 @@ public class NodeAgent extends Agent implements Runnable {
 								
 								log.info("THE SELECTED EDGE :: "+adjacentEdge.intValue()+" TO SELECTED NODE :: "+selected_adjacent_node+" IS :: OUR ROAD");
 								utility_table.put(edge_coordinate, 100);
-								break;						
+								break;
 							} else if (this.isOurRoad(adjacentEdge.intValue()).equals("OPPONENT")){
 								
 								log.info("THE SELECTED EDGE :: "+adjacentEdge.intValue()+" TO SELECTED NODE :: "+selected_adjacent_node+" IS :: OPPONENTS ROAD");
 								utility_table.put(edge_coordinate, 50);
 								break;
-								
+
 							} else if(this.isOurRoad(adjacentEdge.intValue()).equals("AVAILABLE")){
 							
 							log.info("THE SELECTED EDGE :: "+adjacentEdge.intValue()+" TO SELECTED NODE :: "+selected_adjacent_node+" IS :: AVAILABLE");
 							utility_table.put(edge_coordinate, 0);
-						
 							}
-							
 						}	
-					
 					}
-				
 				}
-				
-				
 			}
 			
 		if(utility_table.size() == 0) {
@@ -395,7 +394,7 @@ public class NodeAgent extends Agent implements Runnable {
 			
 			log.info("IS POTENTIAL SETTLEMENT AT NODE :: "+getNode());
 			
-			SOCSettlement soc_settlement = new SOCSettlement(player, getNode());
+			SOCSettlement soc_settlement = new SOCSettlement(player, getNode(), null);
 			
 			// total estimated building speed by building this settlement at this coordinate
 			
@@ -405,7 +404,7 @@ public class NodeAgent extends Agent implements Runnable {
 			
 			// check what are the adjacent hexes around 
 			
-			Vector adjHexes = game.getBoard().getAdjacentHexesToNode(getNode());
+            Vector adjHexes = SOCBoard.getAdjacentHexesToNode(getNode());
 			
 			int [] numbers_on_hexes = new int[3]; // array to store numbers on the adjacent hexes
 			
@@ -762,7 +761,7 @@ public class NodeAgent extends Agent implements Runnable {
 				
 				log.info("THE NODE :: "+getNode()+" IS A POTENTIAL SETTLEMENT");
 				
-				SOCSettlement soc_settlement = new SOCSettlement(player, getNode());
+				SOCSettlement soc_settlement = new SOCSettlement(player, getNode(), null);
 				
 				// total estimated building speed by building this settlement at this coordinate
 				
@@ -802,7 +801,7 @@ public class NodeAgent extends Agent implements Runnable {
 					
 				log.info("UPGRADE TO A CITY AT NODE :: "+getNode());
 				
-				SOCCity soc_city = new SOCCity(player, getNode());
+				SOCCity soc_city = new SOCCity(player, getNode(), null);
 				
 				// total estimated building speed by building this settlement at this coordinate
 				
@@ -982,7 +981,7 @@ public class NodeAgent extends Agent implements Runnable {
 		
 		int pieces_utility = 0;
 		
-		Vector adjHexes = game.getBoard().getAdjacentHexesToNode(getNode());
+        Vector adjHexes = SOCBoard.getAdjacentHexesToNode(getNode());
 		
 		log.info("HEXES ADJACENT TO NODE :: "+getNode()+" ARE :: "+adjHexes);
 		
