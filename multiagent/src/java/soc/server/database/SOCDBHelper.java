@@ -111,6 +111,9 @@ public class SOCDBHelper
      */
     private static String dbURL = null;
 
+    /** Cached url used when reconnecting on error */
+    private static String url;
+	
     /**
      * This flag indicates that the connection should be valid, yet the last
      * operation failed. Methods will attempt to reconnect prior to their
@@ -123,45 +126,47 @@ public class SOCDBHelper
 
     /** Cached password used when reconnecting on error */
     private static String password;
-    
-    /** Cached url used when reconnecting on error */
-    private static String url;
+
     
     private static String CREATE_ACCOUNT_COMMAND =  "INSERT INTO users VALUES (?,?,?,?,?,?,?,?,?);";
-    
-    private static String HOST_QUERY =              "SELECT nickname FROM users WHERE ( users.host = ? );";
-    
-    private static String HUMAN_STATS_QUERY =       "SELECT nickname, wins, losses, totalpoints, totalpoints/(wins+losses) AS avg, 100 * (wins/(wins+losses)) AS pct FROM users WHERE (wins+losses) > 0 ORDER BY pct desc, avg desc, totalpoints desc;";
-    
-    private static String LASTLOGIN_UPDATE =        "UPDATE users SET lastlogin = ? WHERE nickname = ? ;";
-    
+
     private static String RECORD_LOGIN_COMMAND =    "INSERT INTO logins VALUES (?,?,?);";
-    
-    private static String RESET_HUMAN_STATS =       "UPDATE users SET wins = 0, losses = 0, totalpoints = 0 WHERE nickname = ?;";
-    
+
+    private static String USER_PASSWORD_QUERY =     "SELECT password FROM users WHERE ( users.nickname = ? );";
+	
+    private static String HOST_QUERY =              "SELECT nickname FROM users WHERE ( users.host = ? );";
+
+    private static String LASTLOGIN_UPDATE =        "UPDATE users SET lastlogin = ? WHERE nickname = ? ;";
+
+    private static String SAVE_GAME_COMMAND =       "INSERT INTO games VALUES (?,?,?,?,?,?,?,?,?,?);";
+	
     private static String ROBOT_PARAMS_QUERY =      "SELECT * FROM robotparams WHERE robotname = ?;";
     
+    private static String ROBOT_PARAMS_QUERY =      "SELECT * FROM robotparams WHERE robotname = ?;";
+
     private static String ROBOT_STATS_QUERY =       "SELECT robotname, wins, losses, totalpoints, totalpoints/(wins+losses) AS avg, (100*(wins/(wins+losses))) AS pct FROM robotparams WHERE (wins+losses) > 0 ORDER BY pct desc, avg desc, totalpoints desc;";
     
-    private static String SAVE_GAME_COMMAND =       "INSERT INTO games VALUES (?,?,?,?,?,?,?,?,?,?);";
-    
+    private static String HUMAN_STATS_QUERY =       "SELECT nickname, wins, losses, totalpoints, totalpoints/(wins+losses) AS avg, 100 * (wins/(wins+losses)) AS pct FROM users WHERE (wins+losses) > 0 ORDER BY pct desc, avg desc, totalpoints desc;";
+
+    private static String RESET_HUMAN_STATS =       "UPDATE users SET wins = 0, losses = 0, totalpoints = 0 WHERE nickname = ?;";
+
     private static String UPDATE_ROBOT_STATS =      "UPDATE robotparams SET wins = wins + ?, losses = losses + ?, totalpoints = totalpoints + ? WHERE robotname = ?;";
     
-    private static String UPDATE_USER_STATS = "UPDATE users SET wins = wins + ?, losses = losses + ?, totalpoints = totalpoints + ? WHERE nickname = ?;";
+    private static String UPDATE_USER_STATS =       "UPDATE users SET wins = wins + ?, losses = losses + ?, totalpoints = totalpoints + ? WHERE nickname = ?;";
     
     private static String USER_FACE_QUERY =         "SELECT face FROM users WHERE users.nickname = ?;";
     
     private static String USER_FACE_UPDATE =        "UPDATE users SET face = ? WHERE nickname = ?;";
     
-    private static String USER_PASSWORD_QUERY =     "SELECT password FROM users WHERE ( users.nickname = ? );";
-    
-    private static PreparedStatement createAccountCommand = null;    
+    private static PreparedStatement createAccountCommand = null;
+    private static PreparedStatement recordLoginCommand = null;
+    private static PreparedStatement userPasswordQuery = null;
     private static PreparedStatement hostQuery = null;
     private static PreparedStatement lastloginUpdate = null;
+    private static PreparedStatement saveGameCommand = null;
+    private static PreparedStatement robotParamsQuery = null;
     private static PreparedStatement recordLoginCommand = null;
     private static PreparedStatement resetHumanStats = null;
-    private static PreparedStatement robotParamsQuery = null;
-    private static PreparedStatement saveGameCommand = null;
     private static PreparedStatement updateRobotStats = null;
     private static PreparedStatement updateUserStats = null;
     private static PreparedStatement userFaceQuery = null;
@@ -217,23 +222,15 @@ public class SOCDBHelper
         }
         catch (Exception x) // everything else
         {
+            // InstantiationException & IllegalAccessException
+            // should not be possible  for org.gjt.mm.mysql.Driver
+            // ClassNotFound
             SQLException sx = new SQLException("Unable to initialize user database: " + url);
             sx.initCause(x);
             throw sx;
         }
         
         return isConnected();
-    }
-
-    /**
-     * Returns true if connection has been made. Does not attempt to reconnect
-     * if an error has occured.
-     *
-     * @return true if the connection has been made
-     */
-    public static boolean isConnected() throws SQLException
-    {
-        return connection != null;
     }
 
     /**
@@ -265,15 +262,16 @@ public class SOCDBHelper
         
         // prepare PreparedStatements for queries
         createAccountCommand = connection.prepareStatement(CREATE_ACCOUNT_COMMAND);
+        recordLoginCommand = connection.prepareStatement(RECORD_LOGIN_COMMAND);
+        userPasswordQuery = connection.prepareStatement(USER_PASSWORD_QUERY);
         hostQuery = connection.prepareStatement(HOST_QUERY);
         lastloginUpdate = connection.prepareStatement(LASTLOGIN_UPDATE);
-        recordLoginCommand = connection.prepareStatement(RECORD_LOGIN_COMMAND);
-        resetHumanStats = connection.prepareStatement(RESET_HUMAN_STATS);
-        robotParamsQuery = connection.prepareStatement(ROBOT_PARAMS_QUERY);
         saveGameCommand = connection.prepareStatement(SAVE_GAME_COMMAND);
+        robotParamsQuery = connection.prepareStatement(ROBOT_PARAMS_QUERY);
+
+        resetHumanStats = connection.prepareStatement(RESET_HUMAN_STATS);
         userFaceQuery = connection.prepareStatement(USER_FACE_QUERY);
         userFaceUpdate = connection.prepareStatement(USER_FACE_UPDATE);
-        userPasswordQuery = connection.prepareStatement(USER_PASSWORD_QUERY);
         updateRobotStats = connection.prepareStatement(UPDATE_ROBOT_STATS);
         updateUserStats = connection.prepareStatement(UPDATE_USER_STATS);
         
@@ -281,13 +279,13 @@ public class SOCDBHelper
     }
     
     /**
-     * DOCUMENT ME!
+     * Retrieve this user's password from the database.
      *
-     * @param sUserName DOCUMENT ME!
+     * @param sUserName Username who needs password
      *
-     * @return null if user account doesn't exist
+     * @return null if user account doesn't exist, or if no database is currently connected
      *
-     * @throws SQLException DOCUMENT ME!
+     * @throws SQLException if any unexpected database problem
      */
     public static String getUserPassword(String sUserName) throws SQLException
     {
@@ -650,12 +648,12 @@ public class SOCDBHelper
                 // fill in the data values to the Prepared statement
                 saveGameCommand.setString(sGCindex++, ga.getName());
 
-		// iterate through the players
+                // iterate through the players
                 for (int i = 0; i < SOCGame.MAXPLAYERS; i++)
                 {
                     SOCPlayer pl = ga.getPlayer(i);
 
-		    saveGameCommand.setString(sGCindex++, pl.getName());
+	                saveGameCommand.setString(sGCindex++, pl.getName());
                 }
                 for (int i = 0; i < SOCGame.MAXPLAYERS; i++)
                 {
@@ -669,7 +667,7 @@ public class SOCDBHelper
                 // execute the Command
                 saveGameCommand.executeUpdate();
 
-		// iterate through the players
+                // iterate through the players
                 for (int i = 0; i < SOCGame.MAXPLAYERS; i++)
                 {
                     SOCPlayer pl = ga.getPlayer(i);
@@ -864,16 +862,6 @@ public class SOCDBHelper
     }
 
     /**
-     * Common behavior for SQL Exceptions.
-     */
-    protected static void handleSQLException(SQLException x) throws SQLException
-    {
-        errorCondition = true;
-        x.printStackTrace();
-        throw x;
-    }
-
-    /**
      * DOCUMENT ME!
      */
     public static void cleanup() throws SQLException
@@ -883,18 +871,17 @@ public class SOCDBHelper
             try
             {
                 createAccountCommand.close();
+                userPasswordQuery.close();
                 hostQuery.close();
                 lastloginUpdate.close();
-                recordLoginCommand.close();
-                resetHumanStats.close();
-                robotParamsQuery.close();
                 saveGameCommand.close();
+                robotParamsQuery.close();
+                connection.close();
                 updateRobotStats.close();
                 updateUserStats.close();
                 userFaceQuery.close();
-                userPasswordQuery.close();
-                connection.close();
-
+                recordLoginCommand.close();
+                resetHumanStats.close();
                 connection = null;
             }
             catch (SQLException sqlE)
@@ -904,9 +891,10 @@ public class SOCDBHelper
         }
     }
 
-    /**
-     * Useful for debugging. Leave commented out of final build.
-     *   /
+    //-------------------------------------------------------------------
+    // dispResultSet
+    // Displays all columns and rows in the given result set
+    //-------------------------------------------------------------------
     private static void dispResultSet(ResultSet rs) throws SQLException
     {
         System.out.println("dispResultSet()");
@@ -956,7 +944,27 @@ public class SOCDBHelper
             more = rs.next();
         }
     }
-    */
+	
+    /**
+     * Common behavior for SQL Exceptions.
+     */
+    protected static void handleSQLException(SQLException x) throws SQLException
+    {
+        errorCondition = true;
+        x.printStackTrace();
+        throw x;
+    }
+
+    /**
+     * Returns true if connection has been made. Does not attempt to reconnect
+     * if an error has occured.
+     *
+     * @return true if the connection has been made
+     */
+    public static boolean isConnected() throws SQLException
+    {
+        return connection != null;
+    }
 
     /**
      * Constant results for authorization requests.
