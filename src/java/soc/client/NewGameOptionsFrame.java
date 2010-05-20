@@ -186,6 +186,7 @@ public class NewGameOptionsFrame extends Frame
         NewGameOptionsFrame ngof = new NewGameOptionsFrame(cli, gaName, opts, forPractice, readOnly);
         ngof.pack();
         ngof.setVisible(true);
+        ngof.gameName.requestFocus();
         return ngof;
     }
     
@@ -542,15 +543,6 @@ public class NewGameOptionsFrame extends Frame
         if (defaultIdx > 0)
             ch.select(defaultIdx);
         return ch;
-    }
-
-    /**
-     * Show the window, and request focus on game name textfield.
-     */
-    public void show()
-    {
-        super.setVisible(true);
-        gameName.requestFocus();
     }
 
     /** React to button clicks */
