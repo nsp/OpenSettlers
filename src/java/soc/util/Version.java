@@ -6,11 +6,11 @@ import java.util.Properties;
 
 /**
  * Package level version file used to keep packaging and codebase in sync. The
- * file Version.java.in is filtered to create Version.java when Callisto is
+ * file Version.java.in is filtered to create Version.java when the program is
  * built using <a href="http://ant.apache.org">ant</a>.  If you are not using
- * ant to build Callisto you can do this manually by copying Version.java.in
- * to Version.java, replacing "@ VERSION @" with the "version" property value
- * in the file build.xml.
+ * ant to build, you can do this manually by copying Version.java.in to
+ * Version.java, replacing "@ VERSION @" with the "version" property value in
+ * the file build.xml.
  *
  * @author <a href="mailto:mchenryc@acm.org">Chadwick A. McHenry</a>
  */
@@ -138,12 +138,11 @@ public class Version {
   }
 
   /** Check for sufficient version of the JRE. */
-  static boolean isJREValid () {
+  public static boolean isJREValid () {
     String v = System.getProperty("java.vm.version");
     int major = Integer.parseInt (v.substring (0,1));
     int minor = Integer.parseInt (v.substring (2,3));
     int edit = Integer.parseInt (v.substring (4,5));;
-    // String build = v.substring (6);
 
     if (versionInfo.getProperty(JRE_MIN_VERSION) == null)
       minJREVersion();  

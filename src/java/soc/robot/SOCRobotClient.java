@@ -21,6 +21,7 @@
  **/
 package soc.robot;
 
+
 import soc.client.SOCDisplaylessPlayerClient;
 
 import soc.disableDebug.D;
@@ -1066,7 +1067,7 @@ public class SOCRobotClient extends SOCDisplaylessPlayerClient
             sendText(ga, "Games won:" + gamesWon);
             sendText(ga, "Clean brain kills:" + cleanBrainKills);
             sendText(ga, "Brains running: " + robotBrains.size());
-
+ 
             Runtime rt = Runtime.getRuntime();
             sendText(ga, "Total Memory:" + rt.totalMemory());
             sendText(ga, "Free Memory:" + rt.freeMemory());
@@ -1272,6 +1273,8 @@ public class SOCRobotClient extends SOCDisplaylessPlayerClient
      */
     protected void handleTURN(SOCTurn mes)
     {
+    	System.out.println("SOCROBOTCLIENT HANDLE TURN");
+    	
         CappedQueue brainQ = (CappedQueue) brainQs.get(mes.getGame());
 
         if (brainQ != null)
@@ -1293,6 +1296,8 @@ public class SOCRobotClient extends SOCDisplaylessPlayerClient
      */
     protected void handlePLAYERELEMENT(SOCPlayerElement mes)
     {
+    	System.out.println("handle player element in the method");
+    	
         CappedQueue brainQ = (CappedQueue) brainQs.get(mes.getGame());
 
         if (brainQ != null)
@@ -1356,6 +1361,9 @@ public class SOCRobotClient extends SOCDisplaylessPlayerClient
      */
     protected void handlePUTPIECE(SOCPutPiece mes)
     {
+    	
+    	System.out.println("PUT PIECE CALLED IN RobotClient");
+    	
         CappedQueue brainQ = (CappedQueue) brainQs.get(mes.getGame());
 
         if (brainQ != null)

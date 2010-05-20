@@ -79,7 +79,7 @@ class SOCDiscardDialog extends Dialog implements ActionListener, MouseListener
         numChosen = 0;
         setBackground(new Color(255, 230, 162));
         setForeground(Color.black);
-        setFont(new Font("Geneva", Font.PLAIN, 12));
+        setFont(new Font("SansSerif", Font.PLAIN, 12));
 
         discardBut = new Button("Discard");
 

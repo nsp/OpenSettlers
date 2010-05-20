@@ -125,7 +125,7 @@ public class SOCJoin extends SOCMessage
      */
     public static String toCmd(String nn, String pw, String hn, String ch)
     {
-        String temppw = new String(pw);
+        String temppw = pw;
 
         if (temppw.equals(""))
         {

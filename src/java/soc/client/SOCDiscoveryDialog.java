@@ -62,7 +62,7 @@ class SOCDiscoveryDialog extends Dialog implements ActionListener, ColorSquareLi
         this.pi = pi;
         setBackground(new Color(255, 230, 162));
         setForeground(Color.black);
-        setFont(new Font("Geneva", Font.PLAIN, 12));
+        setFont(new Font("SansSerif", Font.PLAIN, 12));
 
         doneBut = new Button("Pick");
         clearBut = new Button("Clear");

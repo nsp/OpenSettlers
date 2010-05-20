@@ -244,6 +244,8 @@ public class SOCDisplaylessPlayerClient implements Runnable
                     s = in.readUTF();
                 else
                     s = sLocal.readNext();
+                System.out.println("run method in Displayless with string :: "+s);
+                
                 treat((SOCMessage) SOCMessage.toMsg(s));
             }
         }
@@ -291,7 +293,9 @@ public class SOCDisplaylessPlayerClient implements Runnable
     public synchronized boolean put(String s)
     {
         lastMessage = s;
-
+        
+        System.out.println("put() in SocDisplaylessplayerclient :: message :: "+lastMessage);
+        
         D.ebugPrintln("OUT - " + s);
 
         if ((ex != null) || !connected)
@@ -448,7 +452,7 @@ public class SOCDisplaylessPlayerClient implements Runnable
              */
             case SOCMessage.LEAVEGAME:
                 handleLEAVEGAME((SOCLeaveGame) mes);
-
+		System.out.println("someone left the game");
                 break;
 
             /**
@@ -464,7 +468,7 @@ public class SOCDisplaylessPlayerClient implements Runnable
              */
             case SOCMessage.DELETEGAME:
                 handleDELETEGAME((SOCDeleteGame) mes);
-
+		System.out.println("game destroyed");
                 break;
 
             /**
@@ -858,11 +862,7 @@ public class SOCDisplaylessPlayerClient implements Runnable
         gotPassword = true;
 
         SOCGame ga = new SOCGame(mes.getGame());
-
-        if (ga != null)
-        {
-            games.put(mes.getGame(), ga);
-        }
+        games.put(mes.getGame(), ga);
     }
 
     /**
@@ -1065,6 +1065,9 @@ public class SOCDisplaylessPlayerClient implements Runnable
      */
     protected void handlePLAYERELEMENT(SOCPlayerElement mes)
     {
+     
+    	
+    	
         final SOCGame ga = (SOCGame) games.get(mes.getGame());
 
         if (ga != null)

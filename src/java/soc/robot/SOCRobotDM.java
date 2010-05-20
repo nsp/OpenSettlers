@@ -1184,15 +1184,6 @@ public class SOCRobotDM {
       }
     }
 
-    /*
-    boolean goingToPlayRB = false;
-    if (!ourPlayerData.hasPlayedDevCard() &&
-	ourPlayerData.getNumPieces(SOCPlayingPiece.ROAD) >= 2 &&
-	ourPlayerData.getDevCards().getAmount(SOCDevCardSet.OLD, SOCDevCardConstants.ROADS) > 0) {
-      goingToPlayRB = true;
-    }
-    */
-
     ///
     /// score the possible settlements
     ///
@@ -1581,16 +1572,6 @@ public class SOCRobotDM {
    */
   protected void scorePossibleSettlements(int settlementETA, int leadersCurrentWGETA) {
     D.ebugPrintln("****** scorePossibleSettlements");
-    // int ourCurrentWGETA = ourPlayerTracker.getWinGameETA();
-
-    /*
-    boolean goingToPlayRB = false;
-    if (!ourPlayerData.hasPlayedDevCard() &&
-	ourPlayerData.getNumPieces(SOCPlayingPiece.ROAD) >= 2 &&
-	ourPlayerData.getDevCards().getAmount(SOCDevCardSet.OLD, SOCDevCardConstants.ROADS) > 0) {
-      goingToPlayRB = true;
-    }
-    */
 
     Iterator posSetsIter = ourPlayerTracker.getPossibleSettlements().values().iterator();
     while (posSetsIter.hasNext()) {

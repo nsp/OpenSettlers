@@ -4041,11 +4041,11 @@ public class SOCRobotBrain extends Thread
          * Find the best scoring node
          */
         BoardNodeScorePair bestNodePair = new BoardNodeScorePair(0, 0);
-        Enumeration cenum = twoAway.keys();
+        Enumeration enum = twoAway.keys();
 
-        while (cenum.hasMoreElements())
+        while (enum.hasMoreElements())
         {
-            Integer coord = (Integer) cenum.nextElement();
+            Integer coord = (Integer) enum.nextElement();
             final int score = ((Integer) twoAway.get(coord)).intValue();
 
             D.ebugPrintln("Considering " + Integer.toHexString(coord.intValue()) + " with a score of " + score);

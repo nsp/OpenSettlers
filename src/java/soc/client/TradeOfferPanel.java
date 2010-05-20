@@ -43,7 +43,7 @@ import java.awt.event.ActionListener;
  * resource trade offer (and counter-offer).
  *<P>
  * The status message mode is used for tasks such as:
- *<UL>
+ * @version $Revision: 1.6 $
  *  <LI> Saying "no thanks" to a trade offer
  *  <LI> Showing vote on a board reset request
  *  <LI> Showing the player is deciding what to discard
@@ -169,7 +169,7 @@ public class TradeOfferPanel extends Panel
         public MessagePanel()
         {
             setLayout(null);
-            setFont(new Font("Helvetica", Font.PLAIN, 18));
+            setFont(new Font("SansSerif", Font.PLAIN, 18));
         
             msg = new Label(" ", Label.CENTER);
             msg.setBackground(insideBGColor);
@@ -263,7 +263,7 @@ public class TradeOfferPanel extends Panel
         public OfferPanel()
         {
             setLayout(null);
-            setFont(new Font("Helvetica", Font.PLAIN, 10));
+            setFont(new Font("SansSerif", Font.PLAIN, 10));
 
             /** Offer received */
 
@@ -432,7 +432,7 @@ public class TradeOfferPanel extends Panel
                         if (names2 == null)
                         {
                             names1 += ",";
-                            names2 = new String(name);
+                            names2 = name;
                         }
                         else
                         {
@@ -678,7 +678,6 @@ public class TradeOfferPanel extends Panel
                 SOCPlayer player = hp.getGame().getPlayer(hp.getClient().getNickname());
                 haveResources = player.getResources().contains(get);
             }
-
             giveLab2.setVisible(visible);
             getLab2.setVisible(visible);
             counterOfferToWhom.setVisible(visible);

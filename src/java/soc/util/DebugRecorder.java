@@ -70,10 +70,14 @@ public class DebugRecorder
      */
     public void turnOff()
     {
+        if (records != null)
+        {
+            records.clear();
+        }
+
         on = false;
         currentRecord = null;
         currentKey = null;
-        records.clear();
         state = NOT_RECORDING;
     }
 

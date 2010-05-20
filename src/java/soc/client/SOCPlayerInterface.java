@@ -21,11 +21,6 @@
  **/
 package soc.client;
 
-import soc.debug.D;  // JM
-
-import soc.game.SOCGame;
-import soc.game.SOCPlayer;
-
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -48,13 +43,16 @@ import java.awt.event.TextEvent;
 import java.awt.event.TextListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.StringTokenizer;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.Vector;
 
-import java.io.PrintWriter;  // For chatPrintStackTrace
-import java.io.StringWriter;
+import soc.debug.D;
+import soc.game.SOCGame;
+import soc.game.SOCPlayer;
 
 /**
  * Window with interface for a player in one game of Settlers of Catan.
@@ -366,6 +364,9 @@ public class SOCPlayerInterface extends Frame implements ActionListener, MouseLi
      */
     protected SOCMonopolyDialog monopolyDialog;
 
+    protected Vector history = new Vector();
+    protected int historyCounter = 1;
+
     /**
      * create a new player interface
      *
@@ -415,7 +416,7 @@ public class SOCPlayerInterface extends Frame implements ActionListener, MouseLi
          */
         setBackground(Color.black);
         setForeground(Color.black);
-        setFont(new Font("Geneva", Font.PLAIN, 10));
+        setFont(new Font("SansSerif", Font.PLAIN, 10));
 
         /**
          * we're doing our own layout management
@@ -427,6 +428,7 @@ public class SOCPlayerInterface extends Frame implements ActionListener, MouseLi
          * PERF: hide window while doing so (osx firefox)
          */
         final boolean didHideTemp = isShowing();
+        history.addElement("");
         if (didHideTemp)
         {
             setVisible(false);
@@ -525,6 +527,9 @@ public class SOCPlayerInterface extends Frame implements ActionListener, MouseLi
         textInput.setText("Please wait...");
         add(textInput);
         textInput.addActionListener(this);
+// TODO from Multi Agent
+//        textInput.addActionListener(new InputActionListener());
+//        textInput.addKeyListener(new InputKeyListener());
         if (is6player)
             textInput.addMouseListener(this);
 
@@ -2281,4 +2286,51 @@ public class SOCPlayerInterface extends Frame implements ActionListener, MouseLi
 
     }  // SOCPITextDisplaysLargerTask
 
+    /** send the message that was just typed in, or start editing a private
+     * message */
+    private class InputActionListener implements ActionListener
+    {
+        public void actionPerformed(ActionEvent e)
+        {
+            // send text, as typed
+            String s = textInput.getText();
+
+            if (s.trim().length() > 0) // don't send if only whitespace
+            {
+                if (s.length() > 100)  // limit text sent
+                    s = s.substring(0, 100);
+
+                textInput.setText("");
+                client.sendText(game, s);
+
+                history.insertElementAt(s, history.size() - 1);
+                historyCounter = 1;
+            }
+        }
+    }
+
+    private class InputKeyListener extends KeyAdapter
+    {
+        public void keyPressed(KeyEvent e)
+        {
+            int hs = history.size();
+            int key = e.getKeyCode();
+
+            if ((key == KeyEvent.VK_UP) && (hs > historyCounter))
+            {
+                if (historyCounter == 1)
+                {
+                    history.setElementAt(textInput.getText(), hs - 1);
+                }
+
+                historyCounter++;
+                textInput.setText((String) history.elementAt(hs - historyCounter));
+            }
+            else if ((key == KeyEvent.VK_DOWN) && (historyCounter > 1))
+            {
+                historyCounter--;
+                textInput.setText((String) history.elementAt(hs - historyCounter));
+            }
+        }
+    }
 }  // SOCPlayerInterface

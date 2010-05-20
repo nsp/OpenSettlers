@@ -209,10 +209,12 @@ public abstract class SOCMessage implements Serializable, Cloneable
 
     /** @since 1.1.00 */
     public static final int VERSION = 9998;   // cli-serv versioning, 20080807, v1.1.00
-
+    public static final int GETSTATISTICS = 10001;
+    public static final int SHOWSTATS = 10002;
+    public static final int RESETSTATS = 10003;
     public static final int SERVERPING = 9999;  // available in all versions
 
-    public static final int IMSMARTSETTLERS = 1072;
+    public static final int IMSMARTSETTLERS = 10000;
     
     /**
      * Token separators. At most one SEP per message; multiple SEP2 are allowed after SEP.
@@ -461,9 +463,7 @@ public abstract class SOCMessage implements Serializable, Cloneable
                 data = "";
             }
 
-            /**
-             * convert the data part and create the message
-             */
+            // convert the data part and create the message
             switch (msgId)
             {
             case NULLMESSAGE:
@@ -672,6 +672,15 @@ public abstract class SOCMessage implements Serializable, Cloneable
 
             case CREATEACCOUNT:
                 return SOCCreateAccount.parseDataStr(data);
+                
+            case GETSTATISTICS:
+                return SOCGetStatistics.parseDataStr(data);
+                
+            case RESETSTATS:
+                return SOCResetStatistics.parseDataStr(data);
+                
+            case SHOWSTATS:
+                return SOCShowStatistics.parseDataStr(data);
 
             case UPDATEROBOTPARAMS:
                 return SOCUpdateRobotParams.parseDataStr(data);
@@ -735,6 +744,7 @@ public abstract class SOCMessage implements Serializable, Cloneable
         catch (Exception e)
         {
             System.err.println("toMsg ERROR - " + e);
+            System.err.println("Msg: " + s);
             e.printStackTrace();
 
             return null;

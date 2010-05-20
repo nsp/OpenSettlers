@@ -79,7 +79,7 @@ public class ChannelFrame extends Frame
         cnvs.setBackground(Color.lightGray);
         cnvs.setSize(5, 200);
         lst.setSize(180, 200);
-        setFont(new Font("Helvetica", Font.PLAIN, 12));
+        setFont(new Font("SansSerif", Font.PLAIN, 12));
         add(ta);
         add(cnvs);
         add(lst);
@@ -100,33 +100,11 @@ public class ChannelFrame extends Frame
     /** add some text*/
     public void print(String s)
     {
-        StringTokenizer st = new StringTokenizer(s, " \n", true);
-        String row = "";
+        // avoid empty line at bottom by adding \n before all but first
+        if (ta.getText().length() > 0)
+            s = "\n" + s;
 
-        while (st.hasMoreElements())
-        {
-            String tk = st.nextToken();
-
-            if (tk.equals("\n"))
-            {
-                continue;
-            }
-
-            if ((row.length() + tk.length()) > ncols)
-            {
-                ta.append(row + "\n");
-                row = tk;
-
-                continue;
-            }
-
-            row += tk;
-        }
-
-        if (row.trim().length() > 0)
-        {
-            ta.append(row + "\n");
-        }
+        ta.append(s);
     }
 
     /** an error occured, stop editing */
@@ -185,15 +163,15 @@ public class ChannelFrame extends Frame
     {
         public void actionPerformed(ActionEvent e)
         {
-            String s = tf.getText().trim();
+            // send text, as typed
+            String s = tf.getText();
 
-            if (s.length() > 0)
+            if (s.trim().length() > 0) // don't send if only whitespace
             {
                 tf.setText("");
-                cc.chSend(cname, s + "\n");
+                cc.chSend(cname, s);
 
-                history.setElementAt(s, history.size() - 1);
-                history.addElement("");
+                history.insertElementAt(s, history.size() - 1);
                 historyCounter = 1;
             }
         }

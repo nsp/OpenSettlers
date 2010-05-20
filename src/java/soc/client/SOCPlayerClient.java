@@ -21,36 +21,8 @@
  **/
 package soc.client;
 
-import soc.debug.D;  // JM
-
-import soc.game.SOCBoard;
-import soc.game.SOCCity;
-import soc.game.SOCDevCardSet;
-import soc.game.SOCGame;
-import soc.game.SOCGameOption;
-import soc.game.SOCPlayer;
-import soc.game.SOCPlayingPiece;
-import soc.game.SOCResourceConstants;
-import soc.game.SOCResourceSet;
-import soc.game.SOCRoad;
-import soc.game.SOCSettlement;
-import soc.game.SOCTradeOffer;
-
-import soc.message.*;
-
-import soc.robot.SOCRobotClient;
-
-import soc.server.SOCServer;
-import soc.server.genericServer.LocalStringConnection;
-import soc.server.genericServer.LocalStringServerSocket;
-import soc.server.genericServer.StringConnection;
-
-import soc.util.SOCGameList;
-import soc.util.Version;
-
 import java.applet.Applet;
 import java.applet.AppletContext;
-
 import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.CardLayout;
@@ -72,20 +44,113 @@ import java.awt.event.TextEvent;
 import java.awt.event.TextListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-
 import java.net.ConnectException;
 import java.net.Socket;
-
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
+
+import soc.debug.D;
+import soc.game.SOCBoard;
+import soc.game.SOCCity;
+import soc.game.SOCDevCardSet;
+import soc.game.SOCGame;
+import soc.game.SOCGameOption;
+import soc.game.SOCPlayer;
+import soc.game.SOCPlayingPiece;
+import soc.game.SOCResourceConstants;
+import soc.game.SOCResourceSet;
+import soc.game.SOCRoad;
+import soc.game.SOCSettlement;
+import soc.game.SOCTradeOffer;
+import soc.message.SOCAcceptOffer;
+import soc.message.SOCBCastTextMsg;
+import soc.message.SOCBankTrade;
+import soc.message.SOCBoardLayout;
+import soc.message.SOCBoardLayout2;
+import soc.message.SOCBuildRequest;
+import soc.message.SOCBuyCardRequest;
+import soc.message.SOCCancelBuildRequest;
+import soc.message.SOCChangeFace;
+import soc.message.SOCChannels;
+import soc.message.SOCChoosePlayer;
+import soc.message.SOCChoosePlayerRequest;
+import soc.message.SOCClearOffer;
+import soc.message.SOCClearTradeMsg;
+import soc.message.SOCDeleteChannel;
+import soc.message.SOCDeleteGame;
+import soc.message.SOCDevCard;
+import soc.message.SOCDevCardCount;
+import soc.message.SOCDiceResult;
+import soc.message.SOCDiscard;
+import soc.message.SOCDiscardRequest;
+import soc.message.SOCDiscoveryPick;
+import soc.message.SOCEndTurn;
+import soc.message.SOCFirstPlayer;
+import soc.message.SOCGameMembers;
+import soc.message.SOCGameOptionGetDefaults;
+import soc.message.SOCGameOptionGetInfos;
+import soc.message.SOCGameOptionInfo;
+import soc.message.SOCGameState;
+import soc.message.SOCGameStats;
+import soc.message.SOCGameTextMsg;
+import soc.message.SOCGames;
+import soc.message.SOCGamesWithOptions;
+import soc.message.SOCJoin;
+import soc.message.SOCJoinAuth;
+import soc.message.SOCJoinGame;
+import soc.message.SOCJoinGameAuth;
+import soc.message.SOCLargestArmy;
+import soc.message.SOCLeave;
+import soc.message.SOCLeaveAll;
+import soc.message.SOCLeaveGame;
+import soc.message.SOCLongestRoad;
+import soc.message.SOCMakeOffer;
+import soc.message.SOCMembers;
+import soc.message.SOCMessage;
+import soc.message.SOCMonopolyPick;
+import soc.message.SOCMoveRobber;
+import soc.message.SOCNewChannel;
+import soc.message.SOCNewGame;
+import soc.message.SOCNewGameWithOptions;
+import soc.message.SOCNewGameWithOptionsRequest;
+import soc.message.SOCPlayDevCardRequest;
+import soc.message.SOCPlayerElement;
+import soc.message.SOCPlayerStats;
+import soc.message.SOCPotentialSettlements;
+import soc.message.SOCPutPiece;
+import soc.message.SOCRejectConnection;
+import soc.message.SOCRejectOffer;
+import soc.message.SOCResetBoardAuth;
+import soc.message.SOCResetBoardReject;
+import soc.message.SOCResetBoardRequest;
+import soc.message.SOCResetBoardVote;
+import soc.message.SOCResetBoardVoteRequest;
+import soc.message.SOCResourceCount;
+import soc.message.SOCRollDice;
+import soc.message.SOCRollDicePrompt;
+import soc.message.SOCServerPing;
+import soc.message.SOCSetPlayedDevCard;
+import soc.message.SOCSetSeatLock;
+import soc.message.SOCSetTurn;
+import soc.message.SOCSitDown;
+import soc.message.SOCStartGame;
+import soc.message.SOCStatusMessage;
+import soc.message.SOCTextMsg;
+import soc.message.SOCTurn;
+import soc.message.SOCVersion;
+import soc.server.SOCServer;
+import soc.server.genericServer.LocalStringConnection;
+import soc.server.genericServer.LocalStringServerSocket;
+import soc.server.genericServer.StringConnection;
+import soc.util.SOCGameList;
+import soc.util.Version;
 
 
 /**
@@ -517,6 +582,7 @@ public class SOCPlayerClient extends Applet implements Runnable, ActionListener,
         GridBagConstraints c = new GridBagConstraints();
         Panel mainPane = new Panel(gbl);
 
+        // Default constraint
         c.fill = GridBagConstraints.BOTH;
         c.gridwidth = GridBagConstraints.REMAINDER;
         gbl.setConstraints(status, c);
@@ -2371,7 +2437,7 @@ public class SOCPlayerClient extends Applet implements Runnable, ActionListener,
     {
         ChannelFrame fr;
         fr = (ChannelFrame) channels.get(mes.getChannel());
-        fr.print("*** " + mes.getNickname() + " has joined this channel.\n");
+        fr.print("*** " + mes.getNickname() + " has joined this channel.");
         fr.addMember(mes.getNickname());
     }
 
@@ -2482,7 +2548,7 @@ public class SOCPlayerClient extends Applet implements Runnable, ActionListener,
     {
         ChannelFrame fr;
         fr = (ChannelFrame) channels.get(mes.getChannel());
-        fr.print("*** " + mes.getNickname() + " left.\n");
+        fr.print("*** " + mes.getNickname() + " left.");
         fr.deleteMember(mes.getNickname());
     }
 
@@ -2584,7 +2650,7 @@ public class SOCPlayerClient extends Applet implements Runnable, ActionListener,
     protected void handleJOINGAME(SOCJoinGame mes)
     {
         SOCPlayerInterface pi = (SOCPlayerInterface) playerInterfaces.get(mes.getGame());
-        pi.print("*** " + mes.getNickname() + " has joined this game.\n");
+        pi.print("*** " + mes.getNickname() + " has joined this game.");
     }
 
     /**
@@ -5081,7 +5147,8 @@ public class SOCPlayerClient extends Applet implements Runnable, ActionListener,
         client.initVisualElements(); // after the background is set
         
         frame.add(client, BorderLayout.CENTER);
-        frame.setSize(620, 400);
+        frame.pack();
+        frame.setResizable(false);
         frame.setVisible(true);
 
         if (! withConnectOrPractice)

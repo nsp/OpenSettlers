@@ -50,28 +50,66 @@ import java.util.Vector;
  * @author Robert S. Thomas
  */
 /**
- * This code assumes that you're using mySQL as your database. The schema for
- * JSettlers tables can be found in the distribution
- * <code>$JSETTLERS/bin/sql/jsettlers-tables.sql</code>.
+ * This code assumes that you're using mySQL as your database,
+ * but allows you to use other database types.
+ * The default URL is "jdbc:mysql://localhost/socdata".
+ * The default driver is "com.mysql.jdbc.Driver".
+ * These can be changed by supplying properties to {@link #initialize(String, String, Properties)}
+ * for {@link #PROP_JSETTLERS_DB_URL} and {@link #PROP_JSETTLERS_DB_DRIVER}.
+ *<P>
+ * It uses a database created with the following commands:
+ *<code>
+ * CREATE DATABASE socdata;
+ * USE socdata;
+ * CREATE TABLE users (nickname VARCHAR(20), host VARCHAR(50), password VARCHAR(20), email VARCHAR(50), lastlogin DATE);
+ * CREATE TABLE logins (nickname VARCHAR(20), host VARCHAR(50), lastlogin DATE);
+ * CREATE TABLE games (gamename VARCHAR(20), player1 VARCHAR(20), player2 VARCHAR(20), player3 VARCHAR(20), player4 VARCHAR(20), score1 TINYINT, score2 TINYINT, score3 TINYINT, score4 TINYINT, starttime TIMESTAMP);
+ * CREATE TABLE robotparams (robotname VARCHAR(20), maxgamelength INT, maxeta INT, etabonusfactor FLOAT, adversarialfactor FLOAT, leaderadversarialfactor FLOAT, devcardmultiplier FLOAT, threatmultiplier FLOAT, strategytype INT, starttime TIMESTAMP, endtime TIMESTAMP, gameswon INT, gameslost INT, tradeFlag BOOL);
+ *</code>
  */
 public class SOCDBHelper
 {
-    /** Property to specify the SQL database server. */
-    public static final String JSETTLERS_DB_ENABLED = "jsettlers.db.enabled";
+    // If a new property is added, please add a PROP_JSETTLERS_DB_ constant
+    // and also add it to SOCServer.PROPS_LIST.
 
-    /** Property to specify the SQL database username. */
-    public static final String JSETTLERS_DB_USER = "jsettlers.db.user";
+    /** Property to specify the SQL database server. 
+	 * @since 1.1.10
+	 */
+    public static final String PROP_JSETTLERS_DB_ENABLED = "jsettlers.db.enabled";
 
-    /** Property to specify the SQL database password. */
-    public static final String JSETTLERS_DB_PASS = "jsettlers.db.pass";
+	/** Property <tt>jsettlers.db.user</tt> to specify the server's SQL database username.
+     * @since 1.1.09
+     */
+    public static final String PROP_JSETTLERS_DB_USER = "jsettlers.db.user";
 
-    /** Property to specify the SQL database type. */
-    public static final String JSETTLERS_DB_DRIVER = "jsettlers.db.driver";
+    /** Property <tt>jsettlers.db.pass</tt> to specify the server's SQL database password.
+     * @since 1.1.09
+     */
+    public static final String PROP_JSETTLERS_DB_PASS = "jsettlers.db.pass";
 
-    /** Property to specify the SQL database server. */
-    public static final String JSETTLERS_DB_URL = "jsettlers.db.url";
+    /** Property <tt>jsettlers.db.driver</tt> to specify the server's JDBC driver class.
+     * The default driver is "com.mysql.jdbc.Driver".
+     * If the {@link #PROP_JSETTLERS_DB_URL URL} begins with "jdbc:postgresql:",
+     * the driver will be "org.postgresql.Driver".
+     * If the <tt>URL</tt> begins with "jdbc:sqlite:",
+     * the driver will be "org.sqlite.JDBC".
+     * @since 1.1.09
+     */
+    public static final String PROP_JSETTLERS_DB_DRIVER = "jsettlers.db.driver";
+
+    /** Property <tt>jsettlers.db.url</tt> to specify the server's URL.
+     * The default URL is "jdbc:mysql://localhost/socdata".
+     * @since 1.1.09
+     */
+    public static final String PROP_JSETTLERS_DB_URL = "jsettlers.db.url";
 
     private static Connection connection = null;
+
+    /**
+     * Retain the URL (default, or passed via props to {@link #initialize(String, String, Properties)}).
+     * @since 1.1.09
+     */
+    private static String dbURL = null;
 
     /**
      * This flag indicates that the connection should be valid, yet the last

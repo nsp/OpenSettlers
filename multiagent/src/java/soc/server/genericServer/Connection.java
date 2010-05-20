@@ -109,8 +109,7 @@ public final class Connection implements Serializable, Cloneable
         }
         catch (Exception e)
         {
-            D.ebugPrintln("IOException in Connection.connect (" +
-                          host + ") - " + e);
+            D.ebugPrintln("IOException in Connection.connect (" +  host + ") - " + e);
 
             if (D.ebugOn)
             {

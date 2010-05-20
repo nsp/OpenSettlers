@@ -34,7 +34,7 @@ import java.awt.event.MouseListener;
  * type: Clay, ore, sheep, wheat, wood.
  *
  * @author Robert S Thomas
- *
+ * @version $Revision: 1.3 $
  * @see SOCHandPanel
  * @see TradeOfferPanel
  */
@@ -79,7 +79,7 @@ public class SquaresPanel extends Panel implements MouseListener, ColorSquareLis
         notAllZero = false;
         parentHand = hand;
 
-        setFont(new Font("Helvetica", Font.PLAIN, 10));
+        setFont(new Font("SansSerif", Font.PLAIN, 10));
 
         give = new ColorSquare[5];
         get = new ColorSquare[5];

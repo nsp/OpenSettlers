@@ -24,12 +24,20 @@ package soc.util;
  * DOCUMENT ME!
  *
  * @author $author$
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class IntPair
 {
     public int a;
     public int b;
+
+    /**
+     * Creates a new IntPair object initialized with 0 for both values.
+     */
+    public IntPair()
+    {
+        this(0, 0);
+    }
 
     /**
      * Creates a new IntPair object.
@@ -44,22 +52,34 @@ public class IntPair
     }
 
     /**
+     * returns a hash code for the object
+     *
+     * @return the hash code
+     */
+    public int hashCode()
+    {
+        return a ^ b;
+    }
+    
+    /**
      * DOCUMENT ME!
      *
-     * @param ip DOCUMENT ME!
+     * @param o DOCUMENT ME!
      *
      * @return DOCUMENT ME!
      */
-    public boolean equals(IntPair ip)
+    public boolean equals(Object o)
     {
-        if (((ip.a == a) && (ip.b == b)) || ((ip.a == b) && (ip.b == a)))
+        if (o instanceof IntPair)
         {
-            return true;
+            IntPair ip = (IntPair)o;
+            if (((ip.a == a) && (ip.b == b)) || ((ip.a == b) && (ip.b == a)))
+            {
+                return true;
+            }
         }
-        else
-        {
-            return false;
-        }
+
+        return false;
     }
 
     /**

@@ -24,12 +24,19 @@ package soc.util;
  * DOCUMENT ME!
  *
  * @author $author$
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Pair
 {
     private Object a;
     private Object b;
+
+    /**
+     * Creates a new Pair object initialized with null values.
+     */
+    public Pair() {
+        this(null, null);
+    }
 
     /**
      * Creates a new Pair object.
@@ -44,22 +51,34 @@ public class Pair
     }
 
     /**
+     * returns a hash code for the object
+     *
+     * @return the hash code
+     */
+    public int hashCode()
+    {
+        return ((a == null) ? 0 : a.hashCode()) ^ ((b == null) ? 0 : b.hashCode());
+    }
+    
+    /**
      * DOCUMENT ME!
      *
-     * @param ip DOCUMENT ME!
+     * @param o DOCUMENT ME!
      *
      * @return DOCUMENT ME!
      */
-    public boolean equals(Pair ip)
+    public boolean equals(Object o)
     {
-        if (((ip.a == a) && (ip.b == b)) || ((ip.a == b) && (ip.b == a)))
+        if (o instanceof Pair)
         {
-            return true;
+            Pair ip = (Pair)o;
+            if (((ip.a == a) && (ip.b == b)) || ((ip.a == b) && (ip.b == a)))
+            {
+                return true;
+            }
         }
-        else
-        {
-            return false;
-        }
+
+        return false;
     }
 
     /**

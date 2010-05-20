@@ -133,7 +133,7 @@ public class SOCCreateAccount extends SOCMessage
         }
         else
         {
-            tempem = new String(em);
+            tempem = em;
 
             if (tempem.equals(""))
             {

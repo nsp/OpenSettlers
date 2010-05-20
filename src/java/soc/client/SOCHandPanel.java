@@ -389,7 +389,7 @@ public class SOCHandPanel extends Panel implements ActionListener
         final Color pcolor = playerInterface.getPlayerColor(player.getPlayerNumber());
         setBackground(pcolor);
         setForeground(COLOR_FOREGROUND);
-        setFont(new Font("Helvetica", Font.PLAIN, 10));
+        setFont(new Font("SansSerif", Font.PLAIN, 10));
 
         blankStandIn = new ColorSquare(pcolor, "One moment...");
         blankStandIn.setVisible(false);
@@ -1075,7 +1075,8 @@ public class SOCHandPanel extends Panel implements ActionListener
             if (playerInterface.getClientHand() == this)
                 playerInterface.setClientHand(null);
             playerIsClient = false;
-        } else if (game.getGameState() == SOCGame.NEW)
+        } 
+		else if (game.getGameState() == SOCGame.NEW)
         {
             // Un-hide "Sit Here" or "Lock" button
             boolean clientAlreadySitting = (playerInterface.getClientHand() != null);
@@ -2452,8 +2453,6 @@ public class SOCHandPanel extends Panel implements ActionListener
                 int sheepW = fm.stringWidth("Sheep:_");           //Bug in stringWidth does not give correct size for ' '
                 int pcW = fm.stringWidth(CARD.replace(' ','_'));  //Bug in stringWidth
                 int giveW = fm.stringWidth(GIVE.replace(' ','_'));
-                // int clearW = fm.stringWidth(CLEAR.replace(' ','_'));
-                // int bankW = fm.stringWidth(BANK.replace(' ','_'));
                 int cardsH = 5 * (lineH + space);
                 int tradeH = sqpDim.height + space + (2 * (lineH + space));
                 int sectionSpace = (dim.height - (inset + faceW + cardsH + tradeH + lineH + inset)) / 3;

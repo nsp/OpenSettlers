@@ -71,7 +71,7 @@ public class SOCJoinGame extends SOCMessageTemplateJoinGame
      */
     public static String toCmd(String nn, String pw, String hn, String ga)
     {
-        String temppw = new String(pw);
+        String temppw = pw;
 
         if (temppw.equals(""))
         {
