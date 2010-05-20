@@ -1,5 +1,6 @@
 package soc.util;
 
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Properties;
 
@@ -46,6 +47,9 @@ public class Version {
     try {
       String resource = "src/java/resources/version.info";
       InputStream in = Version.class.getResourceAsStream (resource);
+      if(in == null) { // Probably because we're running from eclipse
+          in = new FileInputStream("src/java/resources/version.info.in");
+      }
       versionInfo.load (in);
       in.close ();
 

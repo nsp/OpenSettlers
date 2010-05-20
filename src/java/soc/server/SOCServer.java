@@ -8835,21 +8835,20 @@ public class SOCServer extends Server
      *
      * @param args  arguments: port number, etc
      * @see #printUsage(boolean)
-     * @deprecated Use the Main class instead.
      */
     static public void main(String[] args)
     {
-        if (args.length < 4)
-        {
-            if (! printedUsageAlready)
-            {
-                // Print this hint only if parsed OK up to now, and
-                // if we haven't responded to -h / --help already.
-                System.err.println("SOCServer: Some required command-line parameters are missing.");
-            }
-            printUsage(false);
-            return;
-        }
+//        if (args.length < 4)
+//        {
+//            if (! printedUsageAlready)
+//            {
+//                // Print this hint only if parsed OK up to now, and
+//                // if we haven't responded to -h / --help already.
+//                System.err.println("SOCServer: Some required command-line parameters are missing.");
+//            }
+//            printUsage(false);
+//            return;
+//        }
 
         Properties argp = parseCmdline_DashedArgs(args);
         if (argp == null)

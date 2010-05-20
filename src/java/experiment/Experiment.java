@@ -23,12 +23,13 @@ public class Experiment implements GameStateConstants {
     
     public static void main(String[] args) throws InterruptedException
     {
-        ServerThread st = new ServerThread();
-        st.start();
+//        ServerThread st = new ServerThread();
+//        st.start();
         
-        SmartSettlersClientThread cl0 = new SmartSettlersClientThread(0);
+//        SmartSettlersClientThread cl0 = new SmartSettlersClientThread(0);
 //        SmartSettlersClientThread cl1 = new SmartSettlersClientThread(1);
 //        SmartSettlersClientThread cl2 = new SmartSettlersClientThread(2);
+        ClientThread cl0 = new ClientThread(0);
         ClientThread cl1 = new ClientThread(1);
         ClientThread cl2 = new ClientThread(2);
         ClientThread cl3 = new ClientThread(3);
@@ -41,13 +42,12 @@ public class Experiment implements GameStateConstants {
         cl3.start();
         ttr.start();
         Thread.sleep(6000);
-        st.server.setLoggerClient(cl0.client);
-        System.out.println(cl0.client + "   " + st.server);        
-        System.out.println("sadfasdf");
+//        st.server.setLoggerClient(cl0.client);
+//        System.out.println(cl0.client + "   " + st.server);
         
         String gamename;
         if (args.length==0)
-            gamename = "game0";
+            gamename = "game1";
         else
             gamename = args[0];
         
@@ -55,7 +55,8 @@ public class Experiment implements GameStateConstants {
         SOCPlayerClient client = new SOCPlayerClient();
         client.host = "localhost";
         client.port = 8880;
-        client.nickname = "Player";
+        client.nickname = "Experimenter";
+        String password = "pass";
         client.initVisualElements(); // after the background is set
         client.connect();
         //client.put(SOCJoin.toCmd(client.nickname, "", client.host, "channel0"));
@@ -71,7 +72,7 @@ public class Experiment implements GameStateConstants {
         }
         
         //SOCGame ga = (SOCGame) client.games.get(gamename);
-        client.put(SOCJoinGame.toCmd(client.nickname, "", client.host, gamename), false);
+        client.put(SOCJoinGame.toCmd(client.nickname, password, client.host, gamename), false);
         ga = (SOCGame) client.games.get(gamename);
         //client.sitDown(ga, 0);
         SOCPlayerInterface pi = (SOCPlayerInterface) client.playerInterfaces.get(gamename);

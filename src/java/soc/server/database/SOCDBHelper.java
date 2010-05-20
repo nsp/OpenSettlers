@@ -59,7 +59,7 @@ import soc.util.SOCRobotParameters;
  *<code>
  * CREATE DATABASE socdata;
  * USE socdata;
- * CREATE TABLE users (nickname VARCHAR(20), host VARCHAR(50), password VARCHAR(20), email VARCHAR(50), lastlogin DATE);
+ * CREATE TABLE users (nickname VARCHAR(20), host VARCHAR(50), password VARCHAR(20), email VARCHAR(50), lastlogin DATE, wins INT, losses INT, face INT, totalpoints INT);
  * CREATE TABLE logins (nickname VARCHAR(20), host VARCHAR(50), lastlogin DATE);
  * CREATE TABLE games (gamename VARCHAR(20), player1 VARCHAR(20), player2 VARCHAR(20), player3 VARCHAR(20), player4 VARCHAR(20), score1 TINYINT, score2 TINYINT, score3 TINYINT, score4 TINYINT, starttime TIMESTAMP);
  * CREATE TABLE robotparams (robotname VARCHAR(20), maxgamelength INT, maxeta INT, etabonusfactor FLOAT, adversarialfactor FLOAT, leaderadversarialfactor FLOAT, devcardmultiplier FLOAT, threatmultiplier FLOAT, strategytype INT, starttime TIMESTAMP, endtime TIMESTAMP, gameswon INT, gameslost INT, tradeFlag BOOL);
@@ -141,7 +141,7 @@ public class SOCDBHelper
     
     private static String ROBOT_STATS_QUERY =       "SELECT robotname, wins, losses, totalpoints, totalpoints/(wins+losses) AS avg, (100*(wins/(wins+losses))) AS pct FROM robotparams WHERE (wins+losses) > 0 ORDER BY pct desc, avg desc, totalpoints desc;";
     
-    private static String HUMAN_STATS_QUERY =       "SELECT nickname, wins, losses, totalpoints, totalpoints/(wins+losses) AS avg, 100 * (wins/(wins+losses)) AS pct FROM users WHERE (wins+losses) > 0 ORDER BY pct desc, avg desc, totalpoints desc;";
+    private static String HUMAN_STATS_QUERY =       "SELECT  nickname, wins, losses, totalpoints, totalpoints/(wins+losses) AS avg, (100*(wins/(wins+losses))) AS pct FROM       users WHERE (wins+losses) > 0 ORDER BY pct desc, avg desc, totalpoints desc;";
 
     private static String RESET_HUMAN_STATS =       "UPDATE users SET wins = 0, losses = 0, totalpoints = 0 WHERE nickname = ?;";
 
@@ -189,31 +189,25 @@ public class SOCDBHelper
 
     	String driverclass = "com.mysql.jdbc.Driver";
     	dbURL = "jdbc:mysql://localhost/socdata";
-        boolean enabled = false;
-    	if (props != null)
-    	{
-		    enabled = Boolean.parseBoolean(props.getProperty(PROP_JSETTLERS_DB_ENABLED));
-		}
-        if (! enabled) return false;
-	    String prop_dbURL = props.getProperty(PROP_JSETTLERS_DB_URL);
-	    String prop_driverclass = props.getProperty(PROP_JSETTLERS_DB_DRIVER);
-	    if (prop_dbURL != null)
-	    {
-	        dbURL = prop_dbURL;
-	        if (prop_driverclass != null)
-	            driverclass = prop_driverclass;
-	        else if (prop_dbURL.startsWith("jdbc:postgresql"))
-	            driverclass = "org.postgresql.Driver";
-	        else if (prop_dbURL.startsWith("jdbc:sqlite:"))
-	            driverclass = "org.sqlite.JDBC";
-	        else if (! prop_dbURL.startsWith("jdbc:mysql"))
-	        {
-	            throw new SQLException("JDBC: URL property is set, but driver property is not: ("
-	                + PROP_JSETTLERS_DB_URL + ", " + PROP_JSETTLERS_DB_DRIVER + ")");
-	        }
-	    } else {
-	        if (prop_driverclass != null)
-	            driverclass = prop_driverclass;
+        String prop_dbURL = props.getProperty(PROP_JSETTLERS_DB_URL);
+        String prop_driverclass = props.getProperty(PROP_JSETTLERS_DB_DRIVER);
+        if (prop_dbURL != null)
+        {
+            dbURL = prop_dbURL;
+            if (prop_driverclass != null)
+                driverclass = prop_driverclass;
+            else if (prop_dbURL.startsWith("jdbc:postgresql"))
+                driverclass = "org.postgresql.Driver";
+            else if (prop_dbURL.startsWith("jdbc:sqlite:"))
+                driverclass = "org.sqlite.JDBC";
+            else if (! prop_dbURL.startsWith("jdbc:mysql"))
+            {
+                throw new SQLException("JDBC: URL property is set, but driver property is not: ("
+                    + PROP_JSETTLERS_DB_URL + ", " + PROP_JSETTLERS_DB_DRIVER + ")");
+            }
+        } else {
+            if (prop_driverclass != null)
+                driverclass = prop_driverclass;
             // if it's mysql, use the mysql default url above.
             // if it's postgres or sqlite, use that.
             // otherwise, not sure what they have.
@@ -226,20 +220,16 @@ public class SOCDBHelper
                 dbURL = "jdbc:sqlite:socdata.sqlite";
             }
             else if (! driverclass.contains("mysql"))
-	        {
-	            throw new SQLException("JDBC: Driver property is set, but URL property is not: ("
-	                + PROP_JSETTLERS_DB_DRIVER + ", " + PROP_JSETTLERS_DB_URL + ")");
-	        }
+            {
+                throw new SQLException("JDBC: Driver property is set, but URL property is not: ("
+                    + PROP_JSETTLERS_DB_DRIVER + ", " + PROP_JSETTLERS_DB_URL + ")");
+            }
+//            props.setProperty(PROP, value)
     	}
         userName = props.getProperty(PROP_JSETTLERS_DB_USER);
         password = props.getProperty(PROP_JSETTLERS_DB_PASS);
         url = props.getProperty(PROP_JSETTLERS_DB_URL);
         String driver = props.getProperty(PROP_JSETTLERS_DB_DRIVER);
-
-        if (driver == null)
-            throw new SQLException("SQL driver not specified");
-        if (url == null)
-            throw new SQLException("SQL url not specified");
 
     	try
         {

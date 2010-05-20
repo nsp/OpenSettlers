@@ -18,7 +18,7 @@ public class ServerThread extends Thread
     @Override
     public void run()
     {
-        server = new SOCServer(8880, 10, "root", "");
+        server = new SOCServer(8880, 20, "root", "root");
         server.setPriority(5);
         server.start();
 

@@ -29,7 +29,7 @@ public class ClientThread extends Thread
         try {
             sleep(5000);
             
-            client = new SOCRobotClient("localhost", 8880, "Computer" + num, "");
+            client = new SOCRobotClient("localhost", 8880, "BuiltIn" + num, "");
             client.init();
 //            String[] clientArgs = {"localhost", "8880", "Computer" + num, ""};
 //            soc.robot.SOCRobotClient.main(clientArgs);
