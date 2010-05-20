@@ -6,11 +6,22 @@
 
 package smartsettlers.display;
 
-import java.awt.*;
-import java.awt.geom.*;
-import java.lang.Math;
-import smartsettlers.boardlayout.*;
-import smartsettlers.util.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Polygon;
+import java.awt.Stroke;
+
+import smartsettlers.boardlayout.BoardLayout;
+import smartsettlers.boardlayout.Edge;
+import smartsettlers.boardlayout.GameStateConstants;
+import smartsettlers.boardlayout.HexTile;
+import smartsettlers.boardlayout.HexTypeConstants;
+import smartsettlers.boardlayout.Vertex;
+import smartsettlers.util.VectorConstants;
 
 /**
  *
@@ -20,6 +31,8 @@ public class SettlersPanel extends javax.swing.JPanel
         implements VectorConstants, HexTypeConstants, GameStateConstants 
 {
     
+
+    private static final long serialVersionUID = 4231996682794543495L;
     BoardLayout boardlayout;
     double A[][] = {{1, 0}, {0.5, -0.86602540378443864676372317075294}};
     double offset[] = {-0.5, 6.5};

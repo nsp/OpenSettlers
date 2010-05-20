@@ -13,8 +13,6 @@ import java.util.Vector;
 
 import soc.game.*;
 
-import org.apache.log4j.*;
-
 public class TraderAgent extends Agent implements Runnable {
 	
 	

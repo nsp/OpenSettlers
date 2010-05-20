@@ -58,6 +58,8 @@ import java.util.Vector;
  */
 public class SOCGame implements Serializable, Cloneable
 {
+    private static final long serialVersionUID = -7908465897611553693L;
+
     /**
      * Game states.  NEW is a brand-new game, not yet ready to start playing.
      * Players are choosing where to sit, or have all sat but no one has yet clicked

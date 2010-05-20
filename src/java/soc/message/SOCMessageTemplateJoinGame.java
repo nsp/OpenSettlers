@@ -33,6 +33,8 @@ package soc.message;
  */
 public abstract class SOCMessageTemplateJoinGame extends SOCMessage
 {
+    private static final long serialVersionUID = -6161731618596096209L;
+
     /**
      * symbol to represent a null password
      */

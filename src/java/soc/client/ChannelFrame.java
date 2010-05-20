@@ -39,7 +39,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import java.util.StringTokenizer;
 import java.util.Vector;
 
 
@@ -49,6 +48,7 @@ import java.util.Vector;
  */
 public class ChannelFrame extends Frame
 {
+    private static final long serialVersionUID = -1867943902419567063L;
     public SnippingTextArea ta;
     public TextField tf;
     public java.awt.List lst;

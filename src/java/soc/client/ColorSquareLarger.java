@@ -38,6 +38,7 @@ import java.awt.Color;
  */
 public class ColorSquareLarger extends ColorSquare
 {
+    private static final long serialVersionUID = 8529454475649692590L;
     public final static int WIDTH_L = 20;
     public final static int HEIGHT_L = 20;
 

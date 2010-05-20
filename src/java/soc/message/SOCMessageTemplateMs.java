@@ -57,6 +57,8 @@ package soc.message;
  */
 public abstract class SOCMessageTemplateMs extends SOCMessageMulti
 {
+    private static final long serialVersionUID = 8012139477022533001L;
+
     /**
      * Name of the game, or null if none.
      */

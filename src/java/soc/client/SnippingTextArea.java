@@ -36,6 +36,8 @@ import java.awt.TextArea;
  */
 public class SnippingTextArea extends TextArea
 {
+    private static final long serialVersionUID = 264102144929512688L;
+
     /**
      * A bug in Java 1.4.2: the first time replaceRange() is called, it
      * deletes one char beyond what is requested, but only because it's a
@@ -162,7 +164,7 @@ public class SnippingTextArea extends TextArea
     {
         int lines = 0;
         int last = -1;
-
+        
         while ( (last = s.indexOf('\n', last+1)) > -1)
             lines++;
 
@@ -191,8 +193,7 @@ public class SnippingTextArea extends TextArea
             lines--;
         }
         // java 1.2 deprecated getPeer, adding isDisplayable()
-
-        if (getPeer() != null)
+        if (isDisplayable())
         {
             setCaretPosition(getText().length());
         }

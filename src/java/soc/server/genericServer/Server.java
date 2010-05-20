@@ -80,6 +80,7 @@ import java.util.Vector;
  */
 public abstract class Server extends Thread implements Serializable, Cloneable
 {
+    private static final long serialVersionUID = 3960084299007853486L;
     StringServerSocket ss;
     boolean up = false;
     protected Exception error = null;

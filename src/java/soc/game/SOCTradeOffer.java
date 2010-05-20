@@ -29,6 +29,7 @@ import java.io.Serializable;
  */
 public class SOCTradeOffer implements Serializable, Cloneable
 {
+    private static final long serialVersionUID = 7700011674791746160L;
     String game;
     SOCResourceSet give;
     SOCResourceSet get;

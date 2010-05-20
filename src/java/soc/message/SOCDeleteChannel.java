@@ -28,6 +28,7 @@ package soc.message;
  */
 public class SOCDeleteChannel extends SOCMessage
 {
+    private static final long serialVersionUID = 396705100596337706L;
     /**
      * Name of the channel.
      */

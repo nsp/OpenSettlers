@@ -44,7 +44,7 @@ public class RobberStrategy {
    public int getBestRobberHex(SOCGame game, SOCPlayer ourPlayerData, HashMap playerTrackers)
    {
        Random rand = new Random();
-       log.debug("%%% MOVEROBBER");
+       D.debug("%%% MOVEROBBER");
 
        final int[] hexes = game.getBoard().getHexLandCoords();
 
@@ -61,17 +61,17 @@ public class RobberStrategy {
        while (trackersIter.hasNext())
        {
            SOCPlayerTracker tracker = (SOCPlayerTracker) trackersIter.next();
-           log.debug("%%%%%%%%% TRACKER FOR PLAYER " + tracker.getPlayer().getPlayerNumber());
+           D.debug("%%%%%%%%% TRACKER FOR PLAYER " + tracker.getPlayer().getPlayerNumber());
 
            try
            {
                tracker.recalcWinGameETA();
                winGameETAs[tracker.getPlayer().getPlayerNumber()] = tracker.getWinGameETA();
-               log.debug("winGameETA = " + tracker.getWinGameETA());
+               D.debug("winGameETA = " + tracker.getWinGameETA());
            }
            catch (NullPointerException e)
            {
-               log.debug("Null Pointer Exception calculating winGameETA");
+               D.debug("Null Pointer Exception calculating winGameETA");
                winGameETAs[tracker.getPlayer().getPlayerNumber()] = 500;
            }
        }
@@ -85,13 +85,13 @@ public class RobberStrategy {
                if ((victimNum < 0) && (pnum != ourPlayerData.getPlayerNumber()))
                {
                    // The first pick
-                   log.debug("Picking a robber victim: pnum=" + pnum);
+                   D.debug("Picking a robber victim: pnum=" + pnum);
                    victimNum = pnum;
                }
                else if ((pnum != ourPlayerData.getPlayerNumber()) && (winGameETAs[pnum] < winGameETAs[victimNum]))
                {
                    // A better pick
-                   log.debug("Picking a robber victim: pnum=" + pnum);
+                   D.debug("Picking a robber victim: pnum=" + pnum);
                    victimNum = pnum;
                }
            }
@@ -125,19 +125,19 @@ public class RobberStrategy {
                    totalSpeed += speeds[j];
                }
 
-               log.debug("total Speed = " + totalSpeed);
+               D.debug("total Speed = " + totalSpeed);
 
                if (totalSpeed > worstSpeed)
                {
                    bestHex = hexes[i];
                    worstSpeed = totalSpeed;
-                   log.debug("bestHex = " + Integer.toHexString(bestHex));
-                   log.debug("worstSpeed = " + worstSpeed);
+                   D.debug("bestHex = " + Integer.toHexString(bestHex));
+                   D.debug("worstSpeed = " + worstSpeed);
                }
            }
        }
 
-       log.debug("%%% bestHex = " + Integer.toHexString(bestHex));
+       D.debug("%%% bestHex = " + Integer.toHexString(bestHex));
 
        /**
         * pick a spot at random if we can't decide
@@ -145,7 +145,7 @@ public class RobberStrategy {
        while ((bestHex == robberHex) && (ourPlayerData.getNumbers().getNumberResourcePairsForHex(hexes[bestHex]).isEmpty()))
        {
            bestHex = hexes[Math.abs(rand.nextInt() % hexes.length)];
-           log.debug("%%% random pick = " + Integer.toHexString(bestHex));
+           D.debug("%%% random pick = " + Integer.toHexString(bestHex));
        }
        
        return bestHex;

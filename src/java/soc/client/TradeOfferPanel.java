@@ -54,6 +54,7 @@ import java.awt.event.ActionListener;
  */
 public class TradeOfferPanel extends Panel
 {
+    private static final long serialVersionUID = 7328841152192283316L;
     public static final String OFFER_MODE = "offer";
     public static final String MESSAGE_MODE = "message";
 
@@ -159,6 +160,10 @@ public class TradeOfferPanel extends Panel
     
     private class MessagePanel extends Panel
     {
+        /**
+         * 
+         */
+        private static final long serialVersionUID = -8066167179927154007L;
         SpeechBalloon balloon;
         Label msg;
         int msgHeight;
@@ -218,6 +223,11 @@ public class TradeOfferPanel extends Panel
     /** Contains both offer and counter-offer; see {@link #setCounterOfferVisible(boolean)} */
     private class OfferPanel extends Panel implements ActionListener
     {
+        /**
+         * 
+         */
+        private static final long serialVersionUID = -8055790775282788045L;
+
         /** Balloon to hold offer received */
         SpeechBalloon balloon;
 

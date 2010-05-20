@@ -29,6 +29,8 @@ package soc.message;
  */
 public class SOCAdminReset extends SOCMessage
 {
+    private static final long serialVersionUID = 2123939188714585009L;
+
     /**
      * Create a AdminReset message.
      *

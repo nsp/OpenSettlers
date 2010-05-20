@@ -56,6 +56,8 @@ import java.util.StringTokenizer;
  */
 public class SOCCancelBuildRequest extends SOCMessage
 {
+    private static final long serialVersionUID = -4803026726070501498L;
+
     /**
      * Name of game
      */

@@ -30,6 +30,8 @@ import java.util.StringTokenizer;
  */
 public class SOCClearTradeMsg extends SOCMessage
 {
+    private static final long serialVersionUID = 971277387077405646L;
+
     /**
      * Name of game
      */

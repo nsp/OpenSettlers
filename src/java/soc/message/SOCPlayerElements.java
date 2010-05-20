@@ -31,6 +31,8 @@ package soc.message;
  */
 public class SOCPlayerElements extends SOCMessageTemplateMi
 {
+    private static final long serialVersionUID = -1176202024663631757L;
+
     /** Introduced in version 1.1.09 */
     public static final int VERSION = 1109;
 

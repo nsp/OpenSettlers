@@ -34,6 +34,8 @@ import java.util.StringTokenizer;
  */
 public class SOCDiscoveryPick extends SOCMessage
 {
+    private static final long serialVersionUID = 2149628093687815026L;
+
     /**
      * Name of game
      */

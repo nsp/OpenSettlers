@@ -33,6 +33,7 @@ import java.util.StringTokenizer;
  */
 public class SOCUpdateRobotParams extends SOCMessage
 {
+    private static final long serialVersionUID = -8208953086270139000L;
     private SOCRobotParameters params;
 
     /**

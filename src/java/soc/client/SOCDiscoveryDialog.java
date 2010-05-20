@@ -38,6 +38,7 @@ import java.awt.event.ActionListener;
  */
 class SOCDiscoveryDialog extends Dialog implements ActionListener, ColorSquareListener
 {
+    private static final long serialVersionUID = 5484845217618283558L;
     /** Pick (Done) button */
     private Button doneBut;
     /** Clear button */
@@ -77,11 +78,11 @@ class SOCDiscoveryDialog extends Dialog implements ActionListener, ColorSquareLi
 
         add(doneBut);
         doneBut.addActionListener(this);
-        doneBut.disable();  // Since nothing picked yet
+        doneBut.setEnabled(false);  // Since nothing picked yet
 
         add(clearBut);
         clearBut.addActionListener(this);
-        // clearBut.disable();        
+        // clearBut.setEnabled(false);        
 
         rsrc = new ColorSquare[5];
         for (int i = 0; i < 5; i++)
@@ -221,7 +222,7 @@ class SOCDiscoveryDialog extends Dialog implements ActionListener, ColorSquareLi
                 rsrc[i].setIntValue(0);
             }
             rsrcTotal = 0;
-            doneBut.disable();
+            doneBut.setEnabled(false);
         }
         } catch (Throwable th) {
             pi.chatPrintStackTrace(th);

@@ -33,6 +33,8 @@ import java.util.StringTokenizer;
  */
 public class SOCSetTurn extends SOCMessageTemplate1i
 {
+    private static final long serialVersionUID = -3782621041320746376L;
+
     /**
      * Create a SetTurn message.
      *

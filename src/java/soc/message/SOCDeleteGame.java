@@ -28,6 +28,7 @@ package soc.message;
  */
 public class SOCDeleteGame extends SOCMessage
 {
+    private static final long serialVersionUID = 5788672904091022450L;
     /**
      * Name of the game.
      */

@@ -34,6 +34,8 @@ import java.util.Vector;
  */
 public class SOCGameOptionVersionException extends IllegalArgumentException
 {
+    private static final long serialVersionUID = -6341950670774449066L;
+
     /** Minimum client version required by game options */
     public final int gameOptsVersion;
 

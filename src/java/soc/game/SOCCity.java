@@ -29,6 +29,8 @@ import java.util.Vector;
  */
 public class SOCCity extends SOCPlayingPiece
 {
+    private static final long serialVersionUID = -2724093676296242011L;
+
     /**
      * Make a new city
      *

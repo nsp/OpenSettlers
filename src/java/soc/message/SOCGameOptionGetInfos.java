@@ -51,6 +51,7 @@ import soc.game.SOCGameOption;
  */
 public class SOCGameOptionGetInfos extends SOCMessage
 {
+    private static final long serialVersionUID = 3340386264025647111L;
     /**
      * List of game option keynames (Strings), or null
      */

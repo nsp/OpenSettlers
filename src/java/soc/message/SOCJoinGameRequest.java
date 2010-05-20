@@ -41,6 +41,8 @@ import soc.game.SOCGameOption;
  */
 public class SOCJoinGameRequest extends SOCMessage
 {
+    private static final long serialVersionUID = 5982013969494192377L;
+
     /**
      * Name of game
      */

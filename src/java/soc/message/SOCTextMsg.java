@@ -30,6 +30,8 @@ import java.util.StringTokenizer;
  */
 public class SOCTextMsg extends SOCMessage
 {
+    private static final long serialVersionUID = -8664085511387539311L;
+
     /**
      * our token seperator
      */

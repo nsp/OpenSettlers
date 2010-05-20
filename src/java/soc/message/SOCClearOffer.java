@@ -34,6 +34,8 @@ import java.util.StringTokenizer;
  */
 public class SOCClearOffer extends SOCMessage
 {
+    private static final long serialVersionUID = 8889218132911181211L;
+
     /**
      * Minimum version (1.1.09) which supports playerNumber -1 for clear all.
      * @since 1.1.09

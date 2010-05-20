@@ -39,6 +39,7 @@ package soc.message;
  */
 public abstract class SOCMessageTemplate0 extends SOCMessage
 {
+    private static final long serialVersionUID = -2515212619936040771L;
     /**
      * Name of the game.
      */

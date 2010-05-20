@@ -179,6 +179,8 @@ import soc.util.Version;
  */
 public class SOCPlayerClient extends Applet implements Runnable, ActionListener, TextListener, ItemListener
 {
+    private static final long serialVersionUID = 3879651133746360983L;
+
     /** main panel, in cardlayout */
     protected static final String MAIN_PANEL = "main";
 
@@ -1114,7 +1116,7 @@ public class SOCPlayerClient extends Applet implements Runnable, ActionListener,
         }
         else
         {
-            cf.show();
+            cf.setVisible(true);
         }
 
         channel.setText("");
@@ -1290,7 +1292,7 @@ public class SOCPlayerClient extends Applet implements Runnable, ActionListener,
             }
             else
             {
-                new SOCPracticeAskDialog(this, pi).show();
+                new SOCPracticeAskDialog(this, pi).setVisible(true);
             }
 
             return true;
@@ -1341,7 +1343,7 @@ public class SOCPlayerClient extends Applet implements Runnable, ActionListener,
         }
         else
         {
-            pi.show();
+            pi.setVisible(true);
         }
 
         return true;
@@ -1435,7 +1437,7 @@ public class SOCPlayerClient extends Applet implements Runnable, ActionListener,
     {
         if (newGameOptsFrame != null)
         {
-            newGameOptsFrame.show();
+            newGameOptsFrame.setVisible(true);
             return;
         }
 
@@ -3988,7 +3990,7 @@ public class SOCPlayerClient extends Applet implements Runnable, ActionListener,
 
         // String gameName = thing + STATSPREFEX + "-- -- -- --]";
 
-        if ((gmlist.countItems() > 0) && (gmlist.getItem(0).equals(" ")))
+        if ((gmlist.getItemCount() > 0) && (gmlist.getItem(0).equals(" ")))
         {
             gmlist.replaceItem(gameName, 0);
             gmlist.select(0);

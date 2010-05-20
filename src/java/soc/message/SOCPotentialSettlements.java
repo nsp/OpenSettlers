@@ -32,6 +32,8 @@ import java.util.Vector;
  */
 public class SOCPotentialSettlements extends SOCMessage
 {
+    private static final long serialVersionUID = 7920287823739860343L;
+
     /**
      * Name of game
      */

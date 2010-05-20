@@ -30,6 +30,8 @@ import java.util.StringTokenizer;
  */
 public class SOCJoin extends SOCMessage
 {
+    private static final long serialVersionUID = 8165992245169008036L;
+
     /**
      * symbol to represent a null password
      */

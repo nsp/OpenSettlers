@@ -33,6 +33,7 @@ import java.util.Vector;
  */
 public class SOCChannels extends SOCMessage
 {
+    private static final long serialVersionUID = -4840797936493586631L;
     /**
      * List of channels
      */

@@ -26,6 +26,8 @@ package soc.util;
  */
 public class CutoffExceededException extends Exception
 {
+    private static final long serialVersionUID = 8240071180658912137L;
+
     /**
      * Creates a new CutoffExceededException object.
      */

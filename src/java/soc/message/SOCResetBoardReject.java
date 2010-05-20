@@ -32,6 +32,8 @@ package soc.message;
  */
 public class SOCResetBoardReject extends SOCMessageTemplate0
 {
+    private static final long serialVersionUID = -7937303264050050122L;
+
     /**
      * Create a SOCResetBoardReject message.
      *

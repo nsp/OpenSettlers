@@ -7,7 +7,6 @@ package smartsettlers.player;
 
 import java.util.Random;
 import smartsettlers.boardlayout.*;
-import smartsettlers.util.*;
 
 /**
  *

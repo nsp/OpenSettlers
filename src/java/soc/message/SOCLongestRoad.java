@@ -33,6 +33,8 @@ import java.util.StringTokenizer;
  */
 public class SOCLongestRoad extends SOCMessage
 {
+    private static final long serialVersionUID = -4847932430985074751L;
+
     /**
      * Name of game
      */

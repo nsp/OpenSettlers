@@ -33,6 +33,8 @@ import java.util.StringTokenizer;
  */
 public class SOCResetBoardVoteRequest extends SOCMessageTemplate1i
 {
+    private static final long serialVersionUID = 949838338517433505L;
+
     /**
      * Create a SOCResetBoardVoteRequest message.
      *

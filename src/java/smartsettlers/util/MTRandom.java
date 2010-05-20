@@ -27,8 +27,6 @@
 
 package smartsettlers.util;
 
-import java.util.Random;
-
 /**
  * @version 1.0
  * @author David Beaumont, Copyright 2005

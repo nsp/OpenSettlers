@@ -32,6 +32,7 @@ import soc.game.SOCDevCardConstants;  // for javadoc's use
  */
 public class SOCDevCard extends SOCMessage
 {
+    private static final long serialVersionUID = 7427818316528220348L;
     /** dev card action DRAW: Add as new to player's hand */
     public static final int DRAW = 0;
     /** dev card action PLAY: remove as old from player's hand */

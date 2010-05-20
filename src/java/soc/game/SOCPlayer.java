@@ -53,6 +53,8 @@ import java.util.Vector;
  */
 public class SOCPlayer implements SOCDevCardConstants, Serializable, Cloneable
 {
+    private static final long serialVersionUID = -2394953476862097264L;
+
     /**
      * the name of the player
      */

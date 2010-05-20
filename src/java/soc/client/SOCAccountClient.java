@@ -69,6 +69,7 @@ import java.net.Socket;
  */
 public class SOCAccountClient extends Applet implements Runnable, ActionListener
 {
+    private static final long serialVersionUID = -417008229644381651L;
     private static final String MAIN_PANEL = "main";
     private static final String MESSAGE_PANEL = "message";
 

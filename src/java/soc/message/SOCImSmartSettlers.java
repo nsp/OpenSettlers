@@ -30,6 +30,9 @@ import soc.robot.SSRobotClient;
  */
 public class SOCImSmartSettlers extends SOCMessage
 {
+
+    private static final long serialVersionUID = 3229200228137769241L;
+
     /**
      * Name of built-in robot brain class.
      * This robot is the original robot, distributed with the JSettlers server,

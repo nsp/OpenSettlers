@@ -33,6 +33,8 @@ import java.util.StringTokenizer;
  */
 public class SOCBankTrade extends SOCMessage
 {
+    private static final long serialVersionUID = -8425078056720461761L;
+
     /**
      * Name of game
      */

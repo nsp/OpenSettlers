@@ -31,6 +31,8 @@ import java.util.StringTokenizer;
  */
 public class SOCMonopolyPick extends SOCMessage
 {
+    private static final long serialVersionUID = 122781229525670750L;
+
     /**
      * Name of game
      */

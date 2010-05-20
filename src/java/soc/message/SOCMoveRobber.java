@@ -30,6 +30,8 @@ import java.util.StringTokenizer;
  */
 public class SOCMoveRobber extends SOCMessage
 {
+    private static final long serialVersionUID = 2080120164524009231L;
+
     /**
      * the name of the game
      */

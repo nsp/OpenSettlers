@@ -30,6 +30,8 @@ import java.util.StringTokenizer;
  */
 public class SOCSetSeatLock extends SOCMessage
 {
+    private static final long serialVersionUID = 1936080252976722251L;
+
     /**
      * Name of game
      */

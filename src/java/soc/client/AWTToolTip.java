@@ -40,7 +40,11 @@ public class AWTToolTip
   implements MouseListener, MouseMotionListener, ComponentListener
 {
 
-  /** The tip is hidden after the mouse has been moved
+  /**
+     * 
+     */
+    private static final long serialVersionUID = 7280182652571335453L;
+/** The tip is hidden after the mouse has been moved
    *  closeAfterMoveX poinntes horizontally or closeAfterMoveY
    *  points vertically away from the point where it has been clicked
    *  (or it has left its parent component's area)

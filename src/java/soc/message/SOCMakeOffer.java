@@ -35,6 +35,8 @@ import java.util.StringTokenizer;
  */
 public class SOCMakeOffer extends SOCMessage
 {
+    private static final long serialVersionUID = -7977524162698583765L;
+
     /**
      * Name of game
      */

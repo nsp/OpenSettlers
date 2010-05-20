@@ -31,6 +31,8 @@ import java.util.StringTokenizer;
  */
 public class SOCLastSettlement extends SOCMessage
 {
+    private static final long serialVersionUID = -2478158179642284823L;
+
     /**
      * the name of the game
      */

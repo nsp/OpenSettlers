@@ -43,6 +43,8 @@ import soc.game.SOCGame;
  */
 public class SOCGames extends SOCMessage
 {
+    private static final long serialVersionUID = 5863547808894044506L;
+
     /**
      * If this is the first character of a game name,
      * the client is too limited to be able to play that game,

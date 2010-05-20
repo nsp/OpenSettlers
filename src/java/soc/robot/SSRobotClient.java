@@ -20,70 +20,24 @@
  **/
 package soc.robot;
 
-import soc.client.SOCDisplaylessPlayerClient;
-
-import soc.disableDebug.D;
-
 import soc.game.SOCBoard;
 import soc.game.SOCGame;
 import soc.game.SOCPlayer;
 
-import soc.message.SOCAcceptOffer;
-import soc.message.SOCAdminPing;
-import soc.message.SOCAdminReset;
 import soc.message.SOCBoardLayout;
-import soc.message.SOCChangeFace;
-import soc.message.SOCChoosePlayerRequest;
-import soc.message.SOCClearOffer;
-import soc.message.SOCClearTradeMsg;
 import soc.message.SOCDeleteGame;
-import soc.message.SOCDevCard;
-import soc.message.SOCDevCardCount;
 import soc.message.SOCDiceResult;
-import soc.message.SOCDiscardRequest;
-import soc.message.SOCFirstPlayer;
-import soc.message.SOCGameMembers;
 import soc.message.SOCGameState;
-import soc.message.SOCGameTextMsg;
-import soc.message.SOCImARobot;
-import soc.message.SOCJoinGame;
 import soc.message.SOCJoinGameAuth;
-import soc.message.SOCJoinGameRequest;
-import soc.message.SOCLargestArmy;
-import soc.message.SOCLeaveAll;
-import soc.message.SOCLeaveGame;
-import soc.message.SOCLongestRoad;
-import soc.message.SOCMakeOffer;
 import soc.message.SOCMessage;
 import soc.message.SOCMoveRobber;
-import soc.message.SOCPlayerElement;
-import soc.message.SOCPotentialSettlements;
 import soc.message.SOCPutPiece;
-import soc.message.SOCRejectOffer;
-import soc.message.SOCResourceCount;
-import soc.message.SOCRobotDismiss;
-import soc.message.SOCServerPing;
-import soc.message.SOCSetPlayedDevCard;
-import soc.message.SOCSetTurn;
-import soc.message.SOCSitDown;
 import soc.message.SOCStartGame;
-import soc.message.SOCTurn;
-import soc.message.SOCUpdateRobotParams;
-
 import soc.util.CappedQueue;
-import soc.util.CutoffExceededException;
-import soc.util.SOCRobotParameters;
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
-import java.net.Socket;
-
 import java.util.Enumeration;
-import java.util.Hashtable;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;

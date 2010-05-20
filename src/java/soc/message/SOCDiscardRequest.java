@@ -30,6 +30,8 @@ import java.util.StringTokenizer;
  */
 public class SOCDiscardRequest extends SOCMessage
 {
+    private static final long serialVersionUID = -8323473015877654160L;
+
     /**
      * Name of game
      */

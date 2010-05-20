@@ -5,8 +5,6 @@
 
 package soc.message;
 
-import java.util.*;
-
 public class RobberMessage {
 	
 	String request;

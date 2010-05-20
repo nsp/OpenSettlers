@@ -32,6 +32,7 @@ import java.util.StringTokenizer;
  */
 public class SOCPlayerElement extends SOCMessage
 {
+    private static final long serialVersionUID = 4355739399810274987L;
     /**
      * player element types.  CLAY has same value
      * as {@link soc.game.SOCResourceConstants#CLAY};

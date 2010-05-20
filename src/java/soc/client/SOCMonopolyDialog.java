@@ -31,6 +31,7 @@ import java.awt.event.ActionListener;
 
 class SOCMonopolyDialog extends Dialog implements ActionListener
 {
+    private static final long serialVersionUID = -2797738736094818827L;
     Button[] rsrcBut;
     Label msg;
     SOCPlayerInterface pi;

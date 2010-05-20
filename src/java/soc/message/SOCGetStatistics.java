@@ -31,6 +31,7 @@ import java.util.StringTokenizer;
 public class SOCGetStatistics extends SOCMessage
 {
     
+    private static final long serialVersionUID = 5058208009759951809L;
     /**
      * Statistics type
      **/

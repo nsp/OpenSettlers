@@ -14,6 +14,8 @@ import smartsettlers.boardlayout.BoardLayout;
  */
 public class DebugFrame extends javax.swing.JFrame {
 
+
+    private static final long serialVersionUID = 2158370287081328081L;
     public BoardLayout boardlayout;
     
     /** Creates new form DebugFrame */

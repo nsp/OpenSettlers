@@ -29,6 +29,8 @@ package soc.client;
  */
 class SOCPracticeAskDialog extends AskDialog
 {
+    private static final long serialVersionUID = -4203900457631872158L;
+
     /**
      * Creates a new SOCPracticeAskDialog.
      *
@@ -47,7 +49,7 @@ class SOCPracticeAskDialog extends AskDialog
      */
     public void button1Chosen()
     {
-        pi.show();    
+        pi.setVisible(true);    
     }
 
     /**

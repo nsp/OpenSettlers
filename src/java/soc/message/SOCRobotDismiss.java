@@ -29,6 +29,7 @@ package soc.message;
  */
 public class SOCRobotDismiss extends SOCMessage
 {
+    private static final long serialVersionUID = 6516148095095542869L;
     /**
      * Name of game
      */

@@ -29,6 +29,8 @@ import java.util.Vector;
  */
 public class SOCSettlement extends SOCPlayingPiece
 {
+    private static final long serialVersionUID = -5918536742496971952L;
+
     /**
      * Make a new settlement
      *

@@ -38,6 +38,8 @@ import java.util.StringTokenizer;
  **/
 public class SOCResetStatistics extends SOCMessage
 {
+    private static final long serialVersionUID = 3613803368824899436L;
+
     /**
      * Nickname
      */

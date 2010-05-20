@@ -33,8 +33,8 @@ public class Agent {
 	
 	public Agent(SOCPlayer player, SOCGame game) {
 		
-		this.game = game;
-		this.player = player;
+		Agent.game = game;
+		Agent.player = player;
 		
 		messages = new Vector();
 	
@@ -49,24 +49,24 @@ public class Agent {
 	
 	public void setPlayer(SOCPlayer player) {
 		
-		this.player = player;
+		Agent.player = player;
 	}
 	
 	public void setGame(SOCGame game) {
 		
-		this.game = game;
+		Agent.game = game;
 		
 	}
 	
 	public SOCPlayer getPlayer() {
 		
-		return this.player;
+		return Agent.player;
 		
 	}
 	
 	public SOCGame getGame() {
 		
-		return this.game;
+		return Agent.game;
 		
 	}
 	

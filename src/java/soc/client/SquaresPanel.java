@@ -40,6 +40,8 @@ import java.awt.event.MouseListener;
  */
 public class SquaresPanel extends Panel implements MouseListener, ColorSquareListener
 {
+    private static final long serialVersionUID = -1955777882599785524L;
+
     /**
      * Height of this panel
      * @since 1.1.08

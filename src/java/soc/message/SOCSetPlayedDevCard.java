@@ -31,6 +31,8 @@ import java.util.StringTokenizer;
  */
 public class SOCSetPlayedDevCard extends SOCMessage
 {
+    private static final long serialVersionUID = 2035230986016889526L;
+
     /**
      * Name of game
      */

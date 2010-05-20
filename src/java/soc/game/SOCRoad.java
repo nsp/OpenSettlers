@@ -27,6 +27,8 @@ package soc.game;
  */
 public class SOCRoad extends SOCPlayingPiece
 {
+    private static final long serialVersionUID = -4125865620963839043L;
+
     /**
      * Make a new road
      *
@@ -47,7 +49,7 @@ public class SOCRoad extends SOCPlayingPiece
      */
     public int[] getAdjacentNodes()
     {
-        return board.getAdjacentNodesToEdge_arr(coord);
+        return SOCBoard.getAdjacentNodesToEdge_arr(coord);
     }
 
 }

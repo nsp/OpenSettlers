@@ -72,6 +72,8 @@ import soc.game.SOCPlayer;
  */
 public class SOCPlayerInterface extends Frame implements ActionListener, MouseListener
 {
+    private static final long serialVersionUID = -8902362797292643034L;
+
     /**
      * System property os.name; For use by {@link #isPlatformWindows}.
      * @since 1.1.08
@@ -1538,7 +1540,7 @@ public class SOCPlayerInterface extends Frame implements ActionListener, MouseLi
         for (int i = 0; i < hands.length; ++i)
         {
             hands[i].removePlayer();  // will cancel roll countdown timer, right-click menus, etc
-            hands[i].disable();
+            hands[i].setEnabled(false);
             hands[i].destroy();
         }
         clientHand = null;
@@ -2016,6 +2018,11 @@ public class SOCPlayerInterface extends Frame implements ActionListener, MouseLi
      */
     protected static class ResetBoardVoteDialog extends AskDialog implements Runnable
     {
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 7628903906200446377L;
+
         /** Runs in own thread, to not tie up client's message-treater thread. */
         private Thread rdt;
 
@@ -2103,7 +2110,7 @@ public class SOCPlayerInterface extends Frame implements ActionListener, MouseLi
         {
             try
             {
-                show();
+                setVisible(true);
             }
             catch (ThreadDeath e) {}
         }

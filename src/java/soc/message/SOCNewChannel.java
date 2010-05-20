@@ -28,6 +28,7 @@ package soc.message;
  */
 public class SOCNewChannel extends SOCMessage
 {
+    private static final long serialVersionUID = -2445009994491461146L;
     /**
      * Name of the new channel.
      */

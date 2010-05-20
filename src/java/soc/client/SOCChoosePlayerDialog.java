@@ -40,6 +40,8 @@ import java.awt.event.ActionListener;
  */
 class SOCChoosePlayerDialog extends Dialog implements ActionListener
 {
+    private static final long serialVersionUID = -2176132381402126211L;
+
     /** Player names on each button */
     Button[] buttons;
 

@@ -20,6 +20,39 @@
  **/
 package soc.client;
 
+import java.applet.Applet;
+import java.awt.BorderLayout;
+import java.awt.Button;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.Frame;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Label;
+import java.awt.Panel;
+import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Vector;
+
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
+
 import soc.disableDebug.D;
 import soc.message.SOCChannels;
 import soc.message.SOCGetStatistics;
@@ -28,53 +61,7 @@ import soc.message.SOCRejectConnection;
 import soc.message.SOCResetStatistics;
 import soc.message.SOCShowStatistics;
 import soc.message.SOCStatusMessage;
-import soc.server.database.SOCDBHelper;
 import soc.util.SOCPlayerInfo;
-import soc.util.Version;
-
-import java.applet.Applet;
-import java.applet.AppletContext;
-
-import java.awt.BorderLayout;
-import java.awt.Button;
-import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Frame;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.Label;
-import java.awt.Panel;
-import java.awt.ScrollPane;
-import java.awt.TextField;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.Socket;
-import java.sql.SQLException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Vector;
-
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 
 
 /**
@@ -87,6 +74,7 @@ import javax.swing.table.TableColumnModel;
  **/
 public class SOCStatisticsClient extends Applet implements Runnable, ActionListener
 {
+    private static final long serialVersionUID = 3335969676221506087L;
     private static final String MAIN_PANEL = "main";
     private static final String MESSAGE_PANEL = "message";
 
@@ -114,6 +102,10 @@ public class SOCStatisticsClient extends Applet implements Runnable, ActionListe
     
     public static class StatisticsTableModel extends AbstractTableModel
     {
+        /**
+         * 
+         */
+        private static final long serialVersionUID = -2774438552967545151L;
         public static final String[] columnNames = {"Name",
                                                     "Rank",
                                                     "Wins",

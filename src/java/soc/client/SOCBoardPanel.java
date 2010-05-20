@@ -74,6 +74,8 @@ import java.util.Timer;
  */
 public class SOCBoardPanel extends Canvas implements MouseListener, MouseMotionListener
 {
+    private static final long serialVersionUID = 2668610842427948581L;
+
     private static String IMAGEDIR = "/soc/client/images";
 
     /**
@@ -4597,7 +4599,12 @@ public class SOCBoardPanel extends Canvas implements MouseListener, MouseMotionL
     private class BoardPopupMenu extends PopupMenu
         implements java.awt.event.ActionListener
     {
-      /** our parent boardpanel */
+      /**
+         * 
+         */
+        private static final long serialVersionUID = -9024341673407972074L;
+
+    /** our parent boardpanel */
       SOCBoardPanel bp;
 
       MenuItem buildRoadItem, buildSettleItem, upgradeCityItem;
@@ -4957,6 +4964,10 @@ public class SOCBoardPanel extends Canvas implements MouseListener, MouseMotionL
      */
     /* package-access */ static class ResourceTradeAllMenu extends SOCHandPanel.ResourceTradePopupMenu
     {
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 6528587762465751998L;
         private SOCBoardPanel bpanel;
         private SOCHandPanel.ResourceTradeTypeMenu[] tradeFromTypes;        
 

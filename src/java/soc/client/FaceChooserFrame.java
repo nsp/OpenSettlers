@@ -59,6 +59,8 @@ import soc.game.SOCGame;
  */
 public class FaceChooserFrame extends Frame implements ActionListener, WindowListener, KeyListener
 {
+    private static final long serialVersionUID = -7158740122357339452L;
+
     /** Face button that launched us. Passed to constructor, not null. */
     protected SOCFaceButton fb;
 
@@ -387,6 +389,11 @@ public class FaceChooserFrame extends Frame implements ActionListener, WindowLis
     protected static class FaceChooserList extends Container
         implements AdjustmentListener
     {
+        /**
+         * 
+         */
+        private static final long serialVersionUID = -5095230249334100413L;
+
         /**
          *  How many faces per row?  Default 7.
          *  Do not change after creating an instance.
@@ -920,6 +927,11 @@ public class FaceChooserFrame extends Frame implements ActionListener, WindowLis
          */
         private class FaceChooserRow extends Container
         {
+            /**
+             * 
+             */
+            private static final long serialVersionUID = -6132612695544230399L;
+
             private int startFaceId;
 
             /** Will not go past SOCFaceButton.NUM_FACES */

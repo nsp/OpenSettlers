@@ -31,6 +31,8 @@ import java.util.StringTokenizer;
  */
 public class SOCDiceResult extends SOCMessageTemplate1i
 {
+    private static final long serialVersionUID = -3001157414043884526L;
+
     /**
      * Create a DiceResult message.
      *

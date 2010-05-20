@@ -31,6 +31,8 @@ import java.util.StringTokenizer;
  */
 public class SOCRollDicePrompt extends SOCMessage
 {
+    private static final long serialVersionUID = -7609803165419825001L;
+
     /**
      * Name of game
      */

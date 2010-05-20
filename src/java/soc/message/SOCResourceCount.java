@@ -30,6 +30,8 @@ import java.util.StringTokenizer;
  */
 public class SOCResourceCount extends SOCMessage
 {
+    private static final long serialVersionUID = 384689414947089103L;
+
     /**
      * Name of game
      */

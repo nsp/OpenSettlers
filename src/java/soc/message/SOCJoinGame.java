@@ -37,6 +37,8 @@ import java.util.StringTokenizer;
  */
 public class SOCJoinGame extends SOCMessageTemplateJoinGame
 {
+    private static final long serialVersionUID = -1237668510117057983L;
+
     /**
      * Create a Join message.
      *

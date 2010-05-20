@@ -29,6 +29,7 @@ import java.io.Serializable;
  */
 public class SOCDevCardSet implements Serializable, Cloneable
 {
+    private static final long serialVersionUID = 7178006197603834224L;
     /**
      * age constants. OLD == 0, NEW == 1 (guaranteed for use in loops).
      */

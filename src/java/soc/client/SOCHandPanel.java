@@ -62,6 +62,8 @@ import java.util.TimerTask;
  */
 public class SOCHandPanel extends Panel implements ActionListener
 {
+    private static final long serialVersionUID = 4543299675442604744L;
+
     /** Minimum desired width, in pixels */
     public static final int WIDTH_MIN = 218;
 
@@ -1422,7 +1424,7 @@ public class SOCHandPanel extends Panel implements ActionListener
                 // or "Restart" during game-start (label DONE_RESTART),
                 // or "Done" during 6-player Special Building Phase.
             playCardBut.setEnabled(normalTurnStarting && (cardList.getItemCount() > 0));
-            bankBut.disable();  // enabled by updateAtPlay1()
+            bankBut.setEnabled(false);  // enabled by updateAtPlay1()
         }
 
         // Although this method is called at the start of our turn,
@@ -1446,7 +1448,7 @@ public class SOCHandPanel extends Panel implements ActionListener
        if (! playerIsClient)
            return;
 
-       bankBut.enable();
+       bankBut.setEnabled(true);
     }
 
     /** Enable,disable the proper buttons
@@ -1461,16 +1463,16 @@ public class SOCHandPanel extends Panel implements ActionListener
         }
         else
         {
-            rollBut.disable();
-            doneBut.disable();
-            playCardBut.disable();
-            bankBut.disable();  // enabled by updateAtPlay1()
+            rollBut.setEnabled(false);
+            doneBut.setEnabled(false);
+            playCardBut.setEnabled(false);
+            bankBut.setEnabled(false);  // enabled by updateAtPlay1()
         }
 
-        clearOfferBut.disable();  // No trade offer has been set yet
+        clearOfferBut.setEnabled(false);  // No trade offer has been set yet
         if (! playerTradingDisabled)
         {
-            offerBut.disable();
+            offerBut.setEnabled(false);
             if (offerButTip != null)
                 offerButTip.setTip(OFFERBUTTIP_DIS);
         }
@@ -1921,10 +1923,10 @@ public class SOCHandPanel extends Panel implements ActionListener
                 }
             }
 
-            clearOfferBut.disable();
+            clearOfferBut.setEnabled(false);
             if (! playerTradingDisabled)
             {
-                offerBut.disable();
+                offerBut.setEnabled(false);
                 offerButTip.setTip(OFFERBUTTIP_DIS);
             }
         }
@@ -2676,6 +2678,10 @@ public class SOCHandPanel extends Panel implements ActionListener
      */
     protected static class ResourceTradeMenuItem extends MenuItem
     {
+        /**
+         * 
+         */
+        private static final long serialVersionUID = -3065638697548397077L;
         private int tradeFrom, tradeTo;
         private int tradeNum;
         private boolean shortTxt;
@@ -2781,6 +2787,10 @@ public class SOCHandPanel extends Panel implements ActionListener
      */
     /* package-access */ static abstract class ResourceTradePopupMenu extends PopupMenu
     {
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1898183264139348196L;
         protected SOCHandPanel hpan;
 
         protected ResourceTradePopupMenu(SOCHandPanel hp, String title)
@@ -2820,6 +2830,10 @@ public class SOCHandPanel extends Panel implements ActionListener
     /* package-access */ static class ResourceTradeTypeMenu extends ResourceTradePopupMenu
         implements java.awt.event.MouseListener, java.awt.event.ActionListener
     {
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 8950314936478100188L;
         private ColorSquare resSq;
         private int resTypeFrom;
         private int costFrom;

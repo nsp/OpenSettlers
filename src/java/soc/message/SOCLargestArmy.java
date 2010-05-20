@@ -33,6 +33,8 @@ import java.util.StringTokenizer;
  */
 public class SOCLargestArmy extends SOCMessage
 {
+    private static final long serialVersionUID = -5203278114080370684L;
+
     /**
      * Name of game
      */

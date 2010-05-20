@@ -37,6 +37,8 @@ import soc.game.SOCPlayer;
  */
 public class SOCPlayerStats extends SOCMessageTemplateMi
 {
+    private static final long serialVersionUID = 2183344132506393454L;
+
     /** Lowest-numbered stats type (1) */
     public static final int STYPE_MIN = 1;
 

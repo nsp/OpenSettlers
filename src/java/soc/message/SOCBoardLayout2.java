@@ -48,6 +48,8 @@ import java.util.StringTokenizer;
  */
 public class SOCBoardLayout2 extends SOCMessage
 {
+    private static final long serialVersionUID = -4424709350281185455L;
+
     /**
      * Minimum version (1.1.08) of client/server which recognize
      * and send VERSION_FOR_BOARDLAYOUT2.

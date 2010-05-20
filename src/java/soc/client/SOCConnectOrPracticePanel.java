@@ -51,6 +51,8 @@ import soc.util.Version;
 public class SOCConnectOrPracticePanel extends Panel
     implements ActionListener, KeyListener
 {
+    private static final long serialVersionUID = 778766065257211528L;
+
     private SOCPlayerClient cl;
 
     /** "Practice" */

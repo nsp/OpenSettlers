@@ -4,11 +4,8 @@
 
 package soc.robot;
 
-import org.apache.log4j.*;
-
 import soc.message.Message;
 import soc.message.RobberMessage;
-import soc.robot.test.MyComparator;
 import soc.util.ApplicationConstants;
 import soc.util.Loggers;
 import soc.util.HashComparator;

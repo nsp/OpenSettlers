@@ -63,5 +63,7 @@ package soc.message;
  */
 public abstract class SOCMessageMulti extends SOCMessage
 {
+
+    private static final long serialVersionUID = -7410961180400421843L;
     // @see SOCMessageTemplateMi, SOCMessageTemplateMs
 }

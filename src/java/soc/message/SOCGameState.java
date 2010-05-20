@@ -32,6 +32,8 @@ import soc.game.SOCGame;  // for javadoc's use
  */
 public class SOCGameState extends SOCMessage
 {
+    private static final long serialVersionUID = -4222687491997897391L;
+
     /**
      * Name of game
      */

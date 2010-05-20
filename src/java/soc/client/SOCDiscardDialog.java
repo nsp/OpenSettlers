@@ -45,6 +45,7 @@ import java.awt.event.MouseListener;
  */
 class SOCDiscardDialog extends Dialog implements ActionListener, MouseListener
 {
+    private static final long serialVersionUID = -2780718441771659352L;
     Button discardBut;
     ColorSquare[] keep;
     ColorSquare[] disc;
@@ -102,7 +103,7 @@ class SOCDiscardDialog extends Dialog implements ActionListener, MouseListener
         add(discardBut);
         discardBut.addActionListener(this);
         if (numDiscards > 0)
-            discardBut.disable();  // Must choose that many first
+            discardBut.setEnabled(false);  // Must choose that many first
 
         keep = new ColorSquare[5];
         disc = new ColorSquare[5];
@@ -311,12 +312,12 @@ class SOCDiscardDialog extends Dialog implements ActionListener, MouseListener
                 --numChosen;
                 if (numChosen == (numDiscards-1))
                 {
-                    discardBut.disable();  // Count un-reached (too few)
+                    discardBut.setEnabled(false);  // Count un-reached (too few)
                     wantsRepaint = true;
                 }
                 else if (numChosen == numDiscards)
                 {
-                    discardBut.enable();   // Exact count reached
+                    discardBut.setEnabled(true);   // Exact count reached
                     wantsRepaint = true;
                 }
                 break;
@@ -328,12 +329,12 @@ class SOCDiscardDialog extends Dialog implements ActionListener, MouseListener
                 ++numChosen;
                 if (numChosen == numDiscards)
                 {
-                    discardBut.enable();  // Exact count reached
+                    discardBut.setEnabled(true);  // Exact count reached
                     wantsRepaint = true;
                 }
                 else if (numChosen == (numDiscards+1))
                 {
-                    discardBut.disable();  // Count un-reached (too many)
+                    discardBut.setEnabled(false);  // Count un-reached (too many)
                     wantsRepaint = true;
                 }
                 break;

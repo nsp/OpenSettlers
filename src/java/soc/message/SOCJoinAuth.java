@@ -31,6 +31,8 @@ import java.util.StringTokenizer;
  */
 public class SOCJoinAuth extends SOCMessage
 {
+    private static final long serialVersionUID = 3537755068664492015L;
+
     /**
      * Nickname of the joining member
      */

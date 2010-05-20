@@ -39,6 +39,7 @@ package soc.message;
  */
 public class SOCServerPing extends SOCMessage
 {
+    private static final long serialVersionUID = -2315306380757156011L;
     /**
      * the ammount of time to sleep waiting for the next ping
      */

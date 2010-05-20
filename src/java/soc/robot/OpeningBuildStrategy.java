@@ -46,10 +46,6 @@ import soc.util.CutoffExceededException;
  */
 public class OpeningBuildStrategy {
 
-	/** debug logging */
-    // private transient Logger log = Logger.getLogger(this.getClass().getName());
-    private transient D log = new D();
-    
     /**
      * used in planning where to put our first and second settlements
      */
@@ -70,7 +66,7 @@ public class OpeningBuildStrategy {
      */
     public int planInitialSettlements(SOCGame game, SOCPlayer ourPlayerData)
     {
-        log.debug("--- planInitialSettlements");
+        D.debug("--- planInitialSettlements");
 
         int[] rolls;
         Enumeration hexes;  // Integers
@@ -100,8 +96,8 @@ public class OpeningBuildStrategy {
                 //
                 // this is just for testing purposes
                 //
-                log.debug("FIRST NODE -----------");
-                log.debug("firstNode = " + board.nodeCoordToString(firstNode));
+                D.debug("FIRST NODE -----------");
+                D.debug("firstNode = " + board.nodeCoordToString(firstNode));
                 
                 StringBuffer sb = new StringBuffer();
                 sb.append("numbers:[");
@@ -120,7 +116,7 @@ public class OpeningBuildStrategy {
                 }
 
                 sb.append("]");
-                log.debug(sb.toString());
+                D.debug(sb.toString());
                 sb = new StringBuffer();
                 sb.append("ports: ");
 
@@ -139,8 +135,8 @@ public class OpeningBuildStrategy {
                     sb.append(ports[portType] + "  ");
                 }
 
-                log.debug(sb.toString());
-                log.debug("probTotal = " + probTotal);
+                D.debug(sb.toString());
+                D.debug("probTotal = " + probTotal);
                 estimate.recalculateEstimates(playerNumbers);
                 speed = 0;
                 allTheWay = false;
@@ -160,8 +156,8 @@ public class OpeningBuildStrategy {
                 sb.append(" stlmt: " + rolls[SOCBuildingSpeedEstimate.SETTLEMENT]);
                 sb.append(" city: " + rolls[SOCBuildingSpeedEstimate.CITY]);
                 sb.append(" card: " + rolls[SOCBuildingSpeedEstimate.CARD]);
-                log.debug(sb.toString());
-                log.debug("speed = " + speed);
+                D.debug(sb.toString());
+                D.debug("speed = " + speed);
 
                 //
                 // end test
@@ -171,8 +167,8 @@ public class OpeningBuildStrategy {
                 {
                     if ((ourPlayerData.isPotentialSettlement(secondNode)) && (! board.getAdjacentNodesToNode(secondNode).contains(firstNodeInt)))
                     {
-                        log.debug("firstNode = " + board.nodeCoordToString(firstNode));
-                        log.debug("secondNode = " + board.nodeCoordToString(secondNode));
+                        D.debug("firstNode = " + board.nodeCoordToString(firstNode));
+                        D.debug("secondNode = " + board.nodeCoordToString(secondNode));
 
                         Integer secondNodeInt = new Integer(secondNode);
 
@@ -209,7 +205,7 @@ public class OpeningBuildStrategy {
                         }
 
                         sb.append("]");
-                        log.debug(sb.toString());
+                        D.debug(sb.toString());
 
                         /**
                          * see if the settlements are on any ports
@@ -232,8 +228,8 @@ public class OpeningBuildStrategy {
                             sb.append(ports[portType] + "  ");
                         }
 
-                        log.debug(sb.toString());
-                        log.debug("probTotal = " + probTotal);
+                        D.debug(sb.toString());
+                        D.debug("probTotal = " + probTotal);
 
                         /**
                          * estimate the building speed for this pair
@@ -273,9 +269,9 @@ public class OpeningBuildStrategy {
                         sb.append(" stlmt: " + rolls[SOCBuildingSpeedEstimate.SETTLEMENT]);
                         sb.append(" city: " + rolls[SOCBuildingSpeedEstimate.CITY]);
                         sb.append(" card: " + rolls[SOCBuildingSpeedEstimate.CARD]);
-                        log.debug(sb.toString());
-                        log.debug("allTheWay = " + allTheWay);
-                        log.debug("speed = " + speed);
+                        D.debug(sb.toString());
+                        D.debug("allTheWay = " + allTheWay);
+                        D.debug("speed = " + speed);
 
                         /**
                          * keep the settlements with the best speed
@@ -286,22 +282,22 @@ public class OpeningBuildStrategy {
                             secondSettlement = secondNode;
                             bestSpeed = speed;
                             bestProbTotal = probTotal;
-                            log.debug("bestSpeed = " + bestSpeed);
-                            log.debug("bestProbTotal = " + bestProbTotal);
+                            D.debug("bestSpeed = " + bestSpeed);
+                            D.debug("bestProbTotal = " + bestProbTotal);
                         }
                         else if ((speed == bestSpeed) && allTheWay)
                         {
                             if (probTotal > bestProbTotal)
                             {
-                                log.debug("Equal speed, better prob");
+                                D.debug("Equal speed, better prob");
                                 firstSettlement = firstNode;
                                 secondSettlement = secondNode;
                                 bestSpeed = speed;
                                 bestProbTotal = probTotal;
-                                log.debug("firstSettlement = " + Integer.toHexString(firstSettlement));
-                                log.debug("secondSettlement = " + Integer.toHexString(secondSettlement));
-                                log.debug("bestSpeed = " + bestSpeed);
-                                log.debug("bestProbTotal = " + bestProbTotal);
+                                D.debug("firstSettlement = " + Integer.toHexString(firstSettlement));
+                                D.debug("secondSettlement = " + Integer.toHexString(secondSettlement));
+                                D.debug("bestSpeed = " + bestSpeed);
+                                D.debug("bestProbTotal = " + bestProbTotal);
                             }
                         }
                     }
@@ -452,7 +448,7 @@ public class OpeningBuildStrategy {
             secondSettlement = tmp;
         }
 
-        log.debug(board.nodeCoordToString(firstSettlement) + ":" + firstSpeed + ", " + board.nodeCoordToString(secondSettlement) + ":" + secondSpeed);
+        D.debug(board.nodeCoordToString(firstSettlement) + ":" + firstSpeed + ", " + board.nodeCoordToString(secondSettlement) + ":" + secondSpeed);
         return firstSettlement;
     }
 
@@ -461,7 +457,7 @@ public class OpeningBuildStrategy {
      */
     public int planSecondSettlement(SOCGame game, SOCPlayer ourPlayerData)
     {
-        log.debug("--- planSecondSettlement");
+        D.debug("--- planSecondSettlement");
 
         int bestSpeed = 4 * SOCBuildingSpeedEstimate.DEFAULT_ROLL_LIMIT;
         SOCBoard board = game.getBoard();
@@ -536,8 +532,8 @@ public class OpeningBuildStrategy {
                     sb.append(ports[portType] + "  ");
                 }
 
-                log.debug(sb.toString());
-                log.debug("probTotal = " + probTotal);
+                D.debug(sb.toString());
+                D.debug("probTotal = " + probTotal);
 
                 /**
                  * estimate the building speed for this pair
@@ -570,7 +566,7 @@ public class OpeningBuildStrategy {
                     speed = bestSpeed;
                 }
 
-                log.debug(Integer.toHexString(firstNode) + ", " + Integer.toHexString(secondNode) + ":" + speed);
+                D.debug(Integer.toHexString(firstNode) + ", " + Integer.toHexString(secondNode) + ":" + speed);
 
                 /**
                  * keep the settlements with the best speed
@@ -581,8 +577,8 @@ public class OpeningBuildStrategy {
                     secondSettlement = secondNode;
                     bestSpeed = speed;
                     bestProbTotal = probTotal;
-                    log.debug("firstSettlement = " + Integer.toHexString(firstSettlement));
-                    log.debug("secondSettlement = " + Integer.toHexString(secondSettlement));
+                    D.debug("firstSettlement = " + Integer.toHexString(firstSettlement));
+                    D.debug("secondSettlement = " + Integer.toHexString(secondSettlement));
 
                     int[] rolls = estimate.getEstimatesFromNothingFast(ports);
                     sb = new StringBuffer();
@@ -590,8 +586,8 @@ public class OpeningBuildStrategy {
                     sb.append(" stlmt: " + rolls[SOCBuildingSpeedEstimate.SETTLEMENT]);
                     sb.append(" city: " + rolls[SOCBuildingSpeedEstimate.CITY]);
                     sb.append(" card: " + rolls[SOCBuildingSpeedEstimate.CARD]);
-                    log.debug(sb.toString());
-                    log.debug("bestSpeed = " + bestSpeed);
+                    D.debug(sb.toString());
+                    D.debug("bestSpeed = " + bestSpeed);
                 }
                 else if (speed == bestSpeed)
                 {
@@ -601,8 +597,8 @@ public class OpeningBuildStrategy {
                         secondSettlement = secondNode;
                         bestSpeed = speed;
                         bestProbTotal = probTotal;
-                        log.debug("firstSettlement = " + Integer.toHexString(firstSettlement));
-                        log.debug("secondSettlement = " + Integer.toHexString(secondSettlement));
+                        D.debug("firstSettlement = " + Integer.toHexString(firstSettlement));
+                        D.debug("secondSettlement = " + Integer.toHexString(secondSettlement));
 
                         int[] rolls = estimate.getEstimatesFromNothingFast(ports);
                         sb = new StringBuffer();
@@ -610,8 +606,8 @@ public class OpeningBuildStrategy {
                         sb.append(" stlmt: " + rolls[SOCBuildingSpeedEstimate.SETTLEMENT]);
                         sb.append(" city: " + rolls[SOCBuildingSpeedEstimate.CITY]);
                         sb.append(" card: " + rolls[SOCBuildingSpeedEstimate.CARD]);
-                        log.debug(sb.toString());
-                        log.debug("bestSpeed = " + bestSpeed);
+                        D.debug(sb.toString());
+                        D.debug("bestSpeed = " + bestSpeed);
                     }
                 }
             }
@@ -627,7 +623,7 @@ public class OpeningBuildStrategy {
         int settlementNode = ourPlayerData.getLastSettlementCoord();
         Hashtable twoAway = new Hashtable();  // <Integer,Integer>
 
-        log.debug("--- placeInitRoad");
+        D.debug("--- placeInitRoad");
 
         /**
          * look at all of the nodes that are 2 away from the
@@ -680,7 +676,7 @@ public class OpeningBuildStrategy {
 
         scoreNodesForSettlements(twoAway, 3, 5, 10, game, ourPlayerData);
 
-        log.debug("Init Road for " + client.getNickname());
+        D.debug("Init Road for " + client.getNickname());
 
         /**
          * create a dummy player to calculate possible places to build
@@ -696,7 +692,7 @@ public class OpeningBuildStrategy {
              * where someone else will build first.
              */
             int numberOfBuilds = numberOfEnemyBuilds(game);
-            log.debug("Other players will build " + numberOfBuilds + " settlements before I get to build again.");
+            D.debug("Other players will build " + numberOfBuilds + " settlements before I get to build again.");
 
             if (numberOfBuilds > 0)
             {
@@ -710,7 +706,7 @@ public class OpeningBuildStrategy {
                 {
                     if (ourPlayerData.isPotentialSettlement(i))
                     {
-                        log.debug("-- potential settlement at " + Integer.toHexString(i));
+                        D.debug("-- potential settlement at " + Integer.toHexString(i));
                         allNodes.put(new Integer(i), new Integer(0));
                     }
                 }
@@ -757,7 +753,7 @@ public class OpeningBuildStrategy {
                 {
                     if (ourPlayerData.isPotentialSettlement(j))
                     {
-                        log.debug("- potential settlement at " + Integer.toHexString(j));
+                        D.debug("- potential settlement at " + Integer.toHexString(j));
                         psList.addElement(new Integer(j));
                     }
                 }
@@ -773,7 +769,7 @@ public class OpeningBuildStrategy {
                     {
                         Integer nodeCoord = (Integer) nodesEnum.nextElement();
                         final int score = ((Integer) allNodes.get(nodeCoord)).intValue();
-                        log.debug("NODE = " + Integer.toHexString(nodeCoord.intValue()) + " SCORE = " + score);
+                        D.debug("NODE = " + Integer.toHexString(nodeCoord.intValue()) + " SCORE = " + score);
 
                         if (bestNodePair.getScore() < score)
                         {
@@ -806,7 +802,7 @@ public class OpeningBuildStrategy {
             Integer coord = (Integer) cenum.nextElement();
             final int score = ((Integer) twoAway.get(coord)).intValue();
 
-            log.debug("Considering " + Integer.toHexString(coord.intValue()) + " with a score of " + score);
+            D.debug("Considering " + Integer.toHexString(coord.intValue()) + " with a score of " + score);
 
             if (dummy.isPotentialSettlement(coord.intValue()))
             {
@@ -818,7 +814,7 @@ public class OpeningBuildStrategy {
             }
             else
             {
-                log.debug("Someone is bound to ruin that spot.");
+                D.debug("Someone is bound to ruin that spot.");
             }
         }
 

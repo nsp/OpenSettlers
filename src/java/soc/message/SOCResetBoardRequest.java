@@ -33,6 +33,8 @@ package soc.message;
  */
 public class SOCResetBoardRequest extends SOCMessageTemplate0
 {
+    private static final long serialVersionUID = 8096246266205437918L;
+
     /**
      * Create a ResetBoardRequest message.
      *

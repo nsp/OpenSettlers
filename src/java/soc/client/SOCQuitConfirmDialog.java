@@ -31,6 +31,8 @@ import soc.game.SOCGame;
  */
 class SOCQuitConfirmDialog extends AskDialog
 {
+    private static final long serialVersionUID = -7909114816498528932L;
+
     /**
      * Creates and shows a new SOCQuitConfirmDialog.
      * If the game is over, the "Quit" button is the default;
@@ -49,7 +51,7 @@ class SOCQuitConfirmDialog extends AskDialog
         boolean gaOver = (ga.getGameState() >= SOCGame.OVER);
 
         SOCQuitConfirmDialog qcd = new SOCQuitConfirmDialog(cli, gamePI, gaOver);
-        qcd.show();      
+        qcd.setVisible(true);      
     }
     
 

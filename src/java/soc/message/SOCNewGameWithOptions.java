@@ -49,6 +49,8 @@ import soc.game.SOCGameOption;
  */
 public class SOCNewGameWithOptions extends SOCMessageTemplate2s
 {
+    private static final long serialVersionUID = 3154889703429801860L;
+
     /**
      * Minimum version (1.1.07) of client/server which recognize
      * and send NEWGAMEWITHOPTIONS and other messages related

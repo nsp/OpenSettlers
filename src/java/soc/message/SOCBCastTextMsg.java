@@ -28,6 +28,7 @@ package soc.message;
  */
 public class SOCBCastTextMsg extends SOCMessage
 {
+    private static final long serialVersionUID = 2163438907267597245L;
     /**
      * Text message
      */

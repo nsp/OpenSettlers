@@ -26,7 +26,6 @@
  **/
 package soc.message;
 
-import soc.server.genericServer.Connection;
 import soc.util.SOCPlayerInfo;
 
 import java.util.Enumeration;
@@ -41,6 +40,8 @@ import java.util.Vector;
  **/
 public class SOCShowStatistics extends SOCMessage
 {
+    private static final long serialVersionUID = 5356459606391187792L;
+
     /**
      * Type of statistics
      **/

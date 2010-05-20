@@ -12,8 +12,6 @@ import soc.util.Loggers;
 
 import soc.message.*;
 
-import org.apache.log4j.*;
-
 public class MailAgent extends Agent implements Runnable {
 	
 	private Thread MailAgentThread;

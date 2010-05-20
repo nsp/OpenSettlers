@@ -28,6 +28,7 @@ package soc.message;
  */
 public class SOCRejectConnection extends SOCMessage
 {
+    private static final long serialVersionUID = -3461376041211350539L;
     /**
      * Text message
      */

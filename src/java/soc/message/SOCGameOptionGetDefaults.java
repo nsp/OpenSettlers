@@ -45,6 +45,7 @@ package soc.message;
  */
 public class SOCGameOptionGetDefaults extends SOCMessage
 {
+    private static final long serialVersionUID = 145679725378575755L;
     /**
      * String of the options (name-value pairs) as sent over network
      */

@@ -52,6 +52,8 @@ import java.net.URL;
  */
 public class SOCFaceButton extends Canvas
 {
+    private static final long serialVersionUID = -5130192419270251099L;
+
     public static final int DEFAULT_FACE = 1;  // Human face # 1 (face1.gif)
 
     private static final String IMAGEDIR = "/soc/client/images";
@@ -604,6 +606,10 @@ public class SOCFaceButton extends Canvas
     protected static class FaceButtonPopupMenu extends PopupMenu
         implements java.awt.event.ActionListener
     {
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 3973164610138478767L;
         SOCFaceButton fb;
         MenuItem changeFaceItem;
         FaceChooserFrame fsf;
@@ -652,7 +658,7 @@ public class SOCFaceButton extends Canvas
                     (fb, fb.pi.getClient(), fb.pi, fb.pNumber, fb.getFace(), fb.getSize().width);
                 fsf.pack();
             }
-            fsf.show();
+            fsf.setVisible(true);
         }
 
         /**

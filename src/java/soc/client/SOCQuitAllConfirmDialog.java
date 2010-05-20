@@ -32,6 +32,7 @@ import java.awt.Frame;
  */
 class SOCQuitAllConfirmDialog extends AskDialog
 {
+    private static final long serialVersionUID = 2429965525477307743L;
     protected boolean hostedServerActive;
 
     /**
@@ -51,7 +52,7 @@ class SOCQuitAllConfirmDialog extends AskDialog
 
         boolean hasAny = cli.anyHostedActiveGames();
         SOCQuitAllConfirmDialog qcd = new SOCQuitAllConfirmDialog(cli, gamePIOrSelf, hasAny);
-        qcd.show();      
+        qcd.setVisible(true);      
     }
     
 

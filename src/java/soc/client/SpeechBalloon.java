@@ -42,6 +42,8 @@ import java.awt.Graphics;
  */
 public class SpeechBalloon extends Canvas
 {
+    private static final long serialVersionUID = -2093181254990725513L;
+
     /**
      * Size of the shadow appearing on the right and bottom sides, in pixels.
      * @since 1.1.08

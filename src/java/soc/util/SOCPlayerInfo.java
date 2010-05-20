@@ -29,6 +29,7 @@ import java.io.Serializable;
  */
 public class SOCPlayerInfo implements Serializable
 {
+    private static final long serialVersionUID = 7267783219068658395L;
     public static final String HUMAN = "human";
     public static final String ROBOT = "robot";
     

@@ -20,7 +20,6 @@
  **/
 package soc.server;
 
-import soc.disableDebug.D;
 import soc.server.database.SOCDBHelper;
 
 import java.io.BufferedInputStream;

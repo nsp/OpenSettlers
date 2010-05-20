@@ -87,6 +87,7 @@ import java.util.StringTokenizer;
  */
 public abstract class SOCMessage implements Serializable, Cloneable
 {
+    private static final long serialVersionUID = 8292403866682412441L;
     /**
      * message type IDs.
      * This list of constants does not provide javadocs, instead please see

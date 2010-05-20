@@ -31,6 +31,8 @@ import java.util.Vector;
  */
 public abstract class SOCPlayingPiece implements Serializable, Cloneable
 {
+    private static final long serialVersionUID = -7462074962321284062L;
+
     /**
      * Types of playing pieces: Road.
      * @see #getResourcesToBuild(int)

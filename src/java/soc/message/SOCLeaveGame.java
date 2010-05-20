@@ -30,6 +30,8 @@ import java.util.StringTokenizer;
  */
 public class SOCLeaveGame extends SOCMessage
 {
+    private static final long serialVersionUID = 1442715426791139196L;
+
     /**
      * Nickname of the leaveing member
      */

@@ -37,6 +37,8 @@ import java.util.StringTokenizer;
  */
 public class SOCVersion extends SOCMessage
 {
+    private static final long serialVersionUID = -4405230351462130706L;
+
     /**
      * Version display string, as in {@link soc.util.Version#version()}
      */

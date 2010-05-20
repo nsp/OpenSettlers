@@ -38,6 +38,7 @@ package soc.message;
  */
 public class SOCBuyCardRequest extends SOCMessage
 {
+    private static final long serialVersionUID = -6409617364793726716L;
     /**
      * Name of game
      */

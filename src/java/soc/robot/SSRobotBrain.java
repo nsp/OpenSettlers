@@ -12,7 +12,6 @@ import smartsettlers.boardlayout.GameStateConstants;
 import soc.debug.D;
 
 import smartsettlers.player.*;
-import soc.game.SOCBoard;
 import soc.game.SOCCity;
 import soc.game.SOCDevCardConstants;
 import soc.game.SOCDevCardSet;

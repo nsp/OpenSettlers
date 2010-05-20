@@ -47,6 +47,7 @@ import java.util.Vector;
  */
 public final class Connection extends Thread implements Runnable, Serializable, Cloneable, StringConnection
 {
+    private static final long serialVersionUID = -9196267774209855368L;
     static int putters = 0;
     static Object puttersMonitor = new Object();
     protected final static int TIMEOUT_VALUE = 3600000; // approx. 1 hour

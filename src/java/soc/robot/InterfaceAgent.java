@@ -38,13 +38,10 @@ import java.io.DataOutputStream;
 
 import java.net.Socket;
 
-import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
 import soc.util.Loggers;
 import soc.util.ApplicationConstants;
-
-import java.io.*;
 
 import org.apache.log4j.*;
 
@@ -895,7 +892,7 @@ public class InterfaceAgent extends SOCDisplaylessPlayerClient
     		
     		// make a direct call to execute the Plan again if feasible
     			
-    		this.PA.takeAction(currentplan);
+    		InterfaceAgent.PA.takeAction(currentplan);
     		
     	} else if(mes.getText().equals(nickname+" built a road.")) {
     		
@@ -1609,7 +1606,7 @@ public class InterfaceAgent extends SOCDisplaylessPlayerClient
     		
     		log.info("SETTLEMENT COORDINATE IS :: "+socsettlement.getCoordinates());
     		
-    		log.info("ADJACENT HEXES TO SETTLEMENT IS :: "+game.getBoard().getAdjacentHexesToNode(socsettlement.getCoordinates()));
+            log.info("ADJACENT HEXES TO SETTLEMENT IS :: "+SOCBoard.getAdjacentHexesToNode(socsettlement.getCoordinates()));
     		
     	}
     	
@@ -2565,7 +2562,7 @@ public class InterfaceAgent extends SOCDisplaylessPlayerClient
 		
 		// execute the plan which is the current one
 		
-		this.PA.takeAction(currentplan);
+		InterfaceAgent.PA.takeAction(currentplan);
 		
 		
 		
@@ -2888,7 +2885,7 @@ public class InterfaceAgent extends SOCDisplaylessPlayerClient
     	System.out.println("CITIES LEFT :: "+game.getPlayer(nickname).getNumPieces(SOCPlayingPiece.CITY));
     	System.out.println("SETTLEMENTS LEFT :: "+game.getPlayer(nickname).getNumPieces(SOCPlayingPiece.SETTLEMENT));
     	
-    	this.PA.actionStack(plan_left);
+    	InterfaceAgent.PA.actionStack(plan_left);
     	
     }
     
@@ -2915,7 +2912,7 @@ public class InterfaceAgent extends SOCDisplaylessPlayerClient
     	
     	System.out.println("SETTLEMENTS LEFT :: "+game.getPlayer(nickname).getNumPieces(SOCPlayingPiece.SETTLEMENT));
     	
-    	this.PA.actionStack(plan_left);
+    	InterfaceAgent.PA.actionStack(plan_left);
     	
 //    	PA.releaseAction();
     	
@@ -2937,7 +2934,7 @@ public class InterfaceAgent extends SOCDisplaylessPlayerClient
     	
     	log.info("CALLING ACTION STACK AFTER BUILDING A ROAD");
     	
-    	this.PA.actionStack(plan_left);
+    	InterfaceAgent.PA.actionStack(plan_left);
     	
     }
     

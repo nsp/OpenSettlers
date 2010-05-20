@@ -30,6 +30,8 @@ import java.util.StringTokenizer;
  */
 public class SOCFirstPlayer extends SOCMessage
 {
+    private static final long serialVersionUID = -3069560306633241557L;
+
     /**
      * Name of game
      */

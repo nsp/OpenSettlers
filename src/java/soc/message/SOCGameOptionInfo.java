@@ -52,6 +52,8 @@ import soc.game.SOCGameOption;
  */
 public class SOCGameOptionInfo extends SOCMessageTemplateMs
 {
+    private static final long serialVersionUID = 4104137001420547128L;
+
     /**
      * If the client is asking for any new options, by sending GAMEOPTIONGETINFOS("-"),
      * server responds with set of GAMEOPTIONINFOs. Mark end of this list with a

@@ -62,6 +62,8 @@ import java.util.StringTokenizer;
 public abstract class AskDialog extends Dialog
     implements ActionListener, WindowListener, KeyListener, MouseListener
 {
+    private static final long serialVersionUID = -3500941378830169918L;
+
     /** Player client; passed to constructor, not null */
     protected final SOCPlayerClient pcli;
 

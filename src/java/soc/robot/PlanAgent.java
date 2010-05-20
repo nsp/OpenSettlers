@@ -13,13 +13,8 @@ import soc.message.*;
 import soc.util.ApplicationConstants;
 import soc.game.*;
 
-import java.io.*;
-
 import soc.util.Loggers;
 import soc.util.PlanSorter;
-
-
-import org.apache.log4j.*;
 
 public class PlanAgent extends Agent implements Runnable {
 	
@@ -2057,7 +2052,7 @@ public class PlanAgent extends Agent implements Runnable {
 			
 			// first up we send request to Node Agents to submit the utilities along with the actions
 			
-			NodeAgent [] node_agent = this.IA.getNodeAgents();
+			NodeAgent [] node_agent = InterfaceAgent.getNodeAgents();
 			
 			for(int i = 0; i < node_agent.length; i++) {
 				

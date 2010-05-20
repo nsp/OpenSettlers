@@ -5,8 +5,6 @@
 
 package smartsettlers;
 
-import smartsettlers.display.*;
-
 /**
  *
  * @author szityu

@@ -35,6 +35,8 @@ import java.io.Serializable;
  */
 public class SOCResourceSet implements Serializable, Cloneable
 {
+    private static final long serialVersionUID = 5706718618157436864L;
+
     /** Resource set with zero of each resource type */
     public static final SOCResourceSet EMPTY_SET = new SOCResourceSet();
 

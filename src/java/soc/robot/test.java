@@ -1,9 +1,6 @@
 
 package soc.robot;
 
-import org.apache.log4j.*;
-import java.util.*;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;

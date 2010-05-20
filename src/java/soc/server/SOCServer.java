@@ -187,6 +187,8 @@ import soc.util.Version;
  */
 public class SOCServer extends Server
 {
+    private static final long serialVersionUID = -6123388779047708029L;
+
     /** Default port server listens on. */
     public static final int DEFAULT_PORT = 8880;
     

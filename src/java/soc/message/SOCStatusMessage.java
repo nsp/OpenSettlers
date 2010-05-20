@@ -41,6 +41,8 @@ package soc.message;
  */
 public class SOCStatusMessage extends SOCMessage
 {
+    private static final long serialVersionUID = -7685546196237150644L;
+
     /**
      * Status value constants. SV_OK = 0 : Welcome, OK to connect.
      * SV_NOT_OK_GENERIC = 1 : Generic "not OK" status value.

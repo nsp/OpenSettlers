@@ -30,6 +30,8 @@ import java.util.StringTokenizer;
  */
 public class SOCCreateAccount extends SOCMessage
 {
+    private static final long serialVersionUID = -1233420120463468626L;
+
     /**
      * symbol to represent a null email
      */

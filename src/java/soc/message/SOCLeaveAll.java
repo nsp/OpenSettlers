@@ -28,6 +28,8 @@ package soc.message;
  */
 public class SOCLeaveAll extends SOCMessage
 {
+    private static final long serialVersionUID = 8000533716630858375L;
+
     /**
      * Create a LeaveAll message.
      *

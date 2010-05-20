@@ -46,6 +46,8 @@ import soc.util.SOCGameList;
  */
 public class SOCGamesWithOptions extends SOCMessageTemplateMs
 {
+    private static final long serialVersionUID = 6487725839921132117L;
+
     /**
      * Constructor for client to parse server's list of games.
      * Creates opt with the proper type, even if unknown locally.

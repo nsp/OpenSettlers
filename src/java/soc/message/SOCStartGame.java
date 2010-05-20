@@ -28,6 +28,7 @@ package soc.message;
  */
 public class SOCStartGame extends SOCMessage
 {
+    private static final long serialVersionUID = -765289531709655693L;
     /**
      * Name of game
      */

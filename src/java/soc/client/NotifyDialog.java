@@ -36,6 +36,8 @@ import java.awt.Frame;
  */
 class NotifyDialog extends AskDialog
 {
+    private static final long serialVersionUID = -3459904873633591629L;
+
     /**
      * Creates and shows a new NotifyDialog.
      *
@@ -54,7 +56,7 @@ class NotifyDialog extends AskDialog
             btnText = "OK";
         NotifyDialog nd = new NotifyDialog
 	    (cli, gamePI, promptText, btnText, hasDefault);
-        nd.show();      
+        nd.setVisible(true);      
     }
 
     /**

@@ -47,6 +47,7 @@ import java.awt.event.MouseListener;
  */
 public class ColorSquare extends Canvas implements MouseListener
 {
+    private static final long serialVersionUID = 6833780178900316374L;
     /**
      * The color constants are used by ColorSquare,
      * and also used for the robber's "ghost" when

@@ -32,6 +32,8 @@ import java.util.StringTokenizer;
  */
 public class SOCTurn extends SOCMessage
 {
+    private static final long serialVersionUID = -4250523841070612271L;
+
     /**
      * Name of game
      */

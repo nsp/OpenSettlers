@@ -43,6 +43,7 @@ import java.awt.event.ActionListener;
  */
 public class SOCBuildingPanel extends Panel implements ActionListener
 {
+    private static final long serialVersionUID = 4332068725670557191L;
     static final String ROAD = "road";
     static final String STLMT = "stlmt";
     static final String CITY = "city";

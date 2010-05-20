@@ -34,6 +34,8 @@ import java.awt.Graphics;
  */
 public class ShadowedBox extends Canvas
 {
+    private static final long serialVersionUID = 2771071456858919174L;
+
     /**
      * Size of the shadow, in pixels.
      * @since 1.1.08

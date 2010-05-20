@@ -32,6 +32,8 @@ import java.util.StringTokenizer;
  */
 public class SOCChoosePlayerRequest extends SOCMessage
 {
+    private static final long serialVersionUID = -7515847915515486585L;
+
     /**
      * Name of game
      */

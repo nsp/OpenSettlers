@@ -59,6 +59,7 @@ import java.util.Vector;
  */
 public class SOCBoard implements Serializable, Cloneable
 {
+    private static final long serialVersionUID = 4905733106998982392L;
     //
     // Hex types
     //

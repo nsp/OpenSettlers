@@ -35,6 +35,7 @@ import java.awt.event.MouseListener;
  */
 public class AWTClickTester extends java.awt.Canvas implements MouseListener
 {
+    private static final long serialVersionUID = 2444816671369014437L;
     int lastX, lastY;
     int wid, ht;
     Dimension sz;
@@ -147,7 +148,7 @@ public class AWTClickTester extends java.awt.Canvas implements MouseListener
         AWTClickTester ct = new AWTClickTester();        
         f.add(ct);
         f.pack();
-        f.show();
+        f.setVisible(true);
         ct.printButtonsMods();
     }
 

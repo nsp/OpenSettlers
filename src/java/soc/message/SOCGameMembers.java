@@ -39,6 +39,8 @@ import java.util.Vector;
  */
 public class SOCGameMembers extends SOCMessage
 {
+    private static final long serialVersionUID = 4057903417445770245L;
+
     /**
      * List of members
      */

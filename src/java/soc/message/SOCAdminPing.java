@@ -29,6 +29,7 @@ package soc.message;
  */
 public class SOCAdminPing extends SOCMessage
 {
+    private static final long serialVersionUID = 8184440854453710713L;
     /**
      * Name of the new game.
      */

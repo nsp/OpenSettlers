@@ -20,7 +20,8 @@ import smartsettlers.boardlayout.*;
  * @author  szityu
  */
 public class AppFrame extends javax.swing.JFrame implements GameStateConstants {
-    
+
+    private static final long serialVersionUID = -1796456550361737408L;
     BoardLayout boardlayout;
     DefaultListModel listModel;
 //    ListSelectionListener selChanged;
@@ -125,6 +126,10 @@ public class AppFrame extends javax.swing.JFrame implements GameStateConstants {
         });
 
         jList1.setModel(new javax.swing.AbstractListModel() {
+            /**
+             * 
+             */
+            private static final long serialVersionUID = 1714448074760350754L;
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }

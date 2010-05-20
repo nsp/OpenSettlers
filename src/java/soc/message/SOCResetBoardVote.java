@@ -40,6 +40,8 @@ import java.util.StringTokenizer;
  */
 public class SOCResetBoardVote extends SOCMessageTemplate2i
 {
+    private static final long serialVersionUID = 4984026317563047650L;
+
     /**
      * Create a SOCResetBoardVote message.
      *

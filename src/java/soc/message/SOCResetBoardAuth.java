@@ -43,6 +43,8 @@ import java.util.StringTokenizer;
  */
 public class SOCResetBoardAuth extends SOCMessageTemplate2i
 {
+    private static final long serialVersionUID = 3731181743864325767L;
+
     /**
      * Create a ResetBoardAuth message.
      *

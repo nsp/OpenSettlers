@@ -66,6 +66,8 @@ import soc.util.Version;
 public class NewGameOptionsFrame extends Frame
     implements ActionListener, KeyListener, ItemListener, TextListener, MouseListener
 {
+    private static final long serialVersionUID = -1187112417844074254L;
+
     /**
      * Maximum range (min-max value) for integer-type options
      * to be rendered using a value popup, instead of a textfield. 
@@ -183,7 +185,7 @@ public class NewGameOptionsFrame extends Frame
     {
         NewGameOptionsFrame ngof = new NewGameOptionsFrame(cli, gaName, opts, forPractice, readOnly);
         ngof.pack();
-        ngof.show();
+        ngof.setVisible(true);
         return ngof;
     }
     
@@ -547,7 +549,7 @@ public class NewGameOptionsFrame extends Frame
      */
     public void show()
     {
-        super.show();
+        super.setVisible(true);
         gameName.requestFocus();
     }
 
@@ -741,7 +743,7 @@ public class NewGameOptionsFrame extends Frame
             if (optsVers > -1)
             {
                 allOK = false;
-                new VersionConfirmDialog(this, optsVers).show();
+                new VersionConfirmDialog(this, optsVers).setVisible(true);
             }
         }
 
@@ -867,6 +869,11 @@ public class NewGameOptionsFrame extends Frame
      */
     public class IntTextField extends TextField implements KeyListener
     {
+        /**
+         * 
+         */
+        private static final long serialVersionUID = -8513995904830625643L;
+
         IntTextField(int initVal, int width)
         {
             super(Integer.toString(initVal), width);
@@ -936,6 +943,11 @@ public class NewGameOptionsFrame extends Frame
      */
     private class VersionConfirmDialog extends AskDialog
     {
+        /**
+         * 
+         */
+        private static final long serialVersionUID = -4813644198533344314L;
+
         /**
          * Creates a new VersionConfirmDialog.
          *

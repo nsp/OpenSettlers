@@ -30,6 +30,8 @@ import java.util.StringTokenizer;
  */
 public class SOCPutPiece extends SOCMessage
 {
+    private static final long serialVersionUID = 6517995661650797911L;
+
     /**
      * the name of the game
      */

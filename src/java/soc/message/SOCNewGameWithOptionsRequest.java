@@ -40,6 +40,8 @@ import soc.game.SOCGameOption;
  */
 public class SOCNewGameWithOptionsRequest extends SOCMessageTemplateJoinGame
 {
+    private static final long serialVersionUID = 7767375032901875678L;
+
     /** won't be null, even if opts is null, due to {@link SOCGameOption#packOptionsToString(Hashtable, boolean)} format. */
     private String optsStr;
 

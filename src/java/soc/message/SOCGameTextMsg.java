@@ -34,6 +34,8 @@ import java.util.StringTokenizer;
  */
 public class SOCGameTextMsg extends SOCMessage
 {
+    private static final long serialVersionUID = 5654687405298358835L;
+
     /**
      * our token seperator; not the normal {@link SOCMessage#sep2}
      */

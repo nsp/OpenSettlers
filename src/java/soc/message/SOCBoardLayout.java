@@ -45,6 +45,8 @@ import java.util.StringTokenizer;
  */
 public class SOCBoardLayout extends SOCMessage
 {
+    private static final long serialVersionUID = -3749424346571547319L;
+
     /**
      * Map of dice rolls to values in {@link #numberLayout}. Formerly in SOCBoard.
      * @since 1.1.08
