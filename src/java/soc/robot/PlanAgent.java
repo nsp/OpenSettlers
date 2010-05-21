@@ -33,7 +33,7 @@ public class PlanAgent extends Agent implements Runnable {
 		
 		messages = new Vector();
 	
-		PlanAgentThread = new Thread(this);
+		PlanAgentThread = new Thread(this, "PlanAgent");
 		
 		log = Loggers.PlanAgentLogger;
 		
@@ -830,7 +830,7 @@ public class PlanAgent extends Agent implements Runnable {
 		int FREQUENCY_WHEAT = new Double((Double)ResourceFrequenciesHash.get("WHEAT")).intValue();
 		int FREQUENCY_WOOD = new Double((Double)ResourceFrequenciesHash.get("WOOD")).intValue();
 		
-		System.out.println("PIECE IS :: "+piece);
+//		System.out.println("PIECE IS :: "+piece);
 		
 		Hashtable target_resources = (Hashtable)ApplicationConstants.ResourcesRequired.RequiredResourcesTable.get(piece);
 		
@@ -2337,7 +2337,7 @@ public class PlanAgent extends Agent implements Runnable {
 					
 					message.setMessage(tmessage);
 					
-					InterfaceAgent.MA.mailBox(message); // ask the trader to send a trade offer
+					//InterfaceAgent.MA.mailBox(message); // ask the trader to send a trade offer
 					
 					
 				}
@@ -2391,7 +2391,7 @@ public class PlanAgent extends Agent implements Runnable {
 					
 					message.setMessage(tmessage);
 					
-					InterfaceAgent.MA.mailBox(message); // ask the trader to send a trade offer
+					//InterfaceAgent.MA.mailBox(message); // ask the trader to send a trade offer
 					
 					
 				}
@@ -2442,7 +2442,7 @@ public class PlanAgent extends Agent implements Runnable {
 					
 					message.setMessage(tmessage);
 					
-					InterfaceAgent.MA.mailBox(message); // ask the trader to send a trade offer
+					//InterfaceAgent.MA.mailBox(message); // ask the trader to send a trade offer
 					
 					
 				}

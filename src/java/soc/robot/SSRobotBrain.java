@@ -397,8 +397,8 @@ public class SSRobotBrain extends SOCRobotBrain implements GameStateConstants {
             case A_PORTTRADE:
                 counter = 0;
                 waitingForTradeMsg = true;
-                boolean[] to = new boolean[SOCGame.MAXPLAYERS];
-                for (int i = 0; i < SOCGame.MAXPLAYERS; i++)
+                boolean[] to = new boolean[game.maxPlayers];
+                for (int i = 0; i < game.maxPlayers; i++)
                     to[i] = false;
                 SOCResourceSet give = new SOCResourceSet();
                 SOCResourceSet get = new SOCResourceSet();
@@ -494,7 +494,8 @@ public class SSRobotBrain extends SOCRobotBrain implements GameStateConstants {
                     if (mes != null)
                     {
                         mesType = mes.getType();
-                        D.ebugPrintln("mes - " + mes);
+                        if(mesType != SOCMessage.GAMETEXTMSG)
+                            D.ebugPrintln("mes - " + mes);
                     }
                     else
                     {
@@ -526,7 +527,7 @@ public class SSRobotBrain extends SOCRobotBrain implements GameStateConstants {
                             {
                                 if (getSet.getAmount(rsrcType) > 0)
                                 {
-                                    for (int pn = 0; pn < SOCGame.MAXPLAYERS;
+                                    for (int pn = 0; pn < game.maxPlayers;
                                             pn++)
                                     {
                                         if (offeredTo[pn])
@@ -1084,7 +1085,7 @@ public class SSRobotBrain extends SOCRobotBrain implements GameStateConstants {
                                 {
                                     boolean[] offeredTo = ourPlayerData.getCurrentOffer().getTo();
 
-                                    for (int i = 0; i < SOCGame.MAXPLAYERS;
+                                    for (int i = 0; i < game.maxPlayers;
                                             i++)
                                     {
                                         D.ebugPrintln("offerRejections[" + i + "]=" + offerRejections[i]);
@@ -1201,7 +1202,7 @@ public class SSRobotBrain extends SOCRobotBrain implements GameStateConstants {
 
                             boolean[] offeredTo = ourPlayerData.getCurrentOffer().getTo();
 
-                            for (int i = 0; i < SOCGame.MAXPLAYERS; i++)
+                            for (int i = 0; i < game.maxPlayers; i++)
                             {
                                 D.ebugPrintln("offerRejections[" + i + "]=" + offerRejections[i]);
 
@@ -1227,7 +1228,7 @@ public class SSRobotBrain extends SOCRobotBrain implements GameStateConstants {
                             ///
                             D.ebugPrintln("%%%% ALT REJECT OFFER %%%%");
 
-                            for (int pn = 0; pn < SOCGame.MAXPLAYERS; pn++)
+                            for (int pn = 0; pn < game.maxPlayers; pn++)
                             {
                                 SOCTradeOffer offer = game.getPlayer(pn).getCurrentOffer();
 
@@ -1433,7 +1434,7 @@ public class SSRobotBrain extends SOCRobotBrain implements GameStateConstants {
                                 {
                                     client.sendText(game, "================================");
 
-                                    for (int i = 0; i < SOCGame.MAXPLAYERS;
+                                    for (int i = 0; i < game.maxPlayers;
                                             i++)
                                     {
                                         SOCResourceSet rsrcs = game.getPlayer(i).getResources();

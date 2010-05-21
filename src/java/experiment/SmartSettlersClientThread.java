@@ -13,15 +13,12 @@ import soc.robot.SSRobotClient;
  *
  * @author szityu
  */
-public class SmartSettlersClientThread extends Thread
+public class SmartSettlersClientThread extends ClientHelperThread
 {
-    int num;
-    public SSRobotClient client;
-    
     
     SmartSettlersClientThread(int num)
     {
-        this.num = num;
+        super("Monte", num);
     }
     
     @Override
@@ -29,8 +26,8 @@ public class SmartSettlersClientThread extends Thread
     {
         try {
             sleep(5000);
-            client = new SSRobotClient("localhost", 8880, "SmartSettlers agent " + num, "");
-            client.init();
+            client = new SSRobotClient("localhost", 8880, getName(), "");
+            ((SSRobotClient) client).init();
 //            String[] clientArgs = {"localhost", "8880", "SmartSettlers agent", ""};
 //            soc.robot.SSRobotClient.main(clientArgs);
         } catch (InterruptedException ex) {

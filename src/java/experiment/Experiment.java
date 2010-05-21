@@ -7,7 +7,9 @@ import smartsettlers.boardlayout.GameStateConstants;
 import soc.client.SOCPlayerClient;
 import soc.client.SOCPlayerInterface;
 import soc.game.SOCGame;
+import soc.message.SOCCreateAccount;
 import soc.message.SOCJoinGame;
+import soc.message.SOCSitDown;
 
 /**
  *
@@ -21,44 +23,51 @@ public class Experiment implements GameStateConstants {
         
     }
     
+    /**
+     * 
+     * @param args {run#, 
+     * @throws InterruptedException
+     */
     public static void main(String[] args) throws InterruptedException
     {
-//        ServerThread st = new ServerThread();
-//        st.start();
-        
-//        SmartSettlersClientThread cl0 = new SmartSettlersClientThread(0);
-//        SmartSettlersClientThread cl1 = new SmartSettlersClientThread(1);
-//        SmartSettlersClientThread cl2 = new SmartSettlersClientThread(2);
-        ClientThread cl0 = new ClientThread(0);
-        ClientThread cl1 = new ClientThread(1);
-        ClientThread cl2 = new ClientThread(2);
-        ClientThread cl3 = new ClientThread(3);
+//        soc.debug.D.ebug_disable();
+        if(args.length < 5) {
+            System.err.println("Not enough arguments");
+        }
+        int gameno = Integer.parseInt(args[0]);
+        String gamename = "game" + gameno;
+
+        ClientHelperThread[] clients = new ClientHelperThread[4];
+        for (int i = 0; i < clients.length; i++)
+        {
+            if(args[i+1].contains("builtin"))
+                clients[i] = new ClientThread(10*gameno+i);
+            else if(args[i+1].contains("monte"))
+                clients[i] = new SmartSettlersClientThread(10*gameno+i);
+            else if(args[i+1].contains("multi"))
+                clients[i] = new MultiAgentClientThread(10*gameno+i);
+            else {
+                System.err.println("Bad argument: " + args[i+1]);
+                clients[i] = new ClientThread(10*gameno+i);
+            }
+        }
         TimerThread ttr = new TimerThread();
         
-        
-        cl0.start();
-        cl1.start();
-        cl2.start();
-        cl3.start();
+        for (int i = 0; i < clients.length; i++)
+        {
+            clients[i].start();
+        }
         ttr.start();
         Thread.sleep(6000);
-//        st.server.setLoggerClient(cl0.client);
-//        System.out.println(cl0.client + "   " + st.server);
-        
-        String gamename;
-        if (args.length==0)
-            gamename = "game1";
-        else
-            gamename = args[0];
-        
         
         SOCPlayerClient client = new SOCPlayerClient();
         client.host = "localhost";
         client.port = 8880;
-        client.nickname = "Experimenter";
+        client.nickname = "Experimenter"+args[0];
         String password = "pass";
         client.initVisualElements(); // after the background is set
         client.connect();
+        client.put(SOCCreateAccount.toCmd(client.nickname, password, "localhost", ""), false);
         //client.put(SOCJoin.toCmd(client.nickname, "", client.host, "channel0"));
         //client.put(SOCJoinGameAuth.toCmd(gamename));
         SOCGame ga = new SOCGame(gamename);
@@ -70,11 +79,17 @@ public class Experiment implements GameStateConstants {
 //            client.playerInterfaces.put(gamename, pi);
             client.games.put(gamename, ga);
         }
-        
-        //SOCGame ga = (SOCGame) client.games.get(gamename);
+
         client.put(SOCJoinGame.toCmd(client.nickname, password, client.host, gamename), false);
         ga = (SOCGame) client.games.get(gamename);
-        //client.sitDown(ga, 0);
+        
+        for (int j = 0; j < clients.length; j++)
+        {
+            ClientHelperThread bot = clients[j];
+            bot.client.put(SOCJoinGame.toCmd(bot.client.getNickname(), "", client.host, gamename));
+            bot.client.put(SOCSitDown.toCmd(gamename, bot.client.getNickname(), j, true));
+        }
+        
         SOCPlayerInterface pi = (SOCPlayerInterface) client.playerInterfaces.get(gamename);
         Thread.sleep(5000);
         client.startGame(ga);
@@ -85,11 +100,16 @@ public class Experiment implements GameStateConstants {
 
 class TimerThread extends Thread
 {
+    TimerThread()
+    {
+        super("Timer");
+    }
+    
     @Override
     public void run()
     {
         try {
-            sleep(1000*60*45);
+            sleep(1000*60*60);
         } catch (InterruptedException ex) {
             Logger.getLogger(TimerThread.class.getName()).log(Level.SEVERE, null, ex);
         }

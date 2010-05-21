@@ -22,6 +22,7 @@
 package soc.server.database;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -61,8 +62,8 @@ import soc.util.SOCRobotParameters;
  * USE socdata;
  * CREATE TABLE users (nickname VARCHAR(20), host VARCHAR(50), password VARCHAR(20), email VARCHAR(50), lastlogin DATE, wins INT, losses INT, face INT, totalpoints INT);
  * CREATE TABLE logins (nickname VARCHAR(20), host VARCHAR(50), lastlogin DATE);
- * CREATE TABLE games (gamename VARCHAR(20), player1 VARCHAR(20), player2 VARCHAR(20), player3 VARCHAR(20), player4 VARCHAR(20), score1 TINYINT, score2 TINYINT, score3 TINYINT, score4 TINYINT, starttime TIMESTAMP);
- * CREATE TABLE robotparams (robotname VARCHAR(20), maxgamelength INT, maxeta INT, etabonusfactor FLOAT, adversarialfactor FLOAT, leaderadversarialfactor FLOAT, devcardmultiplier FLOAT, threatmultiplier FLOAT, strategytype INT, starttime TIMESTAMP, endtime TIMESTAMP, gameswon INT, gameslost INT, tradeFlag BOOL);
+ * CREATE TABLE games (gamename VARCHAR(20), player1 VARCHAR(20), player2 VARCHAR(20), player3 VARCHAR(20), player4 VARCHAR(20), score1 TINYINT, score2 TINYINT, score3 TINYINT, score4 TINYINT, starttime TIMESTAMP, endtime TIMESTAMP);
+ * CREATE TABLE robotparams (robotname VARCHAR(20), maxgamelength INT, maxeta INT, etabonusfactor FLOAT, adversarialfactor FLOAT, leaderadversarialfactor FLOAT, devcardmultiplier FLOAT, threatmultiplier FLOAT, strategytype INT, starttime TIMESTAMP, endtime TIMESTAMP, gameswon INT, gameslost INT, tradeFlag BOOL, wins INT, losses INT, face INT, totalpoints INT);
  *</code>
  */
 public class SOCDBHelper
@@ -101,7 +102,7 @@ public class SOCDBHelper
      */
     public static final String PROP_JSETTLERS_DB_URL = "jsettlers.db.url";
 
-    private static Connection connection = null;
+    public static Connection connection = null;
 
     /**
      * Retain the URL (default, or passed via props to {@link #initialize(String, String, Properties)}).
@@ -135,7 +136,7 @@ public class SOCDBHelper
 
     private static String LASTLOGIN_UPDATE =        "UPDATE users SET lastlogin = ? WHERE nickname = ? ;";
 
-    private static String SAVE_GAME_COMMAND =       "INSERT INTO games VALUES (?,?,?,?,?,?,?,?,?,?);";
+    private static String SAVE_GAME_COMMAND =       "INSERT INTO games VALUES (?,?,?,?,?,?,?,?,?,?,?);";
 	
     private static String ROBOT_PARAMS_QUERY =      "SELECT * FROM robotparams WHERE robotname = ?;";
     
@@ -626,7 +627,7 @@ public class SOCDBHelper
             try
             {
                 // Record face for humans
-                for (int i = 0; i < SOCGame.MAXPLAYERS; i++)
+                for (int i = 0; i < ga.maxPlayers; i++)
                 {
                     SOCPlayer pl = ga.getPlayer(i);
                     
@@ -675,13 +676,13 @@ public class SOCDBHelper
                 saveGameCommand.setString(sGCindex++, ga.getName());
 
                 // iterate through the players
-                for (int i = 0; i < SOCGame.MAXPLAYERS; i++)
+                for (int i = 0; i < ga.maxPlayers; i++)
                 {
                     SOCPlayer pl = ga.getPlayer(i);
 
 	                saveGameCommand.setString(sGCindex++, pl.getName());
                 }
-                for (int i = 0; i < SOCGame.MAXPLAYERS; i++)
+                for (int i = 0; i < ga.maxPlayers; i++)
                 {
                     SOCPlayer pl = ga.getPlayer(i);
                     
@@ -689,12 +690,13 @@ public class SOCDBHelper
                 }
                 
                 saveGameCommand.setTimestamp(sGCindex++, new Timestamp(ga.getStartTime().getTime()));
+                saveGameCommand.setTimestamp(sGCindex++, new Timestamp(System.currentTimeMillis()));
 
                 // execute the Command
                 saveGameCommand.executeUpdate();
 
                 // iterate through the players
-                for (int i = 0; i < SOCGame.MAXPLAYERS; i++)
+                for (int i = 0; i < ga.maxPlayers; i++)
                 {
                     SOCPlayer pl = ga.getPlayer(i);
                     int points = pl.getTotalVP();

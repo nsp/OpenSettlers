@@ -219,7 +219,7 @@ public class SOCRobotClient extends SOCDisplaylessPlayerClient
     /**
      * Initialize the robot player; connect to server, send first messages
      */
-    public void init()
+    public void init_noImARobot()
     {
         try
         {
@@ -242,6 +242,20 @@ public class SOCRobotClient extends SOCDisplaylessPlayerClient
             //resetThread.start();
             put(SOCVersion.toCmd(Version.versionNumber(), Version.version(), Version.buildnum()));
             put(SOCImARobot.toCmd(nickname, SOCImARobot.RBCLASS_BUILTIN)); 
+        }
+        catch (Exception e)
+        {
+            ex = e;
+            System.err.println("Could not connect to the server: " + ex);
+        }
+    }
+    
+    public void init()
+    {
+        init_noImARobot();
+        try
+        {
+        put(SOCImARobot.toCmd(nickname, SOCImARobot.RBCLASS_BUILTIN));
         }
         catch (Exception e)
         {

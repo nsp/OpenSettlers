@@ -120,7 +120,7 @@ public class FaceChooserFrame extends Frame implements ActionListener, WindowLis
             throw new IllegalArgumentException("cli cannot be null");
         if (gamePI == null)
             throw new IllegalArgumentException("gamePI cannot be null");
-        if ((pnum < 0) || (pnum >= SOCGame.MAXPLAYERS))
+        if ((pnum < 0) || (pnum >= gamePI.game.maxPlayers))
             throw new IllegalArgumentException("pnum out of range: " + pnum);
         if (faceWidth <= 0)
             throw new IllegalArgumentException("faceWidth must be positive, not " + faceWidth);

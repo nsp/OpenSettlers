@@ -28,7 +28,7 @@ public class TraderAgent extends Agent implements Runnable {
 		
 		log = Loggers.TraderAgentLogger;
 		
-		new Thread(this).start();
+		new Thread(this, "TraderAgent").start();
 		
 	}
 	

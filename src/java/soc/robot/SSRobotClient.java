@@ -28,6 +28,7 @@ import soc.message.SOCBoardLayout;
 import soc.message.SOCDeleteGame;
 import soc.message.SOCDiceResult;
 import soc.message.SOCGameState;
+import soc.message.SOCImARobot;
 import soc.message.SOCJoinGameAuth;
 import soc.message.SOCMessage;
 import soc.message.SOCMoveRobber;
@@ -153,12 +154,12 @@ public class SSRobotClient extends SOCRobotClient implements GameStateConstants,
     @Override
     public void init()
     {
-        super.init();
+        super.init_noImARobot();
         debugframe = new DebugFrame();
         debugframe.setVisible(true);
         bl = debugframe.boardlayout;
-//        try
-//        {
+        try
+        {
 //            s = new Socket(host, port);
 //            s.setSoTimeout(300000);
 //            in = new DataInputStream(s.getInputStream());
@@ -169,13 +170,13 @@ public class SSRobotClient extends SOCRobotClient implements GameStateConstants,
 //
 //            //resetThread = new SOCRobotResetThread(this);
 //            //resetThread.start();
-//            put(SOCImARobot.toCmd(nickname));
-//        }
-//        catch (Exception e)
-//        {
-//            ex = e;
-//            System.err.println("Could not connect to the server: " + ex);
-//        }
+            put(SOCImARobot.toCmd(nickname, "soc.robot.SSRobotClient"));
+        }
+        catch (Exception e)
+        {
+            ex = e;
+            System.err.println("Could not connect to the server: " + ex);
+        }
         
     }
 

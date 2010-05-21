@@ -7676,21 +7676,22 @@ public class SOCServer extends Server
                 }  // for each devcard type
 
                 messageToGame(gname, msg);
-                /* From Monte Carlo, still necessary?
-                sleep(2000);
-                messageToGame(ga.getName(), new SOCDeleteGame(ga.getName() ));
-                sleep(8000);
-                System.out.println("Clean exit.");
-                System.exit(0);
-                */
-                
-                storeGameScores(ga);
-                storePlayerFaces(ga);
 
                 break;
 
             }  // if devcards
         }  // for each player
+
+        /* From Monte Carlo, still necessary?
+                sleep(2000);
+                messageToGame(ga.getName(), new SOCDeleteGame(ga.getName() ));
+                sleep(8000);
+                System.out.println("Clean exit.");
+                System.exit(0);
+         */
+        
+        storeGameScores(ga);
+        storePlayerFaces(ga);
 
         /**
          * send game-length and connect-length messages, possibly win-loss count.

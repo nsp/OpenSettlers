@@ -760,7 +760,8 @@ public class SOCRobotBrain extends Thread
                     if (mes != null)
                     {
                         mesType = mes.getType();
-                        D.ebugPrintln("mes - " + mes);
+                        if(mesType != SOCMessage.GAMETEXTMSG)
+                            D.ebugPrintln("mes - " + mes);
 
                         // Debug aid: when looking at message contents: avoid pings:
                         // check here for (mesType != SOCMessage.GAMETEXTMSG).

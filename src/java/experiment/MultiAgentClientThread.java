@@ -7,17 +7,19 @@ package experiment;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import soc.robot.SOCRobotClient;
+
+import soc.robot.InterfaceAgent;
 
 /**
  *
  * @author szityu
  */
-public class ClientThread extends ClientHelperThread
+public class MultiAgentClientThread extends ClientHelperThread
 {
-    ClientThread(int num)
+    
+    MultiAgentClientThread(int num)
     {
-        super("BuiltIn", num);
+        super("MultiAgent", num);
     }
     
     @Override
@@ -26,12 +28,12 @@ public class ClientThread extends ClientHelperThread
         try {
             sleep(5000);
             
-            client = new SOCRobotClient("localhost", 8880, this.getName(), "");
-            ((SOCRobotClient) client).init();
+            client = new InterfaceAgent("localhost", 8880, getName(), "");
+            ((InterfaceAgent) client).init();
 //            String[] clientArgs = {"localhost", "8880", "Computer" + num, ""};
 //            soc.robot.SOCRobotClient.main(clientArgs);
         } catch (InterruptedException ex) {
-            Logger.getLogger(ClientThread.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MultiAgentClientThread.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
