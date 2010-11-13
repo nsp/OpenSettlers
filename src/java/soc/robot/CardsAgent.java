@@ -18,7 +18,7 @@ public class CardsAgent extends Agent implements Runnable {
 		
 		log = Loggers.CardsAgentLogger;
 		
-		new Thread(this).start();
+		new Thread(this, "CardsAgent").start();
 		
 	}
 	

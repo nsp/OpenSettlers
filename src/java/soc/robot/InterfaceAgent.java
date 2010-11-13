@@ -189,7 +189,7 @@ public class InterfaceAgent extends SOCDisplaylessPlayerClient
             in = new DataInputStream(s.getInputStream());
             out = new DataOutputStream(s.getOutputStream());
             connected = true;
-            reader = new Thread(this);
+            reader = new Thread(this, "InterfaceAgent-reader");
             reader.start();
 
             //resetThread = new SOCRobotResetThread(this);
@@ -277,7 +277,7 @@ public class InterfaceAgent extends SOCDisplaylessPlayerClient
             in = new DataInputStream(s.getInputStream());
             out = new DataOutputStream(s.getOutputStream());
             connected = true;
-            reader = new Thread(this);
+            reader = new Thread(this, "InterfaceAgent-reader");
             reader.start();
 
             //resetThread = new SOCRobotResetThread(this);
@@ -2527,7 +2527,7 @@ public class InterfaceAgent extends SOCDisplaylessPlayerClient
     		
     		message.setMessage(tmessage);
     		
-    		InterfaceAgent.MA.mailBox(message);
+    		//InterfaceAgent.MA.mailBox(message);
     		
     		
     	}

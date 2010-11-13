@@ -31,7 +31,7 @@ public class UCT implements GameStateConstants {
     
     public static int getHashCode(int[] s)
     {
-        int [] s2 = s.clone();
+        int [] s2 = Arrays.copyOf(s, s.length);
         s2[OFS_TURN] = 0;
         s2[OFS_FSMLEVEL] = 0;
         s2[OFS_DIE1] = 0;

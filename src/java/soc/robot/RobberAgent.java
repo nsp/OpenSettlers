@@ -25,7 +25,7 @@ public class RobberAgent extends Agent implements Runnable {
 		
 		log = Loggers.RobberAgentLogger;
 		
-		new Thread(this).start();
+		new Thread(this, "RobberAgent").start();
 		
 		
 		

@@ -30,6 +30,9 @@ public class Experiment implements GameStateConstants {
      */
     public static void main(String[] args) throws InterruptedException
     {
+//        ServerThread srv = new ServerThread();
+//        srv.start();
+        
 //        soc.debug.D.ebug_disable();
         if(args.length < 5) {
             System.err.println("Not enough arguments");
@@ -40,15 +43,15 @@ public class Experiment implements GameStateConstants {
         ClientHelperThread[] clients = new ClientHelperThread[4];
         for (int i = 0; i < clients.length; i++)
         {
-            if(args[i+1].contains("builtin"))
-                clients[i] = new ClientThread(10*gameno+i);
+            if(args[i+1].contains("builtin")) 
+                clients[i] = new ClientThread(10*gameno+(i==3 ? 3 : i), null);
             else if(args[i+1].contains("monte"))
                 clients[i] = new SmartSettlersClientThread(10*gameno+i);
             else if(args[i+1].contains("multi"))
                 clients[i] = new MultiAgentClientThread(10*gameno+i);
             else {
                 System.err.println("Bad argument: " + args[i+1]);
-                clients[i] = new ClientThread(10*gameno+i);
+                clients[i] = new ClientThread(10*gameno+i, null);
             }
         }
         TimerThread ttr = new TimerThread();
@@ -109,11 +112,11 @@ class TimerThread extends Thread
     public void run()
     {
         try {
-            sleep(1000*60*60);
+            sleep(1000*60*20);
         } catch (InterruptedException ex) {
             Logger.getLogger(TimerThread.class.getName()).log(Level.SEVERE, null, ex);
         }
         System.out.println("TIMEOUT!!!!");
-        System.exit(-1);
+//        System.exit(-1);
     }
 }

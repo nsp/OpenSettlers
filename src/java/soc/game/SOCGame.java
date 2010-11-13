@@ -1802,6 +1802,8 @@ public class SOCGame implements Serializable, Cloneable
                     ++tmpCPN;
                     if (tmpCPN >= maxPlayers)
                     {
+                        // So we don't spin our wheels too fast
+                        try { Thread.sleep(10000); } catch (InterruptedException e) { }
                         tmpCPN = 0;
                     }
                 }
@@ -1840,6 +1842,8 @@ public class SOCGame implements Serializable, Cloneable
                     --tmpCPN;
                     if (tmpCPN < 0)
                     {
+                        // So we don't spin our wheels too fast
+                        try { Thread.sleep(10000); } catch (InterruptedException e) { }
                         tmpCPN = maxPlayers - 1;
                     }
                 }

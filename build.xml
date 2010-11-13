@@ -170,15 +170,10 @@
   <target depends="init"
           name="init-libs">
     <mkdir dir="${lib.target}" />
-    <!-- Later: when we use external libraries
+    <!-- Later: when we use external libraries -->
       <copy toDir="${lib.target}">
         <fileset refid="ext.libs" />
-      </copy> -->
-    <copy overwrite="true"
-          preservelastmodified="true"
-          todir="${java.src}">
-      <fileset dir="src" />
-    </copy>
+      </copy> 
   </target>
   <target description="Copy resources to classes directory"
           name="resources">

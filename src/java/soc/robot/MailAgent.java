@@ -20,7 +20,7 @@ public class MailAgent extends Agent implements Runnable {
 		
 		messages = new Vector();
 		
-		MailAgentThread = new Thread(this);
+		MailAgentThread = new Thread(this, "MailAgent");
 		
 		MailAgentThread.start();
 		

@@ -796,7 +796,7 @@ public class BoardLayout implements HexTypeConstants, VectorConstants, GameState
         
         
     }
-    
+    private static final int MAX_ITER = 1000000;
     public void UCTsimulateGame(int[] s2)
     {
         int[] s = null;    
@@ -804,8 +804,9 @@ public class BoardLayout implements HexTypeConstants, VectorConstants, GameState
 
         TreeNode node;
         boolean isKnownState = true;
-        int winner;
+        int winner = -1;
         int it;
+        int ineriter = 0;
         
         boolean oldIsLoggingOn = isLoggingOn;
         isLoggingOn = false;
@@ -829,7 +830,7 @@ public class BoardLayout implements HexTypeConstants, VectorConstants, GameState
             isKnownState = true;
             s = cloneOfState(s2);
             uctTree.clearTraces();
-            while (true)
+            while(true)
             {
                 int hc = UCT.getHashCode(s);
                 node = uctTree.getNode(hc);
@@ -874,6 +875,11 @@ public class BoardLayout implements HexTypeConstants, VectorConstants, GameState
                 winner = getWinner(s);
                 if (winner !=-1)
                     break;
+                if (ineriter++ > MAX_ITER) {
+                    isLoggingOn = oldIsLoggingOn;
+                    s = a = null;
+                    return;
+                }
             }
             uctTree.update(winner, uctTime);
         }

@@ -8,6 +8,7 @@ package experiment;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import soc.robot.SOCRobotClient;
+import soc.util.SOCRobotParameters;
 
 /**
  *
@@ -15,9 +16,12 @@ import soc.robot.SOCRobotClient;
  */
 public class ClientThread extends ClientHelperThread
 {
-    ClientThread(int num)
+    SOCRobotParameters rp;
+    
+    ClientThread(int num, SOCRobotParameters params)
     {
         super("BuiltIn", num);
+        rp = params;
     }
     
     @Override
@@ -27,6 +31,7 @@ public class ClientThread extends ClientHelperThread
             sleep(5000);
             
             client = new SOCRobotClient("localhost", 8880, this.getName(), "");
+//            ((SOCRobotClient) client)
             ((SOCRobotClient) client).init();
 //            String[] clientArgs = {"localhost", "8880", "Computer" + num, ""};
 //            soc.robot.SOCRobotClient.main(clientArgs);

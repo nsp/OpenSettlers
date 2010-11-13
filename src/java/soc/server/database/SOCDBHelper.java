@@ -710,7 +710,7 @@ public class SOCDBHelper
                         updateRobotStats.setInt(3, points); // totalpoints
                         updateRobotStats.setString(4, pl.getName());
 
-                        updateRobotStats.executeUpdate();
+//                        updateRobotStats.executeUpdate();
                     }
                     else // The player is human
                     {

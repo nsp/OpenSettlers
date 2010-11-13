@@ -40,7 +40,7 @@ public class NodeAgent extends Agent implements Runnable {
 		
 		this.node = node;
 		
-		NodeAgentThread = new Thread(this);
+		NodeAgentThread = new Thread(this, "NodeAgent");
 		
 		NodeValidMoves = new Hashtable();
 		
