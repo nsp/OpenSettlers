@@ -1,5 +1,5 @@
 /**
- * Java Settlers - An online multiplayer version of the game Settlers of Catan
+ * Open Settlers - an open implementation of the game Settlers of Catan
  * This file copyright (C) 2008 Christopher McNeil <http://sourceforge.net/users/cmcneil>
  * Portions of this file copyright (C) 2003-2004 Robert S. Thomas
  * Portions of this file copyright (C) 2008 Eli McGowan <http://sourceforge.net/users/emcgowan>
@@ -16,10 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
- * The maintainer of this program can be reached at jsettlers@nand.net
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 package soc.robot;
 

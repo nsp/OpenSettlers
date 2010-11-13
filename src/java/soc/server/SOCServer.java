@@ -1,5 +1,5 @@
 /**
- * Java Settlers - An online multiplayer version of the game Settlers of Catan
+ * Open Settlers - an open implementation of the game Settlers of Catan
  * Copyright (C) 2003  Robert S. Thomas
  * Portions of this file Copyright (C) 2005 Chadwick A McHenry <mchenryc@acm.org>
  * Portions of this file Copyright (C) 2007-2010 Jeremy D. Monin <jeremy@nand.net>
@@ -15,11 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
- * The author of this program can be reached at thomas@infolab.northwestern.edu
- **/
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>. **/
 package soc.server;
 
 import java.sql.SQLException;
@@ -199,16 +195,16 @@ public class SOCServer extends Server
     public static final int DEFAULT_NICE = 5;
     
     /** Property to specify the port the server listens on. */
-    public static final String JSETTLERS_PORT = "jsettlers.port";
+    public static final String OPENSETTLERS_PORT = "osettlers.port";
 
     /** Property to specify the maximum number of connections allowed. */
-    public static final String JSETTLERS_CONNECTIONS = "jsettlers.connections";
+    public static final String OPENSETTLERS_CONNECTIONS = "osettlers.connections";
 
     /** Property to turn on debug mode. */
-    public static final String JSETTLERS_DEBUG = "jsettlers.debug";
+    public static final String OPENSETTLERS_DEBUG = "osettlers.debug";
 
     /** Property to specify the server thread priority. */
-    public static final String JSETTLERS_NICE = "jsettlers.nice";
+    public static final String OPENSETTLERS_NICE = "osettlers.nice";
 
     /**
      * Default tcp port number 8880 to listen, and for client to connect to remote server.
@@ -225,38 +221,38 @@ public class SOCServer extends Server
     /** Property <tt>jsettlers.port</tt> to specify the port the server listens on.
      * @since 1.1.09
      */
-    public static final String PROP_JSETTLERS_PORT = "jsettlers.port";
+    public static final String PROP_OPENSETTLERS_PORT = "osettlers.port";
 
     /** Property <tt>jsettlers.connections</tt> to specify the maximum number of connections allowed.
      * Remember that robots count against this limit.
      * @since 1.1.09
      */
-    public static final String PROP_JSETTLERS_CONNECTIONS = "jsettlers.connections";
+    public static final String PROP_OPENSETTLERS_CONNECTIONS = "osettlers.connections";
 
     /**
      * Property <tt>jsettlers.startrobots</tt> to start some robots when the server starts.
      * (The default is 0, no robots are started by default.)
      *<P>
      * 30% will be "smart" robots, the other 70% will be "fast" robots.
-     * Remember that robots count against the {@link #PROP_JSETTLERS_CONNECTIONS max connections} limit.
+     * Remember that robots count against the {@link #PROP_OPENSETTLERS_CONNECTIONS max connections} limit.
      * @since 1.1.09
      */
-    public static final String PROP_JSETTLERS_STARTROBOTS = "jsettlers.startrobots";
+    public static final String PROP_OPENSETTLERS_STARTROBOTS = "osettlers.startrobots";
 
     /**
      * List of all available JSettlers {@link Properties properties},
-     * such as {@link #PROP_JSETTLERS_PORT} and {@link SOCDBHelper#PROP_JSETTLERS_DB_URL}.
+     * such as {@link #PROP_OPENSETTLERS_PORT} and {@link SOCDBHelper#PROP_OPENSETTLERS_DB_URL}.
      * @since 1.1.09
      */
     public static final String[] PROPS_LIST =
     {
-    	PROP_JSETTLERS_PORT,
-    	PROP_JSETTLERS_CONNECTIONS,
-    	SOCDBHelper.PROP_JSETTLERS_DB_USER,
-    	SOCDBHelper.PROP_JSETTLERS_DB_PASS,
-    	SOCDBHelper.PROP_JSETTLERS_DB_URL,
-    	SOCDBHelper.PROP_JSETTLERS_DB_DRIVER,
-        SOCDBHelper.PROP_JSETTLERS_DB_ENABLED
+    	PROP_OPENSETTLERS_PORT,
+    	PROP_OPENSETTLERS_CONNECTIONS,
+    	SOCDBHelper.PROP_OPENSETTLERS_DB_USER,
+    	SOCDBHelper.PROP_OPENSETTLERS_DB_PASS,
+    	SOCDBHelper.PROP_OPENSETTLERS_DB_URL,
+    	SOCDBHelper.PROP_OPENSETTLERS_DB_DRIVER,
+        SOCDBHelper.PROP_OPENSETTLERS_DB_ENABLED
     };
 
     /**
@@ -540,15 +536,15 @@ public class SOCServer extends Server
      * Create a Settlers of Catan server listening on TCP port p.
      * You must start its thread yourself.
      *<P>
-     * The database properties are {@link SOCDBHelper#PROP_JSETTLERS_DB_USER}
-     * and {@link SOCDBHelper#PROP_JSETTLERS_DB_PASS}.
+     * The database properties are {@link SOCDBHelper#PROP_OPENSETTLERS_DB_USER}
+     * and {@link SOCDBHelper#PROP_OPENSETTLERS_DB_PASS}.
      *<P>
      * Will also print game options to stderr if
      * any option defaults require a minimum client version, or if 
      * {@link #hasSetGameOptions} is set.
      * 
      * @param p    the TCP port that the server listens on
-     * @param props  null, or properties containing {@link #PROP_JSETTLERS_CONNECTIONS}
+     * @param props  null, or properties containing {@link #PROP_OPENSETTLERS_CONNECTIONS}
      *               and any other desired properties. 
      * @since 1.1.09
      * @see #PROPS_LIST
@@ -558,7 +554,7 @@ public class SOCServer extends Server
         super(p);
         try
         {
-            String mcs = props.getProperty(PROP_JSETTLERS_CONNECTIONS, "15");
+            String mcs = props.getProperty(PROP_OPENSETTLERS_CONNECTIONS, "15");
             if (mcs != null)
                 maxConnections = Integer.parseInt(mcs);
             else
@@ -567,8 +563,8 @@ public class SOCServer extends Server
         {
             maxConnections = 15;
         }
-        String dbuser = props.getProperty(SOCDBHelper.PROP_JSETTLERS_DB_USER, "dbuser");
-        String dbpass = props.getProperty(SOCDBHelper.PROP_JSETTLERS_DB_PASS, "dbpass");
+        String dbuser = props.getProperty(SOCDBHelper.PROP_OPENSETTLERS_DB_USER, "dbuser");
+        String dbpass = props.getProperty(SOCDBHelper.PROP_OPENSETTLERS_DB_PASS, "dbpass");
         initSocServer(dbuser, dbpass, props);
     }
 
@@ -598,11 +594,11 @@ public class SOCServer extends Server
     /**
      * Common init for all constructors.
      * Starts all server threads except the main thread.
-     * If {@link #PROP_JSETTLERS_STARTROBOTS} is specified, those aren't started until {@link #serverUp()}.
+     * If {@link #PROP_OPENSETTLERS_STARTROBOTS} is specified, those aren't started until {@link #serverUp()}.
      *
      * @param databaseUserName Used for DB connect - not retained
      * @param databasePassword Used for DB connect - not retained
-     * @param props  null, or properties containing {@link #PROP_JSETTLERS_CONNECTIONS}
+     * @param props  null, or properties containing {@link #PROP_OPENSETTLERS_CONNECTIONS}
      *       and any other desired properties. 
      *       If <code>props</code> is null, the properties will be created empty.
      */
@@ -691,7 +687,7 @@ public class SOCServer extends Server
     /**
      * Callback to take care of things when server comes up, after the server socket
      * is bound and listening, in the main thread.
-     * If {@link #PROP_JSETTLERS_STARTROBOTS} is specified, start those {@link SOCRobotClient}s now.
+     * If {@link #PROP_OPENSETTLERS_STARTROBOTS} is specified, start those {@link SOCRobotClient}s now.
      * @since 1.1.09
      */
     public void serverUp()
@@ -700,17 +696,17 @@ public class SOCServer extends Server
          * If we have any STARTROBOTS, start them up now.
          * Each bot will have its own thread and {@link SOCRobotClient}.
          */
-        if ((props != null) && (props.containsKey(PROP_JSETTLERS_STARTROBOTS)))
+        if ((props != null) && (props.containsKey(PROP_OPENSETTLERS_STARTROBOTS)))
         {
             try
             {
-                int rcount = Integer.parseInt(props.getProperty(PROP_JSETTLERS_STARTROBOTS));
+                int rcount = Integer.parseInt(props.getProperty(PROP_OPENSETTLERS_STARTROBOTS));
                 int fast30 = (int) (0.30f * rcount);
                 setupLocalRobots(fast30, rcount - fast30);  // each bot gets a thread
             }
             catch (NumberFormatException e)
             {
-                System.err.println("Not starting robots: Bad number format, ignoring property " + PROP_JSETTLERS_STARTROBOTS);
+                System.err.println("Not starting robots: Bad number format, ignoring property " + PROP_OPENSETTLERS_STARTROBOTS);
             }
         }        
     }
@@ -8609,10 +8605,10 @@ public class SOCServer extends Server
      * is called to set them globally.
      * @param args args as passed to main
      * @return Properties collection of args, or null for argument error.
-     *     Will contain at least {@link #PROP_JSETTLERS_PORT},
-     *     {@link #PROP_JSETTLERS_CONNECTIONS},
-     *     {@link SOCDBHelper#PROP_JSETTLERS_DB_USER},
-     *     {@link SOCDBHelper#PROP_JSETTLERS_DB_PASS}.
+     *     Will contain at least {@link #PROP_OPENSETTLERS_PORT},
+     *     {@link #PROP_OPENSETTLERS_CONNECTIONS},
+     *     {@link SOCDBHelper#PROP_OPENSETTLERS_DB_USER},
+     *     {@link SOCDBHelper#PROP_OPENSETTLERS_DB_PASS}.
      * @since 1.1.07
      */
     public static Properties parseCmdline_DashedArgs(String[] args)
@@ -8716,10 +8712,10 @@ public class SOCServer extends Server
             printUsage(false);
             return null;
         }
-        argp.setProperty(PROP_JSETTLERS_PORT, args[aidx]);  ++aidx;
-        argp.setProperty(PROP_JSETTLERS_CONNECTIONS, args[aidx]);  ++aidx;
-        argp.setProperty(SOCDBHelper.PROP_JSETTLERS_DB_USER, args[aidx]);  ++aidx;
-        argp.setProperty(SOCDBHelper.PROP_JSETTLERS_DB_PASS, args[aidx]);  ++aidx;
+        argp.setProperty(PROP_OPENSETTLERS_PORT, args[aidx]);  ++aidx;
+        argp.setProperty(PROP_OPENSETTLERS_CONNECTIONS, args[aidx]);  ++aidx;
+        argp.setProperty(SOCDBHelper.PROP_OPENSETTLERS_DB_USER, args[aidx]);  ++aidx;
+        argp.setProperty(SOCDBHelper.PROP_OPENSETTLERS_DB_PASS, args[aidx]);  ++aidx;
 
         if (aidx < args.length)
         {
@@ -8770,7 +8766,7 @@ public class SOCServer extends Server
             System.err.println("       -V or --version    : print version information");
             System.err.println("       -h or --help or -? : print this screen");
             System.err.println("       -o or --option name=value : set per-game options' default values");
-            System.err.println("       -D name=value : set properties such as " + SOCDBHelper.PROP_JSETTLERS_DB_USER);
+            System.err.println("       -D name=value : set properties such as " + SOCDBHelper.PROP_OPENSETTLERS_DB_USER);
             printGameOptions();
         } else {
             System.err.println("       use java soc.server.SOCServer --help to see recognized options");            
@@ -8860,7 +8856,7 @@ public class SOCServer extends Server
 
         try
         {
-            int port = Integer.parseInt(argp.getProperty(PROP_JSETTLERS_PORT));
+            int port = Integer.parseInt(argp.getProperty(PROP_OPENSETTLERS_PORT));
 
             // SOCServer constructor will also print game options if we've set them on
             // commandline, or if any option defaults require a minimum client version.

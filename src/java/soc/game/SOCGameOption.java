@@ -1,5 +1,5 @@
 /**
- * Java Settlers - An online multiplayer version of the game Settlers of Catan
+ * Open Settlers - an open implementation of the game Settlers of Catan
  * This file Copyright (C) 2009 Jeremy Monin <jeremy@nand.net>
  *
  * This program is free software; you can redistribute it and/or
@@ -13,11 +13,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
- * The author of this program can be reached at thomas@infolab.northwestern.edu
- **/
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>. **/
 package soc.game;
 
 import java.util.Enumeration;
@@ -39,7 +35,7 @@ import soc.message.SOCMessage;
  *</UL>
  *<P>
  * For information about adding or changing game options in a
- * later version of JSettlers, please see {@link #initAllOptions()}.
+ * later version of OpenSettlers, please see {@link #initAllOptions()}.
  *<P>
  * All in-game code uses 2-letter key strings to query and change
  * game option settings; only a very few places use SOCGameOption
@@ -63,10 +59,10 @@ import soc.message.SOCMessage;
  * Introduced in 1.1.07; check server, client versions against
  * {@link soc.message.SOCNewGameWithOptions#VERSION_FOR_NEWGAMEWITHOPTIONS}.
  * Each option has version information, because options can be added or changed
- * with new versions of JSettlers.  Since games run on the server, the server is
+ * with new versions of OpenSettlers.  Since games run on the server, the server is
  * authoritative about game options:  If the client is newer, it must defer to the
  * server's older set of known options.  At client connect, the client compares its
- * JSettlers version number to the server's, and asks for any changes to options if
+ * OpenSettlers version number to the server's, and asks for any changes to options if
  * their versions differ.
  *<P>
  * @author Jeremy D. Monin <jeremy@nand.net>

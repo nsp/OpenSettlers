@@ -1,5 +1,5 @@
 /**
- * Java Settlers - An online multiplayer version of the game Settlers of Catan
+ * Open Settlers - an open implementation of the game Settlers of Catan
  * Copyright (C) 2003  Robert S. Thomas
  * Documentation paragraphs and other portions of this file Copyright (C) 2007-2010 Jeremy D Monin <jeremy@nand.net>
  *
@@ -14,11 +14,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
- * The author of this program can be reached at thomas@infolab.northwestern.edu
- **/
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>. **/
 package soc.message;
 
 import java.io.Serializable;
@@ -53,10 +49,10 @@ import java.util.StringTokenizer;
  * To create and add a new message type:
  *<UL>
  * <LI> Decide the message type name.  Add to the end of the constant list in this
- *      class.  Add a comment to note the JSettlers version in which it was introduced, and the date.
+ *      class.  Add a comment to note the OpenSettlers version in which it was introduced, and the date.
  * <LI> If the new message is for something that any kind of game can use,
  *      give it the next available type ID number in the list (10xx).
- *      If the message is specific to the JSettlers game and its interface,
+ *      If the message is specific to the OpenSettlers game and its interface,
  *      use a message number above 10000.  The intention is that other kinds of games
  *      can be played eventually within this server framework.
  * <LI> Add it to the switch in {@link #toMsg(String)}.  Again, note the version.
@@ -66,7 +62,7 @@ import java.util.StringTokenizer;
  *      Template parent-classes can help; the example subclasses extend them.
  *      Be sure to override the minimum version reported in {@link #getMinimumVersion()}.
  * <LI> Add to the switch in SOCPlayerClient.treat and/or SOCServer.processCommand.
- *      Note the JSettlers version with a comment.
+ *      Note the OpenSettlers version with a comment.
  *      <P>
  *      <em>Note:</em> Most things added to SOCPlayerClient.treat should also be added to
  *      {@link soc.client.SOCDisplaylessPlayerClient#treat(SOCMessage)},
@@ -202,7 +198,7 @@ public abstract class SOCMessage implements Serializable, Cloneable
     /////////////////////////////////////////
     // REQUEST FOR FUTURE MESSAGE NUMBERS: //
     /////////////////////////////////////////
-    // Gametype-specific messages (jsettlers) above 10000;
+    // Gametype-specific messages (opensettlers) above 10000;
     // messages applicable to any game (game options, etc) in current low-1000s range.
     // Please see class javadoc.
     /////////////////////////////////////////
@@ -246,7 +242,7 @@ public abstract class SOCMessage implements Serializable, Cloneable
     /**
      * To identify new message types, give the minimum version where this
      * type is used.  Default of 1000 (version 1.0.00) unless overridden.
-     * @return Version number, as in 1006 for JSettlers 1.0.06.
+     * @return Version number, as in 1006 for OpenSettlers 1.0.06.
      */
     public int getMinimumVersion()
     {
@@ -256,7 +252,7 @@ public abstract class SOCMessage implements Serializable, Cloneable
     /**
      * To identify obsolete message types, give the maximum version where this
      * type is used.  Default (for active messages) returns {@link Integer#MAX_VALUE}.
-     * @return Version number, as in 1006 for JSettlers 1.0.06, or {@link Integer#MAX_VALUE}.
+     * @return Version number, as in 1006 for OpenSettlers 1.0.06, or {@link Integer#MAX_VALUE}.
      */
     public int getMaximumVersion()
     {

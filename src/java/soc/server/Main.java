@@ -1,5 +1,5 @@
 /**
- * Java Settlers - An online multiplayer version of the game Settlers of Catan
+ * Open Settlers - an open implementation of the game Settlers of Catan
  * Copyright (C) 2003  Robert S. Thomas
  *
  * This program is free software; you can redistribute it and/or
@@ -13,11 +13,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
- * The author of this program can be reached at thomas@infolab.northwestern.edu
- **/
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>. **/
 package soc.server;
 
 import soc.server.database.SOCDBHelper;
@@ -110,7 +106,7 @@ public class Main
             }
             else if (arg.equals("-port") || arg.equals("-p")) {
                 if (i < args.length -1) {
-                    cmdProps.setProperty(SOCServer.JSETTLERS_PORT, args[++i]);
+                    cmdProps.setProperty(SOCServer.OPENSETTLERS_PORT, args[++i]);
                 }
                 else {
                     String msg = "You must specify a port number when " +
@@ -154,7 +150,7 @@ public class Main
             }
             else if (arg.equals("-nice")) {
                 if (i < args.length - 1) {
-                    cmdProps.setProperty(SOCServer.JSETTLERS_NICE, args[++i]);
+                    cmdProps.setProperty(SOCServer.OPENSETTLERS_NICE, args[++i]);
                 }
                 else {
                     throw new RuntimeException("You must specify a nice value (1-10) " +
@@ -176,19 +172,19 @@ public class Main
 
         // old style command line arguments are deprecated, but take precidence
         if (i < args.length)
-            cmdProps.setProperty(SOCServer.PROP_JSETTLERS_PORT, args[i++]);
+            cmdProps.setProperty(SOCServer.PROP_OPENSETTLERS_PORT, args[i++]);
         if (i < args.length)
-            cmdProps.setProperty(SOCServer.PROP_JSETTLERS_CONNECTIONS, args[i++]);
+            cmdProps.setProperty(SOCServer.PROP_OPENSETTLERS_CONNECTIONS, args[i++]);
         if (i < args.length)
-            cmdProps.setProperty(SOCDBHelper.PROP_JSETTLERS_DB_USER, args[i++]);
+            cmdProps.setProperty(SOCDBHelper.PROP_OPENSETTLERS_DB_USER, args[i++]);
         if (i < args.length)
-            cmdProps.setProperty(SOCDBHelper.PROP_JSETTLERS_DB_PASS, args[i++]);
+            cmdProps.setProperty(SOCDBHelper.PROP_OPENSETTLERS_DB_PASS, args[i++]);
 
         // read propertyfile into props, which is shadowed by command line args
         readProperties(props, propertyFile);
 
         // we need the port to create the server
-        String portVal = cmdProps.getProperty(SOCServer.JSETTLERS_PORT);
+        String portVal = cmdProps.getProperty(SOCServer.OPENSETTLERS_PORT);
         try {
             port = (portVal == null ? port : Integer.parseInt(portVal));
         }
@@ -218,13 +214,13 @@ public class Main
           //.append("  -debug, -d             print debugging information (")
           //.append               (SOCServer.JSETTLERS_OUTPUT+")"+nl)
           .append("  -port, -p              listen on the specified port (")
-          .append               (SOCServer.JSETTLERS_PORT+")"+nl)
+          .append               (SOCServer.OPENSETTLERS_PORT+")"+nl)
           .append("  -propertyfile <file>   use given property file"+nl)
           .append("    -f          <file>         ''"+nl)
           .append("  -D<property>=<value>   use value for given property"+nl)
           .append("  -nice <number>         A niceness value for main thread priority:"+nl)
           .append("                           1 (lowest) to 10 (highest). default=5"+nl)
-          .append("                           ("+SOCServer.JSETTLERS_NICE+")"+nl);
+          .append("                           ("+SOCServer.OPENSETTLERS_NICE+")"+nl);
     }
 
     /**

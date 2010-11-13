@@ -1,5 +1,5 @@
 /**
- * Java Settlers - An online multiplayer version of the game Settlers of Catan
+ * Open Settlers - an open implementation of the game Settlers of Catan
  * Copyright (C) 2003  Robert S. Thomas
  * This file copyright (C) 2008-2009 Jeremy D Monin <jeremy@nand.net>
  *
@@ -14,11 +14,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
- * The author of this program can be reached at thomas@infolab.northwestern.edu
- **/
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>. **/
 package soc.client;
 
 import java.awt.BorderLayout;
@@ -175,7 +171,7 @@ public class SOCConnectOrPracticePanel extends Panel
         gbc.fill = GridBagConstraints.BOTH;
         gbc.gridwidth = GridBagConstraints.REMAINDER;
 
-        Label L = new Label("Welcome to JSettlers!  Please choose an option.");
+        Label L = new Label("Welcome to OpenSettlers!  Please choose an option.");
         L.setAlignment(Label.CENTER);
         gbl.setConstraints(L, gbc);
         bp.add(L);
@@ -227,7 +223,7 @@ public class SOCConnectOrPracticePanel extends Panel
 
         // Final assembly setup
         add(bp, BorderLayout.CENTER);
-        Label verl = new Label("JSettlers " + Version.version() + " build " + Version.buildnum());       
+        Label verl = new Label("OpenSettlers " + Version.version() + " build " + Version.buildnum());       
         verl.setAlignment(Label.CENTER);
         verl.setForeground(new Color(252, 251, 243)); // off-white
         add(verl, BorderLayout.SOUTH);

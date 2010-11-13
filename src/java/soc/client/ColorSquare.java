@@ -1,5 +1,5 @@
 /**
- * Java Settlers - An online multiplayer version of the game Settlers of Catan
+ * Open Settlers - an open implementation of the game Settlers of Catan
  * Copyright (C) 2003  Robert S. Thomas
  * Portions of this file Copyright (C) 2007-2009 Jeremy D. Monin <jeremy@nand.net>
  *
@@ -14,11 +14,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
- * The author of this program can be reached at thomas@infolab.northwestern.edu
- **/
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>. **/
 package soc.client;
 
 import java.awt.Canvas;
@@ -38,7 +34,7 @@ import java.awt.event.MouseListener;
  * colors of the box correspond to resources in SoC.
  *<P>
  * Default size is {@link #WIDTH} by {@link #HEIGHT} pixels.
- * Most colorsquares in JSettlers are actually
+ * Most colorsquares in OpenSettlers are actually
  * {@link ColorSquareLarger} instances.
  * This was easier than changing the values of {@link #WIDTH} and {@link #HEIGHT},
  * which are used for setting the size of many GUI elements.

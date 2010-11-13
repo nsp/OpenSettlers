@@ -6,7 +6,7 @@
  * Portions (c) 2007-2009 Jeremy D Monin <jeremy@nand.net>
  *
  * originally from (GPL'd) de.ios.framework.gui.ExpandTooltip;
- * using for jsettlers AWT tooltip
+ * using for opensettlers AWT tooltip
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as

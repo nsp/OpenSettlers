@@ -1,9 +1,10 @@
-[ The list of the different public versions of JSettlers ]
+[ The list of the different public versions of OpenSettlers/JSettlers ]
 
-Unless otherwise indicated, versions are hosted at http://nand.net/jsettlers/devel/
-and (recent versions) at http://sourceforge.net/projects/jsettlers2/files/
+Unless otherwise indicated, versions are hosted at http://github.com/nsp/OpenSettlers/ 
 
-    > 1.1.09 (build 20100417)
+After version 1.1.09, the project has been renamed OpenSettlers
+
+    > 1.1.09 (build 20100417) http://sourceforge.net/projects/jsettlers2/files/
 - 4-player board: crisper graphics (images from 6-player board)
 - Practice games don't expire (Rowan H idea)
 - Show rounds remaining for "roll no 7s during first n turns" (Rowan H idea)
@@ -43,7 +44,7 @@ and (recent versions) at http://sourceforge.net/projects/jsettlers2/files/
 - Debug assist: Connection, LocalStringConnection +toString()
 - README.developer: Coding Style section
 
-    > 1.1.08 (build 20100112)
+    > 1.1.08 (build 20100112) http://sourceforge.net/projects/jsettlers2/files/
 - 6-player board, with Special Building Phase rule
 - Can now sometimes reconnect after connection to server is lost,
      when message "A player with that nickname is already logged in" appears.
@@ -59,7 +60,7 @@ and (recent versions) at http://sourceforge.net/projects/jsettlers2/files/
 - SOCRobotBrain refactor some message-handlers out of run() (C McNeil idea)
 - Old version history (pre-sourceforge): Added file src/docs/old-updates-rsthomas.html found on web at http://jrh-xp.byu.edu/settlers/updates.htm
 
-    > 1.1.07 (build 20091031)
+    > 1.1.07 (build 20091031) http://sourceforge.net/projects/jsettlers2/files/
 - Per-game options framework, including these options:
 	- PL  Maximum # players (2-4)
 	- RD  Robber can't return to the desert
@@ -80,7 +81,7 @@ and (recent versions) at http://sourceforge.net/projects/jsettlers2/files/
 - Don't cover board with 'choose player' popup (Rowan H idea)
 - AskDialog supports multiple lines with "\n"
 
-    > 1.1.06 (build 2009-06-01)
+    > 1.1.06 (build 2009-06-01) http://sourceforge.net/projects/jsettlers2/files/
 - Based on 1.1.04's code
 - Monopoly reports (privately) number of resources stolen to each victim
 - Reset practice game, at end of game: New randomly-selected robots, instead of same robots each time
@@ -94,12 +95,12 @@ and (recent versions) at http://sourceforge.net/projects/jsettlers2/files/
 - Bugfix: "Start a local server" ignored port-number textfield, was always default port
 - Bugfix: harmless NullPointerException in SOCBoardPanel.setHoverText for getFontMetrics
 
-    > 1.1.05 (backed out)
+    > 1.1.05 (backed out) http://sourceforge.net/projects/jsettlers2/files/
 JSettlers 1.1.05 had been under development (build 2008-09-13) but its direction is being re-considered.
 Further development is based on 1.1.04.
 - Use Log4j 1.2, vs previous homegrown soc.debug/disableDebug
 
-    > 1.1.04 (build 2008-09-06)
+    > 1.1.04 (build 2008-09-06) http://sourceforge.net/projects/jsettlers2/files/
 - Bugfix: Cancelling 2nd initial settlement, other players lost resources (SOCPlayer)
 - Bugfix: Don't disable "play card" button after buying or playing a card (SOCHandPanel)
 - Bugfix: Sometimes, "hovering" road or settlement wouldn't show during initial placement (SOCBoardPanel)
@@ -107,7 +108,7 @@ Further development is based on 1.1.04.
 - Add StringConnection.appData, to support SOCClientData
 - Javadoc adds/updates
 
-    > 1.1.03 (build 2008-08-26)
+    > 1.1.03 (build 2008-08-26) http://sourceforge.net/projects/jsettlers2/files/
 - Reset board: Bugfix: Practice games server version-check
 - Don't show hovering road/settlement/city unless player has the resources
 - "Play card" button: Disable after playing a card; Enable only at start of turn, not after buying a card

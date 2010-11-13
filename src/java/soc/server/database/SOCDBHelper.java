@@ -1,5 +1,5 @@
 /**
- * Java Settlers - An online multiplayer version of the game Settlers of Catan
+ * Open Settlers - an open implementation of the game Settlers of Catan
  * Copyright (C) 2003  Robert S. Thomas
  * Portions of this file Copyright (C) 2009-2010 Jeremy D Monin <jeremy@nand.net>
  *
@@ -14,11 +14,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
- * The author of this program can be reached at thomas@infolab.northwestern.edu
- **/
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>. **/
 package soc.server.database;
 
 import java.sql.Connection;
@@ -54,7 +50,7 @@ import soc.util.SOCRobotParameters;
  * The default URL is "jdbc:mysql://localhost/socdata".
  * The default driver is "com.mysql.jdbc.Driver".
  * These can be changed by supplying properties to {@link #initialize(String, String, Properties)}
- * for {@link #PROP_JSETTLERS_DB_URL} and {@link #PROP_JSETTLERS_DB_DRIVER}.
+ * for {@link #PROP_OPENSETTLERS_DB_URL} and {@link #PROP_OPENSETTLERS_DB_DRIVER}.
  *<P>
  * It uses a database created with the following commands:
  *<code>
@@ -68,39 +64,39 @@ import soc.util.SOCRobotParameters;
  */
 public class SOCDBHelper
 {
-    // If a new property is added, please add a PROP_JSETTLERS_DB_ constant
+    // If a new property is added, please add a PROP_OPENSETTLERS_DB_ constant
     // and also add it to SOCServer.PROPS_LIST.
 
     /** Property to specify the SQL database server. 
 	 * @since 1.1.10
 	 */
-    public static final String PROP_JSETTLERS_DB_ENABLED = "jsettlers.db.enabled";
+    public static final String PROP_OPENSETTLERS_DB_ENABLED = "osettlers.db.enabled";
 
-	/** Property <tt>jsettlers.db.user</tt> to specify the server's SQL database username.
+	/** Property <tt>osettlers.db.user</tt> to specify the server's SQL database username.
      * @since 1.1.09
      */
-    public static final String PROP_JSETTLERS_DB_USER = "jsettlers.db.user";
+    public static final String PROP_OPENSETTLERS_DB_USER = "osettlers.db.user";
 
-    /** Property <tt>jsettlers.db.pass</tt> to specify the server's SQL database password.
+    /** Property <tt>osettlers.db.pass</tt> to specify the server's SQL database password.
      * @since 1.1.09
      */
-    public static final String PROP_JSETTLERS_DB_PASS = "jsettlers.db.pass";
+    public static final String PROP_OPENSETTLERS_DB_PASS = "osettlers.db.pass";
 
-    /** Property <tt>jsettlers.db.driver</tt> to specify the server's JDBC driver class.
+    /** Property <tt>osettlers.db.driver</tt> to specify the server's JDBC driver class.
      * The default driver is "com.mysql.jdbc.Driver".
-     * If the {@link #PROP_JSETTLERS_DB_URL URL} begins with "jdbc:postgresql:",
+     * If the {@link #PROP_OPENSETTLERS_DB_URL URL} begins with "jdbc:postgresql:",
      * the driver will be "org.postgresql.Driver".
      * If the <tt>URL</tt> begins with "jdbc:sqlite:",
      * the driver will be "org.sqlite.JDBC".
      * @since 1.1.09
      */
-    public static final String PROP_JSETTLERS_DB_DRIVER = "jsettlers.db.driver";
+    public static final String PROP_OPENSETTLERS_DB_DRIVER = "osettlers.db.driver";
 
-    /** Property <tt>jsettlers.db.url</tt> to specify the server's URL.
+    /** Property <tt>osettlers.db.url</tt> to specify the server's URL.
      * The default URL is "jdbc:mysql://localhost/socdata".
      * @since 1.1.09
      */
-    public static final String PROP_JSETTLERS_DB_URL = "jsettlers.db.url";
+    public static final String PROP_OPENSETTLERS_DB_URL = "osettlers.db.url";
 
     public static Connection connection = null;
 
@@ -176,12 +172,12 @@ public class SOCDBHelper
      * These can be changed by supplying <code>props</code>.
      * If props = null, we behave as though db.enabled=false;
      *
-     * @param props  null, or properties containing {@link #PROP_JSETTLERS_DB_USER},
-     *       {@link #PROP_JSETTLERS_DB_URL}, and any other desired properties.
+     * @param props  null, or properties containing {@link #PROP_OPENSETTLERS_DB_USER},
+     *       {@link #PROP_OPENSETTLERS_DB_URL}, and any other desired properties.
      * @throws SQLException if an SQL command fails, or the db couldn't be
      *         initialized;
-     *         or if the {@link #PROP_JSETTLERS_DB_DRIVER} property is not mysql, not sqlite, not postgres,
-     *         but the {@link #PROP_JSETTLERS_DB_URL} property is not provided.
+     *         or if the {@link #PROP_OPENSETTLERS_DB_DRIVER} property is not mysql, not sqlite, not postgres,
+     *         but the {@link #PROP_OPENSETTLERS_DB_URL} property is not provided.
      */
     public static boolean initialize(Properties props) throws SQLException
     {
@@ -190,8 +186,8 @@ public class SOCDBHelper
 
     	String driverclass = "com.mysql.jdbc.Driver";
     	dbURL = "jdbc:mysql://localhost/socdata";
-        String prop_dbURL = props.getProperty(PROP_JSETTLERS_DB_URL);
-        String prop_driverclass = props.getProperty(PROP_JSETTLERS_DB_DRIVER);
+        String prop_dbURL = props.getProperty(PROP_OPENSETTLERS_DB_URL);
+        String prop_driverclass = props.getProperty(PROP_OPENSETTLERS_DB_DRIVER);
         if (prop_dbURL != null)
         {
             dbURL = prop_dbURL;
@@ -204,7 +200,7 @@ public class SOCDBHelper
             else if (! prop_dbURL.startsWith("jdbc:mysql"))
             {
                 throw new SQLException("JDBC: URL property is set, but driver property is not: ("
-                    + PROP_JSETTLERS_DB_URL + ", " + PROP_JSETTLERS_DB_DRIVER + ")");
+                    + PROP_OPENSETTLERS_DB_URL + ", " + PROP_OPENSETTLERS_DB_DRIVER + ")");
             }
         } else {
             if (prop_driverclass != null)
@@ -223,14 +219,14 @@ public class SOCDBHelper
             else if (! driverclass.contains("mysql"))
             {
                 throw new SQLException("JDBC: Driver property is set, but URL property is not: ("
-                    + PROP_JSETTLERS_DB_DRIVER + ", " + PROP_JSETTLERS_DB_URL + ")");
+                    + PROP_OPENSETTLERS_DB_DRIVER + ", " + PROP_OPENSETTLERS_DB_URL + ")");
             }
 //            props.setProperty(PROP, value)
     	}
-        userName = props.getProperty(PROP_JSETTLERS_DB_USER);
-        password = props.getProperty(PROP_JSETTLERS_DB_PASS);
-        url = props.getProperty(PROP_JSETTLERS_DB_URL);
-        String driver = props.getProperty(PROP_JSETTLERS_DB_DRIVER);
+        userName = props.getProperty(PROP_OPENSETTLERS_DB_USER);
+        password = props.getProperty(PROP_OPENSETTLERS_DB_PASS);
+        url = props.getProperty(PROP_OPENSETTLERS_DB_URL);
+        String driver = props.getProperty(PROP_OPENSETTLERS_DB_DRIVER);
 
     	try
         {

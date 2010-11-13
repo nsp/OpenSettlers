@@ -1,5 +1,5 @@
 /**
- * Java Settlers - An online multiplayer version of the game Settlers of Catan
+ * Open Settlers - an open implementation of the game Settlers of Catan
  * Copyright (C) 2003  Robert S. Thomas
  * Portions of this file Copyright (C) 2007-2010 Jeremy D Monin <jeremy@nand.net>
  *
@@ -14,11 +14,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
- * The author of this program can be reached at thomas@infolab.northwestern.edu
- **/
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>. **/
 package soc.client;
 
 import java.applet.Applet;
@@ -4954,7 +4950,7 @@ public class SOCPlayerClient extends Applet implements Runnable, ActionListener,
             {
                 try
                 {
-                    ((Frame) parent).setTitle("JSettlers server " + Version.version()
+                    ((Frame) parent).setTitle("OpenSettlers server " + Version.version()
                         + " - port " + tport);
                 } catch (Throwable t)
                 {}
@@ -5140,7 +5136,7 @@ public class SOCPlayerClient extends Applet implements Runnable, ActionListener,
                 ", build " + Version.buildnum() + ", " + Version.copyright());
         System.out.println("Network layer based on code by Cristian Bogdan; local network by Jeremy Monin.");
 
-        Frame frame = new Frame("JSettlers client " + Version.version());
+        Frame frame = new Frame("OpenSettlers client " + Version.version());
         frame.setBackground(new Color(Integer.parseInt("61AF71",16)));
         frame.setForeground(Color.black);
         // Add a listener for the close event

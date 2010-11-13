@@ -3,7 +3,7 @@
 	<classpathentry kind="src" path="src/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.15.jar"/>
-	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.12/mysql-connector-java-5.1.12-bin.jar" sourcepath="C:/Code/CS6700/JSettlers-CU/lib/mysql-connector-java-5.1.12/src.zip"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.12/mysql-connector-java-5.1.12-bin.jar" sourcepath="lib/mysql-connector-java-5.1.12/src.zip"/>
 	<classpathentry kind="lib" path="lib/JSkills.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

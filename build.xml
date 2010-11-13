@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <project default="build"
-         name="jsettlers">
+         name="opensettlers">
   <!-- Give user a chance to override without editing this file
        (and without typing -D each time compiling) -->
   <property file="build.properties" />
@@ -13,9 +13,9 @@
   <property name="deprecation"
             value="false" />
   <property name="name"
-            value="jsettlers" />
+            value="opensettlers" />
   <property name="Name"
-            value="JSettlers" />
+            value="OpenSettlers" />
   <!-- version under development, e.g. 1.1, 1.2-RC2, 2.0-SNAPSHOT -->
   <property name="version"
             value="1.1.09" />
@@ -24,7 +24,7 @@
   <property name="copyright"
             value="2001-2004 Robb Thomas, portions 2007-2010 Jeremy D Monin, portions 2010 Nate Parsons" />
   <property name="url"
-            value="http://github.com/nsp/JSettlers-CU" />
+            value="http://github.com/nsp/OpenSettlers" />
   <!-- **** See build.properties for client/server startup arguments **** -->
   <property name="experiment.class"
             value="experiment.Experiment" />

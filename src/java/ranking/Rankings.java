@@ -39,8 +39,8 @@ public class Rankings
 //            new File(s).delete();
 //        }
         Properties props = new Properties();
-        props.setProperty(SOCDBHelper.PROP_JSETTLERS_DB_USER, "root");
-        props.setProperty(SOCDBHelper.PROP_JSETTLERS_DB_PASS, "root");
+        props.setProperty(SOCDBHelper.PROP_OPENSETTLERS_DB_USER, "root");
+        props.setProperty(SOCDBHelper.PROP_OPENSETTLERS_DB_PASS, "root");
         SOCDBHelper.initialize(props);
         PreparedStatement gameInfoQuery = SOCDBHelper.connection.prepareStatement(GAME_INFO_QUERY);
         ResultSet results = gameInfoQuery.executeQuery();
