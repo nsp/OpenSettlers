@@ -210,8 +210,6 @@ public abstract class Message implements Serializable, Cloneable
     public static final int SHOWSTATS = 10002;
     public static final int RESETSTATS = 10003;
     public static final int SERVERPING = 9999;  // available in all versions
-
-    public static final int IMSMARTSETTLERS = 10000;
     
     /**
      * Token separators. At most one SEP per message; multiple SEP2 are allowed after SEP.
