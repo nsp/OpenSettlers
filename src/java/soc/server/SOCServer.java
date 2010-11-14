@@ -18,6 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>. **/
 package soc.server;
 
+import java.io.FileWriter;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.Enumeration;
@@ -133,7 +134,6 @@ import soc.message.SOCTurn;
 import soc.message.SOCUpdateRobotParams;
 import soc.message.SOCVersion;
 import soc.robot.SOCRobotClient;
-import soc.robot.SSRobotClient;
 import soc.server.database.SOCDBHelper;
 import soc.server.genericServer.LocalStringConnection;
 import soc.server.genericServer.Server;
@@ -509,8 +509,6 @@ public class SOCServer extends Server
     String databaseUserName;
     String databasePassword;
     
-    SSRobotClient loggerClient;
-
     /**
      * Create a Settlers of Catan server listening on TCP port p.
      * You must start its thread yourself.
@@ -8340,21 +8338,10 @@ public class SOCServer extends Server
      */
     protected void recordGameEvent(String gameName, String event)
     {
-        /*
-           FileWriter fw = (FileWriter)gameDataFiles.get(gameName);
-           if (fw != null) {
-           try {
-           fw.write(event+"\n");
-           //D.ebugPrintln("WROTE |"+event+"|");
-           } catch (Exception e) {
-           D.ebugPrintln(e.toString());
-           D.ebugPrintln("Unable to write to disk.");
-           }
-           }
-         */
+        recordGameEvent(null, gameName, event);
     }
 
-        /**
+    /**
      * record events that happen during the game
      *
      * @param gameName   the name of the game
@@ -8362,10 +8349,20 @@ public class SOCServer extends Server
      */
     protected void recordGameEvent(SOCMessage mes, String gameName, String event)
     {
-      
-        System.out.println("log:  " + event);
-        if (loggerClient != null)
-            loggerClient.recordGameEvent(mes,gameName,event);
+        FileWriter fw = (FileWriter) gameDataFiles.get(gameName);
+        if (fw != null)
+        {
+            try
+            {
+                fw.write((mes == null ? "" : mes.toCmd()) + ": " + event + "\n");
+                // D.ebugPrintln("WROTE |"+event+"|");
+            }
+            catch (Exception e)
+            {
+                D.ebugPrintln(e.toString());
+                D.ebugPrintln("Unable to write to disk.");
+            }
+        }
     }
 
     /**
@@ -8556,11 +8553,6 @@ public class SOCServer extends Server
         String outMes = "### " + name + " gets a " + cardType + " card.";
         messageToGame(game.getName(), new SOCDevCard(game.getName(), pnum, SOCDevCard.DRAW, cardType));
         messageToGame(game.getName(), outMes);
-    }
-
-    public void setLoggerClient(SSRobotClient cl)
-    {
-        loggerClient = cl;
     }
     
     /**

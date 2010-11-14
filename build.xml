@@ -79,12 +79,8 @@
             value="${Name}.jar" />
   <property name="server.jar"
             value="${Name}Server.jar" />
-  <property name="experiment.jar"
-            value="Experiment.jar" />
   <property name="test.jar"
             value="${Name}Test.jar" />
-  <property name="smartsettlers.jar"
-            value="SmartSettlers.jar" />
   <property name="dist.name"
             value="${name}-${version}" />
   <property name="dist.src.name"
@@ -108,12 +104,10 @@
   </fileset>
   <!-- jar file packages -->
   <patternset id="server.files">
-    <include name="smartsettlers" />
     <include name="soc/robot/" />
     <include name="soc/server/" />
   </patternset>
   <patternset id="client.files">
-    <include name="smartsettlers/" />
     <include name="uct/" />
     <include name="resources/" />
     <!-- for version file -->
@@ -124,22 +118,11 @@
     <!-- ...except these -->
     <exclude name="soc/server/" />
   </patternset>
-  <patternset id="experiment.files">
-    <include name="smartsettlers/" />
-    <include name="uct/" />
-    <include name="experiment/" />
-    <include name="resources/" />
-    <include name="soc/" />
-    <!-- everything... -->
-  </patternset>
   <patternset id="client.files">
     <include name="resources/" />
     <!-- client may run local server -->
     <include name="soc/" />
     <!-- thus, everything -->
-  </patternset>
-  <patternset id="smartsettlers.files">
-    <include name="smartsettlers/" />
   </patternset>
   <!-- external libraries -->
   <fileset dir="${lib}"
@@ -147,7 +130,6 @@
            includes="*.jar" />
   <!-- class paths -->
   <path id="classpath">
-    <pathelement location="SmartSettlers.jar" />
     <pathelement location="${classes}" />
     <fileset dir="${lib.target}"
              includes="*.jar" />
@@ -171,9 +153,9 @@
           name="init-libs">
     <mkdir dir="${lib.target}" />
     <!-- Later: when we use external libraries -->
-      <copy toDir="${lib.target}">
-        <fileset refid="ext.libs" />
-      </copy> 
+    <copy toDir="${lib.target}">
+      <fileset refid="ext.libs" />
+    </copy>
   </target>
   <target description="Copy resources to classes directory"
           name="resources">
@@ -239,10 +221,6 @@
           description="Create project jar files."
           name="build">
     <jar basedir="${classes}"
-         destfile="${target}/${smartsettlers.jar}">
-      <patternset refid="smartsettlers.files" />
-    </jar>
-    <jar basedir="${classes}"
          destfile="${target}/${client.jar}">
       <patternset refid="client.files" />
       <manifest>
@@ -258,16 +236,6 @@
                    value="${server.class}" />
         <attribute name="Class-Path"
                    value="${client.jar}" />
-      </manifest>
-    </jar>
-    <jar basedir="${classes}"
-         destfile="${target}/${experiment.jar}">
-      <patternset refid="experiment.files" />
-      <manifest>
-        <attribute name="Main-Class"
-                   value="${experiment.class}" />
-        <attribute name="Class-Path"
-                   value="${experiment.jar}" />
       </manifest>
     </jar>
   </target>
@@ -467,12 +435,5 @@
       <fileset defaultExcludes="no"
                dir="${dist}/" />
     </delete>
-  </target>
-  <target depends="init,compile,dist"
-          description="Run a main class."
-          name="run">
-    <java fork="true"
-          jar="${target}/${experiment.jar}"
-          maxmemory="1024m"></java>
   </target>
 </project>

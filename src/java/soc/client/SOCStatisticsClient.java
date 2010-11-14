@@ -14,8 +14,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * The author of this Java Settlers can be reached at thomas@infolab.northwestern.edu
  **/
 package soc.client;
 
