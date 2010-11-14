@@ -1227,7 +1227,6 @@ public class Player implements DevCardConstants, Serializable, Cloneable
                 int portType = board.getPortTypeFromNodeCoord(piece.getCoordinates());
                 if (portType != -1)
                     setPortFlag(portType, true);
-
                 break;
 
             /**
@@ -1247,7 +1246,6 @@ public class Player implements DevCardConstants, Serializable, Cloneable
                  * a city counts as touching a number twice
                  */
                 ourNumbers.updateNumbers(piece, board);
-
                 break;
             }
         }

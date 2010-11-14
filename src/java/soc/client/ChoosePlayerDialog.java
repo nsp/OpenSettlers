@@ -209,7 +209,6 @@ class ChoosePlayerDialog extends Dialog implements ActionListener
             {
                 pi.getClient().choosePlayer(pi.getGame(), players[i]);
                 dispose();
-
                 break;
             }
         }

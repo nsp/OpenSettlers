@@ -323,7 +323,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.STATUSMESSAGE:
                 handleSTATUSMESSAGE((StatusMessage) mes);
-
                 break;
 
             /**
@@ -331,7 +330,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.SERVERPING:
                 handleSERVERPING((ServerPing) mes);
-
                 break;
 
             /**
@@ -339,7 +337,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.ADMINPING:
                 handleADMINPING((AdminPing) mes);
-
                 break;
 
             /**
@@ -347,7 +344,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.ADMINRESET:
                 handleADMINRESET((AdminReset) mes);
-
                 break;
 
             /**
@@ -355,7 +351,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.UPDATEROBOTPARAMS:
                 handleUPDATEROBOTPARAMS((UpdateRobotParams) mes);
-
                 break;
 
             /**
@@ -363,7 +358,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.JOINGAMEAUTH:
                 handleJOINGAMEAUTH((JoinGameAuth) mes);
-
                 break;
 
             /**
@@ -371,7 +365,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.JOINGAME:
                 handleJOINGAME((JoinGame) mes);
-
                 break;
 
             /**
@@ -379,7 +372,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.LEAVEGAME:
                 handleLEAVEGAME((LeaveGame) mes);
-
                 break;
 
             /**
@@ -387,7 +379,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.DELETEGAME:
                 handleDELETEGAME((DeleteGame) mes);
-
                 break;
 
             /**
@@ -395,7 +386,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.GAMEMEMBERS:
                 handleGAMEMEMBERS((GameMembers) mes);
-
                 break;
 
             /**
@@ -403,7 +393,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.GAMETEXTMSG:
                 handleGAMETEXTMSG((GameTextMsg) mes);
-
                 break;
 
             /**
@@ -411,7 +400,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.SITDOWN:
                 handleSITDOWN((SitDown) mes);
-
                 break;
 
             /**
@@ -433,7 +421,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.STARTGAME:
                 handleSTARTGAME((StartGame) mes);
-
                 break;
 
             /**
@@ -441,7 +428,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.GAMESTATE:
                 handleGAMESTATE((GameState) mes);
-
                 break;
 
             /**
@@ -449,7 +435,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.SETTURN:
                 handleSETTURN((SetTurn) mes);
-
                 break;
 
             /**
@@ -457,7 +442,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.FIRSTPLAYER:
                 handleFIRSTPLAYER((FirstPlayer) mes);
-
                 break;
 
             /**
@@ -465,7 +449,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.TURN:
                 handleTURN((Turn) mes);
-
                 break;
 
             /**
@@ -473,7 +456,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.PLAYERELEMENT:
                 handlePLAYERELEMENT((PlayerElement) mes);
-
                 break;
 
             /**
@@ -481,7 +463,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.RESOURCECOUNT:
                 handleRESOURCECOUNT((ResourceCount) mes);
-
                 break;
 
             /**
@@ -489,7 +470,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.DICERESULT:
                 handleDICERESULT((DiceResult) mes);
-
                 break;
 
             /**
@@ -497,7 +477,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.PUTPIECE:
                 handlePUTPIECE((PutPiece) mes);
-
                 break;
 
             /**
@@ -505,7 +484,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.CANCELBUILDREQUEST:
                 handleCANCELBUILDREQUEST((CancelBuildRequest) mes);
-
                 break;
 
             /**
@@ -513,7 +491,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.MOVEROBBER:
                 handleMOVEROBBER((MoveRobber) mes);
-
                 break;
 
             /**
@@ -521,7 +498,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.DISCARDREQUEST:
                 handleDISCARDREQUEST((DiscardRequest) mes);
-
                 break;
 
             /**
@@ -529,7 +505,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.CHOOSEPLAYERREQUEST:
                 handleCHOOSEPLAYERREQUEST((ChoosePlayerRequest) mes);
-
                 break;
 
             /**
@@ -537,7 +512,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.MAKEOFFER:
                 handleMAKEOFFER((MakeOffer) mes);
-
                 break;
 
             /**
@@ -545,7 +519,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.CLEAROFFER:
                 handleCLEAROFFER((ClearOffer) mes);
-
                 break;
 
             /**
@@ -553,7 +526,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.REJECTOFFER:
                 handleREJECTOFFER((RejectOffer) mes);
-
                 break;
 
             /**
@@ -561,7 +533,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.ACCEPTOFFER:
                 handleACCEPTOFFER((AcceptOffer) mes);
-
                 break;
 
             /**
@@ -569,7 +540,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.CLEARTRADEMSG:
                 handleCLEARTRADEMSG((ClearTradeMsg) mes);
-
                 break;
 
             /**
@@ -577,7 +547,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.DEVCARDCOUNT:
                 handleDEVCARDCOUNT((DevCardCount) mes);
-
                 break;
 
             /**
@@ -585,7 +554,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.DEVCARD:
                 handleDEVCARD((DevCard) mes);
-
                 break;
 
             /**
@@ -594,7 +562,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.SETPLAYEDDEVCARD:
                 handleSETPLAYEDDEVCARD((SetPlayedDevCard) mes);
-
                 break;
 
             /**
@@ -602,7 +569,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.POTENTIALSETTLEMENTS:
                 handlePOTENTIALSETTLEMENTS((PotentialSettlements) mes);
-
                 break;
 
             /**
@@ -610,7 +576,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.JOINGAMEREQUEST:
                 handleJOINGAMEREQUEST((JoinGameRequest) mes);
-
                 break;
 
             /**
@@ -618,7 +583,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.ROBOTDISMISS:
                 handleROBOTDISMISS((RobotDismiss) mes);
-
                 break;
 
             /**
@@ -626,7 +590,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.REJECTCONNECTION:
                 handleREJECTCONNECTION((RejectConnection) mes);
-
                 break;
 
             /**
@@ -634,7 +597,6 @@ public class RobotClient extends DisplaylessPlayerClient
              */
             case Message.RESETBOARDAUTH:
                 handleRESETBOARDAUTH((ResetBoardAuth) mes);
-
                 break;
             }
         }

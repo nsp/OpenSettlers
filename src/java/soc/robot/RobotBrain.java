@@ -2887,7 +2887,6 @@ public class RobotBrain extends Thread
                     tracker.addOurNewCity(newCity);
                 else
                     tracker.cancelWrongCity(newCity);
-
                 break;
             }
         }

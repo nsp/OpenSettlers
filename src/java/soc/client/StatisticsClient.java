@@ -625,7 +625,6 @@ public class StatisticsClient extends Applet implements Runnable, ActionListener
              **/
             case Message.CHANNELS:
                 handleCHANNELS((Channels) mes);
-
                 break;
 
             /**
@@ -633,7 +632,6 @@ public class StatisticsClient extends Applet implements Runnable, ActionListener
              **/
             case Message.STATUSMESSAGE:
                 handleSTATUSMESSAGE((StatusMessage) mes);
-
                 break;
 
             /**
@@ -641,7 +639,6 @@ public class StatisticsClient extends Applet implements Runnable, ActionListener
              **/
             case Message.REJECTCONNECTION:
                 handleREJECTCONNECTION((RejectConnection) mes);
-
                 break;
 
             /**

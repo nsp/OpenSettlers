@@ -344,7 +344,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.VERSION:
                 handleVERSION((sLocal != null), (SOCVersion) mes);
-
                 break;
 
             /**
@@ -352,7 +351,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.STATUSMESSAGE:
                 handleSTATUSMESSAGE((StatusMessage) mes);
-
                 break;
 
             /**
@@ -360,7 +358,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.JOINAUTH:
                 handleJOINAUTH((JoinAuth) mes);
-
                 break;
 
             /**
@@ -368,7 +365,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.JOIN:
                 handleJOIN((Join) mes);
-
                 break;
 
             /**
@@ -376,7 +372,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.MEMBERS:
                 handleMEMBERS((Members) mes);
-
                 break;
 
             /**
@@ -384,7 +379,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.NEWCHANNEL:
                 handleNEWCHANNEL((NewChannel) mes);
-
                 break;
 
             /**
@@ -392,7 +386,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.CHANNELS:
                 handleCHANNELS((Channels) mes);
-
                 break;
 
             /**
@@ -400,7 +393,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.TEXTMSG:
                 handleTEXTMSG((TextMsg) mes);
-
                 break;
 
             /**
@@ -408,7 +400,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.LEAVE:
                 handleLEAVE((Leave) mes);
-
                 break;
 
             /**
@@ -416,7 +407,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.DELETECHANNEL:
                 handleDELETECHANNEL((DeleteChannel) mes);
-
                 break;
 
             /**
@@ -424,7 +414,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.GAMES:
                 handleGAMES((Games) mes);
-
                 break;
 
             /**
@@ -432,7 +421,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.JOINGAMEAUTH:
                 handleJOINGAMEAUTH((JoinGameAuth) mes);
-
                 break;
 
             /**
@@ -440,7 +428,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.JOINGAME:
                 handleJOINGAME((JoinGame) mes);
-
                 break;
 
             /**
@@ -456,7 +443,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.NEWGAME:
                 handleNEWGAME((NewGame) mes);
-
                 break;
 
             /**
@@ -472,7 +458,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.GAMEMEMBERS:
                 handleGAMEMEMBERS((GameMembers) mes);
-
                 break;
 
             /**
@@ -480,7 +465,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.GAMESTATS:
                 handleGAMESTATS((GameStats) mes);
-
                 break;
 
             /**
@@ -488,7 +472,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.GAMETEXTMSG:
                 handleGAMETEXTMSG((GameTextMsg) mes);
-
                 break;
 
             /**
@@ -496,7 +479,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.BCASTTEXTMSG:
                 handleBCASTTEXTMSG((BCastTextMsg) mes);
-
                 break;
 
             /**
@@ -504,7 +486,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.SITDOWN:
                 handleSITDOWN((SitDown) mes);
-
                 break;
 
             /**
@@ -512,7 +493,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.BOARDLAYOUT:
                 handleBOARDLAYOUT((BoardLayout) mes);
-
                 break;
 
             /**
@@ -527,7 +507,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.STARTGAME:
                 handleSTARTGAME((StartGame) mes);
-
                 break;
 
             /**
@@ -535,7 +514,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.GAMESTATE:
                 handleGAMESTATE((GameState) mes);
-
                 break;
 
             /**
@@ -543,7 +521,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.SETTURN:
                 handleSETTURN((SetTurn) mes);
-
                 break;
 
             /**
@@ -551,7 +528,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.FIRSTPLAYER:
                 handleFIRSTPLAYER((FirstPlayer) mes);
-
                 break;
 
             /**
@@ -559,7 +535,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.TURN:
                 handleTURN((Turn) mes);
-
                 break;
 
             /**
@@ -567,7 +542,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.PLAYERELEMENT:
                 handlePLAYERELEMENT((PlayerElement) mes);
-
                 break;
 
             /**
@@ -575,7 +549,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.RESOURCECOUNT:
                 handleRESOURCECOUNT((ResourceCount) mes);
-
                 break;
 
             /**
@@ -583,7 +556,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.DICERESULT:
                 handleDICERESULT((DiceResult) mes);
-
                 break;
 
             /**
@@ -591,7 +563,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.PUTPIECE:
                 handlePUTPIECE((PutPiece) mes);
-
                 break;
 
             /**
@@ -600,7 +571,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.CANCELBUILDREQUEST:
                 handleCANCELBUILDREQUEST((CancelBuildRequest) mes);
-
                 break;
 
             /**
@@ -608,7 +578,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.MOVEROBBER:
                 handleMOVEROBBER((MoveRobber) mes);
-
                 break;
 
             /**
@@ -616,7 +585,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.DISCARDREQUEST:
                 handleDISCARDREQUEST((DiscardRequest) mes);
-
                 break;
 
             /**
@@ -624,7 +592,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.CHOOSEPLAYERREQUEST:
                 handleCHOOSEPLAYERREQUEST((ChoosePlayerRequest) mes);
-
                 break;
 
             /**
@@ -632,7 +599,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.MAKEOFFER:
                 handleMAKEOFFER((MakeOffer) mes);
-
                 break;
 
             /**
@@ -640,7 +606,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.CLEAROFFER:
                 handleCLEAROFFER((ClearOffer) mes);
-
                 break;
 
             /**
@@ -648,7 +613,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.REJECTOFFER:
                 handleREJECTOFFER((RejectOffer) mes);
-
                 break;
 
             /**
@@ -656,7 +620,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.CLEARTRADEMSG:
                 handleCLEARTRADEMSG((ClearTradeMsg) mes);
-
                 break;
 
             /**
@@ -664,7 +627,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.DEVCARDCOUNT:
                 handleDEVCARDCOUNT((DevCardCount) mes);
-
                 break;
 
             /**
@@ -672,7 +634,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.DEVCARD:
                 handleDEVCARD((DevCard) mes);
-
                 break;
 
             /**
@@ -681,7 +642,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.SETPLAYEDDEVCARD:
                 handleSETPLAYEDDEVCARD((SetPlayedDevCard) mes);
-
                 break;
 
             /**
@@ -689,7 +649,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.POTENTIALSETTLEMENTS:
                 handlePOTENTIALSETTLEMENTS((PotentialSettlements) mes);
-
                 break;
 
             /**
@@ -697,7 +656,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.CHANGEFACE:
                 handleCHANGEFACE((ChangeFace) mes);
-
                 break;
 
             /**
@@ -705,7 +663,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.REJECTCONNECTION:
                 handleREJECTCONNECTION((RejectConnection) mes);
-
                 break;
 
             /**
@@ -713,7 +670,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.LONGESTROAD:
                 handleLONGESTROAD((LongestRoad) mes);
-
                 break;
 
             /**
@@ -721,7 +677,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.LARGESTARMY:
                 handleLARGESTARMY((LargestArmy) mes);
-
                 break;
 
             /**
@@ -729,7 +684,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.SETSEATLOCK:
                 handleSETSEATLOCK((SetSeatLock) mes);
-
                 break;
 
             /**
@@ -737,7 +691,6 @@ public class DisplaylessPlayerClient implements Runnable
              */
             case Message.RESETBOARDAUTH:
                 handleRESETBOARDAUTH((ResetBoardAuth) mes);
-
                 break;
 
             }
@@ -1343,21 +1296,18 @@ public class DisplaylessPlayerClient implements Runnable
 
                 Road rd = new Road(pl, mes.getCoordinates(), null);
                 ga.putPiece(rd);
-
                 break;
 
             case PlayingPiece.SETTLEMENT:
 
                 Settlement se = new Settlement(pl, mes.getCoordinates(), null);
                 ga.putPiece(se);
-
                 break;
 
             case PlayingPiece.CITY:
 
                 City ci = new City(pl, mes.getCoordinates(), null);
                 ga.putPiece(ci);
-
                 break;
             }
         }
@@ -1535,22 +1485,18 @@ public class DisplaylessPlayerClient implements Runnable
             {
             case DevCard.DRAW:
                 player.getDevCards().add(1, DevCardSet.NEW, mes.getCardType());
-
                 break;
 
             case DevCard.PLAY:
                 player.getDevCards().subtract(1, DevCardSet.OLD, mes.getCardType());
-
                 break;
 
             case DevCard.ADDOLD:
                 player.getDevCards().add(1, DevCardSet.OLD, mes.getCardType());
-
                 break;
 
             case DevCard.ADDNEW:
                 player.getDevCards().add(1, DevCardSet.NEW, mes.getCardType());
-
                 break;
             }
         }

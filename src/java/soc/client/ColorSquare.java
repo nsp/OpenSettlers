@@ -1013,12 +1013,10 @@ public class ColorSquare extends Canvas implements MouseListener
             case CHECKBOX:
                 boolValue = !boolValue;
                 bvalChanged = true;
-
                 break;
 
             case NUMBER:
                 intValue++;
-
                 break;
 
             case BOUNDED_INC:

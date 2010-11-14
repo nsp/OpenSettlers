@@ -2930,7 +2930,6 @@ public class Game implements Serializable, Cloneable
             if (players[i].getNeedToDiscard())
             {
                 gameState = WAITING_FOR_DISCARDS;
-
                 break;
             }
         }

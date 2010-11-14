@@ -529,7 +529,6 @@ public class PlayerTracker
                 //D.ebugPrintln("$$$ removing (wrong) "+Integer.toHexString(road.getCoordinates()));
                 possibleRoads.remove(new Integer(pr.getCoordinates()));
                 removeFromNecessaryRoads(pr);
-
                 break;
             }
         }
@@ -567,7 +566,6 @@ public class PlayerTracker
                 //D.ebugPrintln("$$$ removing "+Integer.toHexString(road.getCoordinates()));
                 possibleRoads.remove(new Integer(pr.getCoordinates()));
                 removeFromNecessaryRoads(pr);
-
                 break;
             }
         }

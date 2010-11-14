@@ -1802,7 +1802,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.VERSION:
                 handleVERSION(isLocal, (SOCVersion) mes);
-
                 break;
 
             /**
@@ -1810,7 +1809,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.STATUSMESSAGE:
                 handleSTATUSMESSAGE((StatusMessage) mes, isLocal);
-
                 break;
 
             /**
@@ -1818,7 +1816,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.JOINAUTH:
                 handleJOINAUTH((JoinAuth) mes);
-
                 break;
 
             /**
@@ -1826,7 +1823,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.JOIN:
                 handleJOIN((Join) mes);
-
                 break;
 
             /**
@@ -1834,7 +1830,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.MEMBERS:
                 handleMEMBERS((Members) mes);
-
                 break;
 
             /**
@@ -1842,7 +1837,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.NEWCHANNEL:
                 handleNEWCHANNEL((NewChannel) mes);
-
                 break;
 
             /**
@@ -1850,7 +1844,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.CHANNELS:
                 handleCHANNELS((Channels) mes, isLocal);
-
                 break;
 
             /**
@@ -1858,7 +1851,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.TEXTMSG:
                 handleTEXTMSG((TextMsg) mes);
-
                 break;
 
             /**
@@ -1866,7 +1858,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.LEAVE:
                 handleLEAVE((Leave) mes);
-
                 break;
 
             /**
@@ -1874,7 +1865,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.DELETECHANNEL:
                 handleDELETECHANNEL((DeleteChannel) mes);
-
                 break;
 
             /**
@@ -1882,7 +1872,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.GAMES:
                 handleGAMES((Games) mes, isLocal);
-
                 break;
 
             /**
@@ -1890,7 +1879,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.JOINGAMEAUTH:
                 handleJOINGAMEAUTH((JoinGameAuth) mes, isLocal);
-
                 break;
 
             /**
@@ -1898,7 +1886,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.JOINGAME:
                 handleJOINGAME((JoinGame) mes);
-
                 break;
 
             /**
@@ -1906,7 +1893,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.LEAVEGAME:
                 handleLEAVEGAME((LeaveGame) mes);
-
                 break;
 
             /**
@@ -1914,7 +1900,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.NEWGAME:
                 handleNEWGAME((NewGame) mes, isLocal);
-
                 break;
 
             /**
@@ -1922,7 +1907,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.DELETEGAME:
                 handleDELETEGAME((DeleteGame) mes, isLocal);
-
                 break;
 
             /**
@@ -1930,7 +1914,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.GAMEMEMBERS:
                 handleGAMEMEMBERS((GameMembers) mes);
-
                 break;
 
             /**
@@ -1938,7 +1921,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.GAMESTATS:
                 handleGAMESTATS((GameStats) mes);
-
                 break;
 
             /**
@@ -1946,7 +1928,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.GAMETEXTMSG:
                 handleGAMETEXTMSG((GameTextMsg) mes);
-
                 break;
 
             /**
@@ -1954,7 +1935,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.BCASTTEXTMSG:
                 handleBCASTTEXTMSG((BCastTextMsg) mes);
-
                 break;
 
             /**
@@ -1962,7 +1942,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.SITDOWN:
                 handleSITDOWN((SitDown) mes);
-
                 break;
 
             /**
@@ -1970,7 +1949,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.BOARDLAYOUT:
                 handleBOARDLAYOUT((BoardLayout) mes);
-
                 break;
 
             /**
@@ -1985,7 +1963,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.STARTGAME:
                 handleSTARTGAME((StartGame) mes);
-
                 break;
 
             /**
@@ -1993,7 +1970,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.GAMESTATE:
                 handleGAMESTATE((GameState) mes);
-
                 break;
 
             /**
@@ -2001,7 +1977,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.SETTURN:
                 handleSETTURN((SetTurn) mes);
-
                 break;
 
             /**
@@ -2009,7 +1984,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.FIRSTPLAYER:
                 handleFIRSTPLAYER((FirstPlayer) mes);
-
                 break;
 
             /**
@@ -2017,7 +1991,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.TURN:
                 handleTURN((Turn) mes);
-
                 break;
 
             /**
@@ -2025,7 +1998,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.PLAYERELEMENT:
                 handlePLAYERELEMENT((PlayerElement) mes);
-
                 break;
 
             /**
@@ -2033,7 +2005,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.RESOURCECOUNT:
                 handleRESOURCECOUNT((ResourceCount) mes);
-
                 break;
 
             /**
@@ -2041,7 +2012,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.DICERESULT:
                 handleDICERESULT((DiceResult) mes);
-
                 break;
 
             /**
@@ -2049,7 +2019,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.PUTPIECE:
                 handlePUTPIECE((PutPiece) mes);
-
                 break;
 
             /**
@@ -2058,7 +2027,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.CANCELBUILDREQUEST:
                 handleCANCELBUILDREQUEST((CancelBuildRequest) mes);
-
                 break;
 
             /**
@@ -2066,7 +2034,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.MOVEROBBER:
                 handleMOVEROBBER((MoveRobber) mes);
-
                 break;
 
             /**
@@ -2074,7 +2041,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.DISCARDREQUEST:
                 handleDISCARDREQUEST((DiscardRequest) mes);
-
                 break;
 
             /**
@@ -2082,7 +2048,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.CHOOSEPLAYERREQUEST:
                 handleCHOOSEPLAYERREQUEST((ChoosePlayerRequest) mes);
-
                 break;
 
             /**
@@ -2090,7 +2055,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.MAKEOFFER:
                 handleMAKEOFFER((MakeOffer) mes);
-
                 break;
 
             /**
@@ -2098,7 +2062,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.CLEAROFFER:
                 handleCLEAROFFER((ClearOffer) mes);
-
                 break;
 
             /**
@@ -2106,7 +2069,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.REJECTOFFER:
                 handleREJECTOFFER((RejectOffer) mes);
-
                 break;
 
             /**
@@ -2114,7 +2076,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.CLEARTRADEMSG:
                 handleCLEARTRADEMSG((ClearTradeMsg) mes);
-
                 break;
 
             /**
@@ -2122,7 +2083,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.DEVCARDCOUNT:
                 handleDEVCARDCOUNT((DevCardCount) mes);
-
                 break;
 
             /**
@@ -2130,7 +2090,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.DEVCARD:
                 handleDEVCARD((DevCard) mes);
-
                 break;
 
             /**
@@ -2139,7 +2098,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.SETPLAYEDDEVCARD:
                 handleSETPLAYEDDEVCARD((SetPlayedDevCard) mes);
-
                 break;
 
             /**
@@ -2147,7 +2105,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.POTENTIALSETTLEMENTS:
                 handlePOTENTIALSETTLEMENTS((PotentialSettlements) mes);
-
                 break;
 
             /**
@@ -2155,7 +2112,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.CHANGEFACE:
                 handleCHANGEFACE((ChangeFace) mes);
-
                 break;
 
             /**
@@ -2163,7 +2119,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.REJECTCONNECTION:
                 handleREJECTCONNECTION((RejectConnection) mes);
-
                 break;
 
             /**
@@ -2171,7 +2126,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.LONGESTROAD:
                 handleLONGESTROAD((LongestRoad) mes);
-
                 break;
 
             /**
@@ -2179,7 +2133,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.LARGESTARMY:
                 handleLARGESTARMY((LargestArmy) mes);
-
                 break;
 
             /**
@@ -2187,7 +2140,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.SETSEATLOCK:
                 handleSETSEATLOCK((SetSeatLock) mes);
-
                 break;
 
             /**
@@ -2196,7 +2148,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.ROLLDICEPROMPT:
                 handleROLLDICEPROMPT((RollDicePrompt) mes);
-
                 break;
 
             /**
@@ -2204,7 +2155,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.RESETBOARDAUTH:
                 handleRESETBOARDAUTH((ResetBoardAuth) mes);
-
                 break;
 
             /**
@@ -2212,7 +2162,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.RESETBOARDVOTEREQUEST:
                 handleRESETBOARDVOTEREQUEST((ResetBoardVoteRequest) mes);
-
                 break;
 
             /**
@@ -2220,7 +2169,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.RESETBOARDVOTE:
                 handleRESETBOARDVOTE((ResetBoardVote) mes);
-
                 break;
 
             /**
@@ -2228,7 +2176,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
              */
             case Message.RESETBOARDREJECT:
                 handleRESETBOARDREJECT((ResetBoardReject) mes);
-
                 break;
 
             /**
@@ -3204,7 +3151,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
                 Road rd = new Road(pl, mes.getCoordinates(), null);
                 ga.putPiece(rd);
                 mesHp.updateValue(HandPanel.ROADS);
-
                 break;
 
             case PlayingPiece.SETTLEMENT:
@@ -3237,7 +3183,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
                 ga.putPiece(ci);
                 mesHp.updateValue(HandPanel.SETTLEMENTS);
                 mesHp.updateValue(HandPanel.CITIES);
-
                 break;
             }
 
@@ -3461,22 +3406,18 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
             {
             case DevCard.DRAW:
                 player.getDevCards().add(1, DevCardSet.NEW, mes.getCardType());
-
                 break;
 
             case DevCard.PLAY:
                 player.getDevCards().subtract(1, DevCardSet.OLD, mes.getCardType());
-
                 break;
 
             case DevCard.ADDOLD:
                 player.getDevCards().add(1, DevCardSet.OLD, mes.getCardType());
-
                 break;
 
             case DevCard.ADDNEW:
                 player.getDevCards().add(1, DevCardSet.NEW, mes.getCardType());
-
                 break;
             }
 
@@ -4089,7 +4030,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
                 }
 
                 gmlist.replaceItem(updatedString, i);
-
                 break;
             }
         }
@@ -4668,7 +4608,6 @@ public class PlayerClient extends Applet implements Runnable, ActionListener, Te
             if (s.equals(name))
             {
                 result = true;
-
                 break;
             }
         }

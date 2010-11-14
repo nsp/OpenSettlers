@@ -993,25 +993,21 @@ public class BoardPanel extends Canvas implements MouseListener, MouseMotionList
             case 0:
                 facing = 6;
                 edgeNum = hexNum - 0x10;
-
                 break;
 
             case 1:
                 facing = 5;
                 edgeNum = hexNum - 0x11;
-
                 break;
 
             case 2:
                 facing = 5;
                 edgeNum = hexNum - 0x11;
-
                 break;
 
             case 3:
                 facing = 4;
                 edgeNum = hexNum - 0x01;
-
                 break;
 
             default:
@@ -1160,31 +1156,26 @@ public class BoardPanel extends Canvas implements MouseListener, MouseMotionList
             case 0:
                 rowState = 00;
                 nodeNum = 0;
-
                 break;
 
             case 1:
                 rowState = 10;
                 nodeNum = hexNum - 0x10;
-
                 break;
 
             case 2:
                 rowState = 20;
                 nodeNum = 0;
-
                 break;
 
             case 3:
                 rowState = 30;
                 nodeNum = hexNum - 0x01;
-
                 break;
 
             case 4:
                 rowState = 40;
                 nodeNum = 0;
-
                 break;
 
             default:

@@ -134,7 +134,6 @@ class MonopolyDialog extends Dialog implements ActionListener
                  */
                 pi.getClient().monopolyPick(pi.getGame(), i + 1);
                 dispose();
-
                 break;
             }
         }

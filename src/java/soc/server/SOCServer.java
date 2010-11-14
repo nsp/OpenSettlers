@@ -3068,22 +3068,18 @@ public class SOCServer extends Server
 
                 case Message.CHANGEFACE:
                     handleCHANGEFACE(c, (ChangeFace) mes);
-
                     break;
 
                 case Message.SETSEATLOCK:
                     handleSETSEATLOCK(c, (SetSeatLock) mes);
-
                     break;
 
                 case Message.RESETBOARDREQUEST:
                     handleRESETBOARDREQUEST(c, (ResetBoardRequest) mes);
-
                     break;
 
                 case Message.RESETBOARDVOTE:
                     handleRESETBOARDVOTE(c, (ResetBoardVote) mes);
-
                     break;
 
                 case Message.CREATEACCOUNT:
@@ -7670,7 +7666,6 @@ public class SOCServer extends Server
                 }  // for each devcard type
 
                 messageToGame(gname, msg);
-
                 break;
 
             }  // if devcards
@@ -8389,7 +8384,6 @@ public class SOCServer extends Server
             else
             {
                 name = token;
-
                 break;
             }
         }
@@ -8541,7 +8535,6 @@ public class SOCServer extends Server
             else
             {
                 name = token;
-
                 break;
             }
         }
