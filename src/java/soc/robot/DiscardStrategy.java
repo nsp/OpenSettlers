@@ -26,19 +26,19 @@ import java.util.Stack;
 // import org.apache.log4j.Logger;
 
 import soc.disableDebug.D;
-import soc.game.SOCGame;
-import soc.game.SOCPlayer;
-import soc.game.SOCPlayingPiece;
-import soc.game.SOCResourceConstants;
-import soc.game.SOCResourceSet;
-import soc.util.SOCRobotParameters;
+import soc.game.Game;
+import soc.game.Player;
+import soc.game.PlayingPiece;
+import soc.game.ResourceConstants;
+import soc.game.ResourceSet;
+import soc.util.RobotParameters;
 
 public class DiscardStrategy {
 
 	/** debug logging */
     // private transient Logger log = Logger.getLogger(this.getClass().getName());
 
-	public SOCResourceSet discard(int numDiscards, Stack buildingPlan, SOCPlayer ourPlayerData, SOCRobotParameters robotParameters, SOCRobotDM decisionMaker, SOCRobotNegotiator negotiator){
+	public ResourceSet discard(int numDiscards, Stack buildingPlan, Player ourPlayerData, RobotParameters robotParameters, RobotDM decisionMaker, RobotNegotiator negotiator){
 		Random rand = new Random();
 		//log.debug("DISCARDING...");
 
@@ -46,7 +46,7 @@ public class DiscardStrategy {
          * if we have a plan, then try to keep the resources
          * needed for that plan, otherwise discard at random
          */
-        SOCResourceSet discards = new SOCResourceSet();
+        ResourceSet discards = new ResourceSet();
 
         /**
          * make a plan if we don't have one
@@ -58,19 +58,19 @@ public class DiscardStrategy {
 
         if (!buildingPlan.empty())
         {
-            SOCPossiblePiece targetPiece = (SOCPossiblePiece) buildingPlan.peek();
+            PossiblePiece targetPiece = (PossiblePiece) buildingPlan.peek();
             negotiator.setTargetPiece(ourPlayerData.getPlayerNumber(), targetPiece);
 
             //log.debug("targetPiece="+targetPiece);
-            SOCResourceSet targetResources = SOCPlayingPiece.getResourcesToBuild(targetPiece.getType());
+            ResourceSet targetResources = PlayingPiece.getResourcesToBuild(targetPiece.getType());
 
             /**
              * figure out what resources are NOT the ones we need
              */
-            SOCResourceSet leftOvers = ourPlayerData.getResources().copy();
+            ResourceSet leftOvers = ourPlayerData.getResources().copy();
 
-            for (int rsrc = SOCResourceConstants.CLAY;
-                    rsrc <= SOCResourceConstants.WOOD; rsrc++)
+            for (int rsrc = ResourceConstants.CLAY;
+                    rsrc <= ResourceConstants.WOOD; rsrc++)
             {
                 if (leftOvers.getAmount(rsrc) > targetResources.getAmount(rsrc))
                 {
@@ -82,7 +82,7 @@ public class DiscardStrategy {
                 }
             }
 
-            SOCResourceSet neededRsrcs = ourPlayerData.getResources().copy();
+            ResourceSet neededRsrcs = ourPlayerData.getResources().copy();
             neededRsrcs.subtract(leftOvers);
 
             /**
@@ -91,13 +91,13 @@ public class DiscardStrategy {
              */
 
             //log.debug("our numbers="+ourPlayerData.getNumbers());
-            SOCBuildingSpeedEstimate estimate = new SOCBuildingSpeedEstimate(ourPlayerData.getNumbers());
+            BuildingSpeedEstimate estimate = new BuildingSpeedEstimate(ourPlayerData.getNumbers());
             int[] rollsPerResource = estimate.getRollsPerResource();
             int[] resourceOrder = 
             {
-                SOCResourceConstants.CLAY, SOCResourceConstants.ORE,
-                SOCResourceConstants.SHEEP, SOCResourceConstants.WHEAT,
-                SOCResourceConstants.WOOD
+                ResourceConstants.CLAY, ResourceConstants.ORE,
+                ResourceConstants.SHEEP, ResourceConstants.WHEAT,
+                ResourceConstants.WOOD
             };
 
             for (int j = 4; j >= 0; j--)
@@ -168,7 +168,7 @@ public class DiscardStrategy {
             /**
              *  choose discards at random
              */
-            SOCGame.discardPickRandom(ourPlayerData.getResources(), numDiscards, discards, rand);
+            Game.discardPickRandom(ourPlayerData.getResources(), numDiscards, discards, rand);
         }
         
         return discards;

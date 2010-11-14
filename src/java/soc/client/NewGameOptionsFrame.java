@@ -47,9 +47,9 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.TreeSet;
 
-import soc.game.SOCGameOption;
-import soc.message.SOCMessage;
-import soc.message.SOCStatusMessage;
+import soc.game.GameOption;
+import soc.message.Message;
+import soc.message.StatusMessage;
 import soc.util.Version;
 
 /**
@@ -67,14 +67,14 @@ public class NewGameOptionsFrame extends Frame
     /**
      * Maximum range (min-max value) for integer-type options
      * to be rendered using a value popup, instead of a textfield. 
-     * @see #initOption_int(SOCGameOption)
+     * @see #initOption_int(GameOption)
      */
     public static final int INTFIELD_POPUP_MAXRANGE = 21;
 
     private static final String TXT_SERVER_TOO_OLD
         = "This server version does not support game options.";
 
-    private SOCPlayerClient cl;
+    private PlayerClient cl;
 
     /** should this be sent to the remote tcp server, or local practice server? */
     private final boolean forPractice;
@@ -82,15 +82,15 @@ public class NewGameOptionsFrame extends Frame
     /** is this for display only? */
     private final boolean readOnly;
 
-    /** Contains this game's {@link SOCGameOption}s, or null if none.
+    /** Contains this game's {@link GameOption}s, or null if none.
      *  Unknowns (OTYPE_UNKNOWN) are removed in initInterface_options.
      */
     private Hashtable opts;
 
-    /** Key = AWT control; value = {@link SOCGameOption} within {@link #opts}. Empty if opts is null.  */
+    /** Key = AWT control; value = {@link GameOption} within {@link #opts}. Empty if opts is null.  */
     private Hashtable controlsOpts;
 
-    /** Key = {@link SOCGameOption#optKey}; value = {@link Checkbox} if bool/intbool option.
+    /** Key = {@link GameOption#optKey}; value = {@link Checkbox} if bool/intbool option.
       * Empty if none, null if readOnly.
       * Used to quickly find an option's associated checkbox.
       */
@@ -115,17 +115,17 @@ public class NewGameOptionsFrame extends Frame
      * @param cli      Player client interface
      * @param gaName   Requested name of game (can change in this frame),
      *                 or null for blank or (forPractice)
-     *                 to use {@link SOCPlayerClient#DEFAULT_PRACTICE_GAMENAME}.
-     * @param opts     Set of {@link SOCGameOption}s; its values will be changed when "New Game" button
+     *                 to use {@link PlayerClient#DEFAULT_PRACTICE_GAMENAME}.
+     * @param opts     Set of {@link GameOption}s; its values will be changed when "New Game" button
      *                 is pressed, so the next OptionsFrame will default to the values the user has chosen.
-     *                 To preserve them, call {@link SOCGameOption#cloneOptions(Hashtable)} beforehand.
+     *                 To preserve them, call {@link GameOption#cloneOptions(Hashtable)} beforehand.
      *                 Null if server doesn't support game options.
-     *                 Unknown options ({@link SOCGameOption#OTYPE_UNKNOWN}) will be removed.
+     *                 Unknown options ({@link GameOption#OTYPE_UNKNOWN}) will be removed.
      * @param forPractice Will this game be on local practice server, vs remote tcp server?
      * @param readOnly    Is this display-only (for use during a game), or can it be changed?
      */
     public NewGameOptionsFrame
-        (SOCPlayerClient cli, String gaName, Hashtable opts, boolean forPractice, boolean readOnly)
+        (PlayerClient cli, String gaName, Hashtable opts, boolean forPractice, boolean readOnly)
     {
         super( readOnly
                 ? ("Current game options: " + gaName)
@@ -146,12 +146,12 @@ public class NewGameOptionsFrame extends Frame
         if ((gaName == null) && forPractice)
         {
             if (cli.numPracticeGames == 0)
-                gaName = SOCPlayerClient.DEFAULT_PRACTICE_GAMENAME;
+                gaName = PlayerClient.DEFAULT_PRACTICE_GAMENAME;
             else
-                gaName = SOCPlayerClient.DEFAULT_PRACTICE_GAMENAME + " " + (1 + cli.numPracticeGames);
+                gaName = PlayerClient.DEFAULT_PRACTICE_GAMENAME + " " + (1 + cli.numPracticeGames);
         }
 
-        // same Frame setup as in SOCPlayerClient.main
+        // same Frame setup as in PlayerClient.main
         setBackground(NGOF_BG);
         setForeground(Color.black);
 
@@ -177,7 +177,7 @@ public class NewGameOptionsFrame extends Frame
      * @return the new frame
      */
     public static NewGameOptionsFrame createAndShow
-        (SOCPlayerClient cli, String gaName, Hashtable opts, boolean forPractice, boolean readOnly)
+        (PlayerClient cli, String gaName, Hashtable opts, boolean forPractice, boolean readOnly)
     {
         NewGameOptionsFrame ngof = new NewGameOptionsFrame(cli, gaName, opts, forPractice, readOnly);
         ngof.pack();
@@ -312,8 +312,8 @@ public class NewGameOptionsFrame extends Frame
         Object[] optArr =  new TreeSet(opts.values()).toArray();
         for (int i = 0; i < optArr.length; ++i)
         {
-            SOCGameOption op = (SOCGameOption) optArr[i];
-            if (op.optType == SOCGameOption.OTYPE_UNKNOWN)
+            GameOption op = (GameOption) optArr[i];
+            if (op.optType == GameOption.OTYPE_UNKNOWN)
             {
                 opts.remove(op.optKey);
                 continue;  // <-- Removed, Go to next entry --
@@ -321,39 +321,39 @@ public class NewGameOptionsFrame extends Frame
 
             switch (op.optType)  // OTYPE_*
             {
-            case SOCGameOption.OTYPE_BOOL:
+            case GameOption.OTYPE_BOOL:
                 initInterface_Opt1(op, new Checkbox(), true, false, bp, gbl, gbc);
                 break;
 
-            case SOCGameOption.OTYPE_INT:
-            case SOCGameOption.OTYPE_INTBOOL:
+            case GameOption.OTYPE_INT:
+            case GameOption.OTYPE_INTBOOL:
                 {
-                    final boolean hasCheckbox = (op.optType == SOCGameOption.OTYPE_INTBOOL);
+                    final boolean hasCheckbox = (op.optType == GameOption.OTYPE_INTBOOL);
                     initInterface_Opt1(op, initOption_int(op), hasCheckbox, true, bp, gbl, gbc);
                 }
                 break;
 
-            case SOCGameOption.OTYPE_ENUM:
-            case SOCGameOption.OTYPE_ENUMBOOL:
+            case GameOption.OTYPE_ENUM:
+            case GameOption.OTYPE_ENUMBOOL:
                 // Choice (popup menu)
                 {
-                    final boolean hasCheckbox = (op.optType == SOCGameOption.OTYPE_ENUMBOOL);
+                    final boolean hasCheckbox = (op.optType == GameOption.OTYPE_ENUMBOOL);
                     initInterface_Opt1(op, initOption_enum(op), hasCheckbox, true, bp, gbl, gbc);
                 }
                 break;
 
-            case SOCGameOption.OTYPE_STR:
-            case SOCGameOption.OTYPE_STRHIDE:
+            case GameOption.OTYPE_STR:
+            case GameOption.OTYPE_STRHIDE:
                 {
                     int txtwid = op.maxIntValue;  // used as max length
                     if (txtwid > 20)
                         txtwid = 20;
-                    final boolean doHide = (op.optType == SOCGameOption.OTYPE_STRHIDE);
+                    final boolean doHide = (op.optType == GameOption.OTYPE_STRHIDE);
                     String txtcontent = (doHide ? "" : op.getStringValue());
                     TextField txtc = new TextField(txtcontent, txtwid);
                     if (doHide)
                     {
-                        if (SOCPlayerClient.isJavaOnOSX)
+                        if (PlayerClient.isJavaOnOSX)
                             txtc.setEchoChar('\u2022');  // round bullet (option-8)
                         else
                             txtc.setEchoChar('*');
@@ -385,7 +385,7 @@ public class NewGameOptionsFrame extends Frame
      * @param gbl Use this layout
      * @param gbc Use these constraints; gridwidth will be set to 1 and then REMAINDER
      */
-    private void initInterface_Opt1(SOCGameOption op, Component oc,
+    private void initInterface_Opt1(GameOption op, Component oc,
             boolean hasCB, boolean allowPH,
             Panel bp, GridBagLayout gbl, GridBagConstraints gbc)
     {
@@ -475,7 +475,7 @@ public class NewGameOptionsFrame extends Frame
     }
 
     /**
-     * Natural log of 10. For use in {@link #initOption_int(SOCGameOption)}, to determine
+     * Natural log of 10. For use in {@link #initOption_int(GameOption)}, to determine
      * number of digits needed for the option in a textfield
      */
     private static final double LOG_10 = Math.log(10.0);
@@ -484,12 +484,12 @@ public class NewGameOptionsFrame extends Frame
      * Based on this game option's type, present its intvalue either as
      * a numeric textfield, or a popup menu if min/max are near each other.
      * The maximum min/max distance which creates a popup is {@link #INTFIELD_POPUP_MAXRANGE}.
-     * @param op A SOCGameOption with an integer value, that is,
-     *           of type {@link SOCGameOption#OTYPE_INT OTYPE_INT}
-     *           or {@link SOCGameOption#OTYPE_INTBOOL OTYPE_INTBOOL}
+     * @param op A GameOption with an integer value, that is,
+     *           of type {@link GameOption#OTYPE_INT OTYPE_INT}
+     *           or {@link GameOption#OTYPE_INTBOOL OTYPE_INTBOOL}
      * @return an IntTextField or {@link java.awt.Choice} (popup menu)
      */
-    private Component initOption_int(SOCGameOption op)
+    private Component initOption_int(GameOption op)
     {
         // OTYPE_* - if a new type is added, update this method's javadoc.
 
@@ -525,10 +525,10 @@ public class NewGameOptionsFrame extends Frame
 
     /**
      * Create a popup menu for the choices of this enum.
-     * @param op Game option, of type {@link SOCGameOption#OTYPE_ENUM OTYPE_ENUM}
-     *           or {@link SOCGameOption#OTYPE_ENUMBOOL OTYPE_ENUMBOOL}
+     * @param op Game option, of type {@link GameOption#OTYPE_ENUM OTYPE_ENUM}
+     *           or {@link GameOption#OTYPE_ENUMBOOL OTYPE_ENUMBOOL}
      */
-    private Choice initOption_enum(SOCGameOption op)
+    private Choice initOption_enum(GameOption op)
     {
         Choice ch = new Choice();
         final String[] chs = op.enumVals;
@@ -586,9 +586,9 @@ public class NewGameOptionsFrame extends Frame
         {
             return;  // Should not happen (button disabled by TextListener)
         }
-        if (! SOCMessage.isSingleLineAndSafe(gmName))
+        if (! Message.isSingleLineAndSafe(gmName))
         {
-            msgText.setText(SOCStatusMessage.MSG_SV_NEWGAME_NAME_REJECTED);
+            msgText.setText(StatusMessage.MSG_SV_NEWGAME_NAME_REJECTED);
             gameName.requestFocusInWindow();
             return;  // Not a valid game name
         }
@@ -607,7 +607,7 @@ public class NewGameOptionsFrame extends Frame
             gameExists = gameExists || cl.serverGames.isGame(gmName);
         if (gameExists)
         {
-            NotifyDialog.createAndShow(cl, this, SOCStatusMessage.MSG_SV_NEWGAME_ALREADY_EXISTS, null, true);
+            NotifyDialog.createAndShow(cl, this, StatusMessage.MSG_SV_NEWGAME_ALREADY_EXISTS, null, true);
             return;
         }
 
@@ -624,7 +624,7 @@ public class NewGameOptionsFrame extends Frame
             // Nickname field is also checked before this dialog is displayed,
             // so the user must have gone back and changed it.
             // Can't correct the problem from within this dialog, since the
-            // nickname field (and hint message) is in SOCPlayerClient's panel.
+            // nickname field (and hint message) is in PlayerClient's panel.
             NotifyDialog.createAndShow(cl, this, "Please go back and enter a valid nickname for your user.", null, true);
             return;
         }
@@ -638,7 +638,7 @@ public class NewGameOptionsFrame extends Frame
         dispose();
     }
 
-    /** Dismiss the frame, and clear client's {@link SOCPlayerClient#newGameOptsFrame}
+    /** Dismiss the frame, and clear client's {@link PlayerClient#newGameOptsFrame}
      *  ref to this frame
      */
     public void dispose()
@@ -668,7 +668,7 @@ public class NewGameOptionsFrame extends Frame
             Component ctrl = (Component) e.nextElement();
             if (ctrl instanceof Label)
                 continue;
-            SOCGameOption op = (SOCGameOption) controlsOpts.get(ctrl);
+            GameOption op = (GameOption) controlsOpts.get(ctrl);
 
             // OTYPE_* - new option types may have new AWT control objects, or
             //           may use the same controls with different contents as these.
@@ -680,8 +680,8 @@ public class NewGameOptionsFrame extends Frame
             else if (ctrl instanceof TextField)
             {
                 String txt = ((TextField) ctrl).getText().trim();
-                if ((op.optType == SOCGameOption.OTYPE_STR)
-                    || (op.optType == SOCGameOption.OTYPE_STRHIDE))
+                if ((op.optType == GameOption.OTYPE_STR)
+                    || (op.optType == GameOption.OTYPE_STRHIDE))
                 {
                     try
                     {
@@ -727,7 +727,7 @@ public class NewGameOptionsFrame extends Frame
 
         if (allOK && checkOptionsMinVers && ! forPractice)
         {
-            int optsVers = SOCGameOption.optionsMinimumVersion(controlsOpts);
+            int optsVers = GameOption.optionsMinimumVersion(controlsOpts);
             if (optsVers > -1)
             {
                 allOK = false;
@@ -781,7 +781,7 @@ public class NewGameOptionsFrame extends Frame
 
     /**
      * When gamename contents change, enable/disable buttons as appropriate. (TextListener)
-     * Also handles {@link SOCGameOption#OTYPE_INTBOOL} textfield/checkbox combos.
+     * Also handles {@link GameOption#OTYPE_INTBOOL} textfield/checkbox combos.
      * @param e textevent from {@link #gameName}, or from a TextField in {@link #controlsOpts}
      */
     public void textValueChanged(TextEvent e)
@@ -800,7 +800,7 @@ public class NewGameOptionsFrame extends Frame
         else
         {
             // if source is OTYPE_INTBOOL, check its checkbox vs notEmpty.
-            SOCGameOption opt = (SOCGameOption) controlsOpts.get(srcObj);
+            GameOption opt = (GameOption) controlsOpts.get(srcObj);
             if (opt == null)
                 return;
             Checkbox cb = (Checkbox) boolOptCheckboxes.get(opt.optKey);
@@ -812,12 +812,12 @@ public class NewGameOptionsFrame extends Frame
 
     /**
      * Set the checkbox when the popup-menu Choice value is changed for a
-     * {@link SOCGameOption#OTYPE_INTBOOL} or {@link SOCGameOption#OTYPE_ENUMBOOL}. (ItemListener)
+     * {@link GameOption#OTYPE_INTBOOL} or {@link GameOption#OTYPE_ENUMBOOL}. (ItemListener)
      * @param e textevent from a Choice in {@link #controlsOpts}
      */
     public void itemStateChanged(ItemEvent e)
     {
-        SOCGameOption opt = (SOCGameOption) controlsOpts.get(e.getSource());
+        GameOption opt = (GameOption) controlsOpts.get(e.getSource());
         if (opt == null)
             return;
         Checkbox cb = (Checkbox) boolOptCheckboxes.get(opt.optKey);
@@ -829,7 +829,7 @@ public class NewGameOptionsFrame extends Frame
     /** when an option with a boolValue's label is clicked, toggle its checkbox */
     public void mouseClicked(MouseEvent e)
     {
-        SOCGameOption opt = (SOCGameOption) controlsOpts.get(e.getSource());
+        GameOption opt = (GameOption) controlsOpts.get(e.getSource());
         if (opt == null)
             return;
         Checkbox cb = (Checkbox) boolOptCheckboxes.get(opt.optKey);

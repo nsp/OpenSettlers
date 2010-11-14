@@ -18,19 +18,19 @@ sleep 3
 echo Starting Robots...
 
 # AI Computers
-#java -cp target/classes soc.robot.SOCRobotClient localhost $PORT Hal password &
-#java -cp target/classes soc.robot.SOCRobotClient localhost $PORT Joshua password &
+#java -cp target/classes soc.robot.RobotClient localhost $PORT Hal password &
+#java -cp target/classes soc.robot.RobotClient localhost $PORT Joshua password &
 
 # Robots
-#java -cp target/classes soc.robot.SOCRobotClient localhost $PORT Chrighton password &
-#java -cp target/classes soc.robot.SOCRobotClient localhost $PORT Gort password &
-#java -cp target/classes soc.robot.SOCRobotClient localhost $PORT Robbie password &
-#java -cp target/classes soc.robot.SOCRobotClient localhost $PORT Twiki password &
-#java -cp target/classes soc.robot.SOCRobotClient localhost $PORT Tobor password &
+#java -cp target/classes soc.robot.RobotClient localhost $PORT Chrighton password &
+#java -cp target/classes soc.robot.RobotClient localhost $PORT Gort password &
+#java -cp target/classes soc.robot.RobotClient localhost $PORT Robbie password &
+#java -cp target/classes soc.robot.RobotClient localhost $PORT Twiki password &
+#java -cp target/classes soc.robot.RobotClient localhost $PORT Tobor password &
 
 # Androids
-java -cp target/classes soc.robot.SOCRobotClient localhost $PORT Bishop password &
-java -cp target/classes soc.robot.SOCRobotClient localhost $PORT Deckard password &
-java -cp target/classes soc.robot.SOCRobotClient localhost $PORT Proteus password &
-java -cp target/classes soc.robot.SOCRobotClient localhost $PORT T-800 password &
-#java -cp target/classes soc.robot.SOCRobotClient localhost $PORT Sonny password &
+java -cp target/classes soc.robot.RobotClient localhost $PORT Bishop password &
+java -cp target/classes soc.robot.RobotClient localhost $PORT Deckard password &
+java -cp target/classes soc.robot.RobotClient localhost $PORT Proteus password &
+java -cp target/classes soc.robot.RobotClient localhost $PORT T-800 password &
+#java -cp target/classes soc.robot.RobotClient localhost $PORT Sonny password &

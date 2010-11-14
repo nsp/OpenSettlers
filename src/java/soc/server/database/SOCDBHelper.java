@@ -30,10 +30,10 @@ import java.util.Calendar;
 import java.util.Properties;
 import java.util.Vector;
 
-import soc.game.SOCGame;
-import soc.game.SOCPlayer;
-import soc.util.SOCPlayerInfo;
-import soc.util.SOCRobotParameters;
+import soc.game.Game;
+import soc.game.Player;
+import soc.util.PlayerInfo;
+import soc.util.RobotParameters;
 
 
 /**
@@ -615,7 +615,7 @@ public class SOCDBHelper
      *
      * @throws SQLException if the database isn't available
      */
-    public static boolean saveFaces(SOCGame ga) throws SQLException
+    public static boolean saveFaces(Game ga) throws SQLException
     {
         // Insure that the JDBC connection is still valid
         if (checkConnection())
@@ -625,7 +625,7 @@ public class SOCDBHelper
                 // Record face for humans
                 for (int i = 0; i < ga.maxPlayers; i++)
                 {
-                    SOCPlayer pl = ga.getPlayer(i);
+                    Player pl = ga.getPlayer(i);
                     
                     // If the player is human
                     if (!pl.isRobot())
@@ -657,7 +657,7 @@ public class SOCDBHelper
      *
      * @throws SQLException if the database isn't available
      */
-    public static boolean saveGameScores(SOCGame ga) throws SQLException
+    public static boolean saveGameScores(Game ga) throws SQLException
     {
         int sGCindex = 1;
         // TODO 6-player: save their scores too, if
@@ -674,13 +674,13 @@ public class SOCDBHelper
                 // iterate through the players
                 for (int i = 0; i < ga.maxPlayers; i++)
                 {
-                    SOCPlayer pl = ga.getPlayer(i);
+                    Player pl = ga.getPlayer(i);
 
 	                saveGameCommand.setString(sGCindex++, pl.getName());
                 }
                 for (int i = 0; i < ga.maxPlayers; i++)
                 {
-                    SOCPlayer pl = ga.getPlayer(i);
+                    Player pl = ga.getPlayer(i);
                     
                     saveGameCommand.setInt(sGCindex++, pl.getTotalVP());
                 }
@@ -694,7 +694,7 @@ public class SOCDBHelper
                 // iterate through the players
                 for (int i = 0; i < ga.maxPlayers; i++)
                 {
-                    SOCPlayer pl = ga.getPlayer(i);
+                    Player pl = ga.getPlayer(i);
                     int points = pl.getTotalVP();
                     boolean isWinner = points >= 10;
                     
@@ -739,9 +739,9 @@ public class SOCDBHelper
      *
      * @throws SQLException DOCUMENT ME!
      */
-    public static SOCRobotParameters retrieveRobotParams(String robotName) throws SQLException
+    public static RobotParameters retrieveRobotParams(String robotName) throws SQLException
     {
-        SOCRobotParameters robotParams = null;
+        RobotParameters robotParams = null;
 
         // ensure that the JDBC connection is still valid
         if (checkConnection())
@@ -767,7 +767,7 @@ public class SOCDBHelper
                     float tm = resultSet.getFloat(8);
                     int st = resultSet.getInt(9);
                     int tf = resultSet.getInt(14);
-                    robotParams = new SOCRobotParameters(mgl, me, ebf, af, laf, dcm, tm, st, tf);
+                    robotParams = new RobotParameters(mgl, me, ebf, af, laf, dcm, tm, st, tf);
                 }
                 
                 resultSet.close();
@@ -784,7 +784,7 @@ public class SOCDBHelper
     /**
      * DOCUMENT ME!
      *
-     * @param type either SOCPlayerInfo.HUMAN or SOCPlayerInfo.ROBOT
+     * @param type either PlayerInfo.HUMAN or PlayerInfo.ROBOT
      *
      * @return array of robot data
      *
@@ -804,7 +804,7 @@ public class SOCDBHelper
                 stmt = connection.createStatement();
 
                 // Execute the appropriate query
-                if (type.equals(SOCPlayerInfo.ROBOT))
+                if (type.equals(PlayerInfo.ROBOT))
                 {
                     resultSet = stmt.executeQuery(ROBOT_STATS_QUERY);
                 }
@@ -815,7 +815,7 @@ public class SOCDBHelper
 
                 while (resultSet.next())
                 {
-                    SOCPlayerInfo info = new SOCPlayerInfo();
+                    PlayerInfo info = new PlayerInfo();
 
                     info.setName(resultSet.getString(1));
                     info.setRank(resultSet.getRow());

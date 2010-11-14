@@ -57,7 +57,7 @@ public class SnippingTextArea extends TextArea
      * @since 1.1.06
      */
     static final boolean isJavaOnOSX105 =
-        SOCPlayerClient.isJavaOnOSX
+        PlayerClient.isJavaOnOSX
         && (System.getProperty("os.version").startsWith("10.5.")
             || System.getProperty("os.version").startsWith("10.6."));
 

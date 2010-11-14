@@ -9,6 +9,6 @@ echo "Starting Java Settlers of Catan Client..."
 OLD_DIR=`pwd`
 cd target/classes
 
-java soc.client.SOCPlayerClient localhost $PORT
+java soc.client.PlayerClient localhost $PORT
 
 cd "$OLD_DIR"

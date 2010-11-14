@@ -84,11 +84,11 @@ If you do not, you might not have entered your nickname correctly.  It must be "
 
 Now you can add some robot players.  Enter the following commands in separate command line windows:  (See below for how to automate this.)
 
-  java -cp OpenSettlersServer.jar soc.robot.SOCRobotClient localhost 8880 robot1 passwd
+  java -cp OpenSettlersServer.jar soc.robot.RobotClient localhost 8880 robot1 passwd
 
-  java -cp OpenSettlersServer.jar soc.robot.SOCRobotClient localhost 8880 robot2 passwd
+  java -cp OpenSettlersServer.jar soc.robot.RobotClient localhost 8880 robot2 passwd
 
-  java -cp OpenSettlersServer.jar soc.robot.SOCRobotClient localhost 8880 robot3 passwd
+  java -cp OpenSettlersServer.jar soc.robot.RobotClient localhost 8880 robot3 passwd
 
 Now click on the "Sit Here" button and press "Start Game".  The robot players should automatically join the game and start playing.
 
@@ -186,7 +186,7 @@ CREATE TABLE robotparams (robotname VARCHAR(20), maxgamelength INT, maxeta INT, 
 
 To create accounts, run the simple account creation client with the following command:
 
-  java -jar OpenSettlers.jar soc.client.SOCAccountClient localhost 8880
+  java -jar OpenSettlers.jar soc.client.AccountClient localhost 8880
 
 Users with accounts must type their password to log into the server to play. People without accounts can still connect, by leaving the password field blank, as long as they aren't using a nickname which has a password in the database. 
 

@@ -1,0 +1,547 @@
+/**
+ * Open Settlers - an open implementation of the game Settlers of Catan
+ * Copyright (C) 2003  Robert S. Thomas
+ * Portions of this file Copyright (C) 2008-2009 Jeremy D Monin <jeremy@nand.net>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>. **/
+package soc.util;
+
+import soc.disableDebug.D;
+import soc.game.Game;
+import soc.game.GameOption;
+import soc.message.Games;
+
+import java.util.Enumeration;
+import java.util.Hashtable;
+
+
+/**
+ * A class for creating and tracking the games;
+ * contains each game's name, {@link GameOption game options},
+ * {@link Game} object, and mutex for synchronization.
+ *<P>
+ * In 1.1.07, moved from soc.server to soc.util package for client's use.
+ * Some methods moved to new subclass {@link soc.server.GameListAtServer}.
+ * That subclass also tracks each game's clients ({@link soc.server.genericServer.StringConnection}s).
+ *<P>
+ * The client-side addGame methods allow game names to have a prefix which marks them
+ * as unjoinable by the client ({@link Games#MARKER_THIS_GAME_UNJOINABLE}).
+ * If the game name has this prefix, its {@link GameInfo#canJoin} flag is set to false,
+ * as queried by {@link #isUnjoinableGame(String)}.  The prefix is stripped within addGame,
+ * and not stored as part of the game name in this list.
+ * Besides addGame, never supply this prefix to a GameList method taking a game name;
+ * supply the game name without the prefix.
+ *
+ * @author Robert S. Thomas
+ */
+public class GameList
+{
+    /** key = String, value = {@link GameInfo}; includes mutexes to synchronize game state access,
+     *  game options, and other per-game info
+     */
+    protected Hashtable gameInfo;
+
+    /** map of game names to {@link Game} objects */
+    protected Hashtable gameData;
+
+    /** used with gamelist's monitor */
+    protected boolean inUse;
+
+    /**
+     * constructor
+     */
+    public GameList()
+    {
+        gameInfo = new Hashtable();
+        gameData = new Hashtable();
+        inUse = false;
+    }
+
+    /**
+     * take the monitor for this game list; if we must wait, sleep up to 1000 ms between attempts.
+     */
+    public synchronized void takeMonitor()
+    {
+        // D.ebugPrintln("GameList : TAKE MONITOR");
+
+        while (inUse)
+        {
+            try
+            {
+                wait(1000);
+            }
+            catch (InterruptedException e)
+            {
+                System.out.println("EXCEPTION IN takeMonitor() -- " + e);
+            }
+        }
+
+        inUse = true;
+    }
+
+    /**
+     * release the monitor for this game list
+     */
+    public synchronized void releaseMonitor()
+    {
+        // D.ebugPrintln("GameList : RELEASE MONITOR");
+        inUse = false;
+        this.notify();
+    }
+
+    /**
+     * take the monitor for this game
+     *
+     * @param game  the name of the game
+     * @return false if the game has no mutex, or game not found in the list
+     */
+    public boolean takeMonitorForGame(String game)
+    {
+        // D.ebugPrintln("GameList : TAKE MONITOR FOR " + game);
+
+        GameInfo info = (GameInfo) gameInfo.get(game);
+        if (info == null)
+        {
+            return false;
+        }
+        MutexFlag mutex = info.mutex;
+
+        if (mutex == null)
+        {
+            return false;
+        }
+
+        boolean done = false;
+
+        while (!done)
+        {
+            if (mutex == null)
+            {
+                return false;
+            }
+
+            synchronized (mutex)
+            {
+                if (mutex.getState() == true)
+                {
+                    try
+                    {
+                        mutex.wait(1000);
+                    }
+                    catch (InterruptedException e)
+                    {
+                        System.out.println("EXCEPTION IN takeMonitor() -- " + e);
+                    }
+                }
+                else
+                {
+                    done = true;
+                }
+            }
+        }
+
+        mutex.setState(true);
+
+        return true;
+    }
+
+    /**
+     * release the monitor for this game
+     *
+     * @param game  the name of the game
+     * @return false if the game has no mutex
+     */
+    public boolean releaseMonitorForGame(String game)
+    {
+        // D.ebugPrintln("GameList : RELEASE MONITOR FOR " + game);
+
+        GameInfo info = (GameInfo) gameInfo.get(game);
+        if (info == null)
+            return false;
+        MutexFlag mutex = info.mutex;
+
+        if (mutex == null)
+        {
+            return false;
+        }
+
+        synchronized (mutex)
+        {
+            mutex.setState(false);
+            mutex.notify();
+        }
+
+        return true;
+    }
+
+    /**
+     * Get the names of every game we know about, even those with no {@link Game} object.
+     * @return an enumeration of game names (Strings)
+     * @see #getGamesData()
+     */
+    public Enumeration getGames()
+    {
+        return gameInfo.keys();
+    }
+
+    /**
+     * Get all the {@link Game} data available; some games in {@link #getGames()}
+     * may not have associated Game data, so this enumeration may have fewer
+     * elements than getGames, or even 0 elements.
+     * @return an enumeration of game data (Games)
+     * @see #getGames()
+     * @since 1.1.06
+     */
+    public Enumeration getGamesData()
+    {
+        return gameData.elements();
+    }
+
+    /**
+     * the number of games in our list
+     * @return the number of games in our list
+     * @since 1.1.07
+     */
+    public int size()
+    {
+        return gameInfo.size();
+    }
+
+    /**
+     * get a game's Game, if we've stored that
+     * @param   gaName  game name
+     * @return the game object data, or null
+     */
+    public Game getGameData(String gaName)
+    {
+        return (Game) gameData.get(gaName);
+    }
+
+    /**
+     * get a game's {@link GameOption}s, if stored and parsed
+     * @param   gaName  game name
+     * @return the game options (hashtable of {@link GameOption}), or null if none or if unparsed
+     * @see #getGameOptionsString(String)
+     * @see #parseGameOptions(String)
+     * @since 1.1.07
+     */
+    public Hashtable getGameOptions(String gaName)
+    {
+        GameInfo info = (GameInfo) gameInfo.get(gaName);
+        if (info == null)
+            return null;
+        else
+            return info.opts;
+    }
+
+    /**
+     * get a game's {@link GameOption}s, as a packed string
+     * @param   gaName  game name
+     * @return the game options string, or null if no packed version
+     * @see #getGameOptions(String)
+     * @since 1.1.07
+     */
+    public String getGameOptionsString(String gaName)
+    {
+        GameInfo info = (GameInfo) gameInfo.get(gaName);
+        if (info == null)
+            return null;
+        else
+            return info.optsStr;
+    }
+
+    /**
+     * Parse these game options from string to hashtable.
+     * Should not be called at client before any updates to "known options" are received from server.
+     * @param   gaName  game name
+     * @return the game options (hashtable of {@link GameOption}), or null if none
+     * @see #getGameOptionsString(String)
+     * @since 1.1.07
+     */
+    public Hashtable parseGameOptions(String gaName)
+    {
+        GameInfo info = (GameInfo) gameInfo.get(gaName);
+        if (info == null)
+            return null;
+        else
+            return info.parseOptsStr();
+    }
+
+    /**
+     * does this game exist in our list?
+     * @param   gaName  the name of the game
+     * @return true if the game exists
+     */
+    public boolean isGame(String gaName)
+    {
+        return (gameInfo.get(gaName) != null);
+    }
+
+    /**
+     * does this game have the unjoinable flag prefix?
+     * @param   gaName  the name of the game;  may be marked with the prefix
+     *         {@link soc.message.Games#MARKER_THIS_GAME_UNJOINABLE}.
+     *         Remember that the prefix is not stored as part of the game name in this list,
+     *         so it's not necessary to add the prefix when calling this method
+     *         about a game already in our list.
+     * @return true if the game is in our list marked as not joinable,
+     *        or has the prefix
+     * @since 1.1.07
+     */
+    public boolean isUnjoinableGame(String gaName)
+    {
+        if (gaName.charAt(0) == Games.MARKER_THIS_GAME_UNJOINABLE)
+            return true;
+        GameInfo gi = (GameInfo) gameInfo.get(gaName);
+        if (gi == null)
+            return false;
+        return ! gi.canJoin;
+    }
+
+    /**
+     * Client-side - Add this game name, with game options.
+     * If a game already exists (per {@link #isGame(String)}), at most clear its canJoin flag.
+     *<P>
+     * Server should instead call {@link soc.server.GameListAtServer#createGame(String, Hashtable)}.
+     *
+     * @param gaName Name of added game; may be marked with the prefix
+     *         {@link soc.message.Games#MARKER_THIS_GAME_UNJOINABLE}.
+     * @param gaOptsStr set of {@link GameOption}s as packed by
+     *         {@link GameOption#packOptionsToString(Hashtable, boolean)}, or null.
+     *         Game options should remain unparsed as late as possible.
+     * @param cannotJoin This game is unjoinable, even if its name doesn't
+     *         start with the unjoinable prefix.
+     *         gaName will be checked for the prefix regardless of cannotJoin's value.
+     * @since 1.1.07
+     */
+    public synchronized void addGame(String gaName, String gaOptsStr, boolean cannotJoin)
+    {
+        addGame(gaName, null, gaOptsStr, cannotJoin);
+    }
+
+    /**
+     * Internal use - Add this game name, with game options.
+     * If a game already exists (per {@link #isGame(String)}), at most clear its canJoin flag.
+     * Supply gaOpts or gaOptsStr, not both.
+     *<P>
+     * Client should instead call {@link #addGame(String, String, boolean)} because game options should
+     * remain unparsed as late as possible.
+     * Server should instead call {@link soc.server.GameListAtServer#createGame(String, Hashtable)}.
+     *
+     * @param gaName Name of added game; may be marked with the prefix
+     *         {@link soc.message.Games#MARKER_THIS_GAME_UNJOINABLE}.
+     * @param gaOpts Hashtable of {@link GameOption game options} of added game, or null 
+     * @param gaOptsStr set of {@link GameOption}s as packed by
+     *         {@link GameOption#packOptionsToString(Hashtable, boolean)}, or null.
+     *         Game options should remain unparsed as late as possible.
+     * @param cannotJoin This game is unjoinable, even if its name doesn't
+     *         start with the unjoinable prefix.
+     *         gaName will be checked for the prefix regardless of cannotJoin's value.
+     * @see #addGames(GameList, int)
+     * @see #addGames(Enumeration, int)
+     * @since 1.1.07
+     */
+    protected synchronized void addGame(String gaName, Hashtable gaOpts, String gaOptsStr, boolean cannotJoin)
+    {
+        if (gaName.charAt(0) == Games.MARKER_THIS_GAME_UNJOINABLE)
+        {
+            cannotJoin = true;
+            gaName = gaName.substring(1);
+        }
+
+        if (isGame(gaName))
+        {
+            if (cannotJoin)
+            {
+                GameInfo gi = (GameInfo) gameInfo.get(gaName);
+                if (gi.canJoin)
+                    gi.canJoin = false;
+            }
+            return;
+        }
+
+        if (gaOpts != null)
+            gameInfo.put(gaName, new GameInfo(! cannotJoin, gaOpts));
+        else
+            gameInfo.put(gaName, new GameInfo(! cannotJoin, gaOptsStr));
+    }
+
+    /**
+     * Add the contents of another GameList to this GameList.
+     * Calls addGame for each one.
+     * gl's {@link Game}s will be added first, followed by games for which we only know
+     * the name and options.
+     * @param gl Another GameList from which to copy game data.
+     *          If gl is null, nothing happens.
+     *          If any game already exists here (per this.{@link #isGame(String)}), don't overwrite it.
+     * @param ourVersion Version to check to see if we can join,
+     *          same format as {@link soc.util.Version#versionNumber()}.
+     *          For each Game in gl, {@link Game#getClientVersionMinRequired()}
+     *          will be called.
+     * @since 1.1.07
+     */
+    public synchronized void addGames(GameList gl, final int ourVersion)
+    {
+        if ((gl == null) || (gl.gameInfo == null))
+            return;
+        if (gl.gameData != null)
+            addGames(gl.gameData.elements(), ourVersion);
+        if (gl.gameInfo != null)
+        {
+            // add games, and/or update canJoin flag of games added via gameData.
+            for (Enumeration gnEnum = gl.gameInfo.keys(); gnEnum.hasMoreElements(); )
+            {
+                String gaName = (String) gnEnum.nextElement();
+                GameInfo gi = (GameInfo) gl.gameInfo.get(gaName);
+                if (gi.opts != null)
+                    addGame(gaName, gi.opts, null, ! gi.canJoin);
+                else
+                    addGame(gaName, null, gi.optsStr, ! gi.canJoin);
+            }
+        }
+    }
+
+    /**
+     * Add several games to this GameList.
+     * Calls {@link #addGame(String, Hashtable, String, boolean)} for each one.
+     * @param gamelist Enumeration of Strings and/or {@link Game}s (mix and match);
+     *          game names may be marked with the prefix
+     *          {@link soc.message.Games#MARKER_THIS_GAME_UNJOINABLE}.
+     *          If gamelist is null, nothing happens.
+     *          If any game already exists (per {@link #isGame(String)}), don't overwrite it;
+     *          at most, clear its canJoin flag.
+     * @param ourVersion Version to check to see if we can join,
+     *          same format as {@link soc.util.Version#versionNumber()}.
+     *          For each Game in gameList, {@link Game#getClientVersionMinRequired()}
+     *          will be called.
+     * @since 1.1.07
+     */
+    public synchronized void addGames(Enumeration gamelist, final int ourVersion)
+    {
+        if (gamelist == null)
+            return;
+
+        while (gamelist.hasMoreElements())
+        {
+            Object ob = gamelist.nextElement();
+            String gaName;
+            Hashtable gaOpts;
+            boolean cannotJoin;
+            if (ob instanceof Game)
+            {
+                gaName = ((Game) ob).getName();
+                gaOpts = ((Game) ob).getGameOptions();
+                cannotJoin = (ourVersion < ((Game) ob).getClientVersionMinRequired());
+            } else {
+                gaName = (String) ob;
+                gaOpts = null;
+                cannotJoin = false;
+            }
+
+            addGame(gaName, gaOpts, null, cannotJoin);
+        }    
+    }
+
+    /**
+     * remove the game from the list
+     *
+     * @param gaName  the name of the game; should not be marked with any prefix.
+     */
+    public synchronized void deleteGame(final String gaName)
+    {
+        D.ebugPrintln("GameList : deleteGame(" + gaName + ")");
+
+        Game game = (Game) gameData.get(gaName);
+
+        if (game != null)
+        {
+            game.destroyGame();
+            gameData.remove(gaName);
+        }
+
+        GameInfo info = (GameInfo) gameInfo.get(gaName);
+        gameInfo.remove(gaName);
+        synchronized (info.mutex)
+        {
+            info.mutex.notifyAll();
+        }
+        info.finalize();
+    }
+
+    /**
+     * Holds most information on one game, except its Game object, which is kept separately.
+     * Includes mutexes to synchronize game state access.
+     * Kept within {@link #gameInfo} hashtable.
+     * @author Jeremy D Monin <jeremy@nand.net>
+     * @since 1.1.07
+     */
+    protected static class GameInfo
+    {
+        public MutexFlag mutex;
+        public Hashtable opts;  // or null
+        public String optsStr;  // or null
+        public boolean canJoin;
+
+        /**
+         * Constructor: gameOpts is null or contains game option objects
+         * @param canJoinGame can we join this game?
+         * @param gameOpts Hashtable of {@link GameOption}s, or null
+         */
+        public GameInfo (boolean canJoinGame, Hashtable gameOpts)
+        {
+            mutex = new MutexFlag();
+            opts = gameOpts;
+            canJoin = canJoinGame;
+        }
+
+        /**
+         * Constructor: gameOptsStr is null or unparsed game options
+         * @param canJoinGame can we join this game?
+         * @param gameOptsStr set of {@link GameOption}s as packed by
+         *            {@link GameOption#packOptionsToString(Hashtable, boolean)}, or null
+         */
+        public GameInfo (boolean canJoinGame, String gameOptsStr)
+        {
+            mutex = new MutexFlag();
+            optsStr = gameOptsStr;
+            canJoin = canJoinGame;
+        }
+
+        /**
+         * Parse optsStr to opts, unless it's already been parsed.
+         * @return opts, after parsing if necessary, or null if opts==null and optsStr==null.
+         */
+        public Hashtable parseOptsStr()
+        {
+            if (opts != null)  // already parsed
+                return opts;
+            else if (optsStr == null)  // none to parse
+                return null;
+            else
+            {
+                opts = GameOption.parseOptionsToHash(optsStr);
+                return opts;
+            }
+        }
+
+        public void finalize()
+        {
+            if (opts != null)
+            {
+                opts.clear();
+                opts = null;
+            }
+        }
+    }
+}

@@ -17,10 +17,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>. **/
 package soc.client;
 
-import soc.game.SOCGame;
-import soc.game.SOCPlayer;
-import soc.game.SOCResourceSet;
-import soc.game.SOCTradeOffer;
+import soc.game.Game;
+import soc.game.Player;
+import soc.game.ResourceSet;
+import soc.game.TradeOffer;
 
 import java.awt.Button;
 import java.awt.CardLayout;
@@ -103,8 +103,8 @@ public class TradeOfferPanel extends Panel
     static final String CANCEL = "cancel";
     static final Color insideBGColor = new Color(255, 230, 162);
     int from;
-    SOCHandPanel hp;
-    SOCPlayerInterface pi;
+    HandPanel hp;
+    PlayerInterface pi;
 
     String mode;
     CardLayout cardLayout;
@@ -131,7 +131,7 @@ public class TradeOfferPanel extends Panel
     /**
      * Creates a new TradeOfferPanel object.
      */
-    public TradeOfferPanel(SOCHandPanel hp, int from)
+    public TradeOfferPanel(HandPanel hp, int from)
     {
         this.hp = hp;
         this.from = from;
@@ -254,8 +254,8 @@ public class TradeOfferPanel extends Panel
         Button clearBut;
         Button cancelBut;
         boolean offered;
-        SOCResourceSet give;
-        SOCResourceSet get;
+        ResourceSet give;
+        ResourceSet get;
         int[] giveInt = new int[5];
         int[] getInt = new int[5];
 
@@ -365,17 +365,17 @@ public class TradeOfferPanel extends Panel
         /**
          * Update the displayed offer.
          * Should be called when already in {@link TradeOfferPanel#OFFER_MODE},
-         * or about to switch to it via {@link TradeOfferPanel#setOffer(SOCTradeOffer)}.
+         * or about to switch to it via {@link TradeOfferPanel#setOffer(TradeOffer)}.
          *
          * @param  offer  the trade offer, with set of resources being given and asked for
          */
-        public void update(SOCTradeOffer offer)
+        public void update(TradeOffer offer)
         {
             this.give = offer.getGiveSet();
             this.get = offer.getGetSet();
             boolean[] offerList = offer.getTo();
         
-            SOCPlayer player = hp.getGame().getPlayer(hp.getClient().getNickname());
+            Player player = hp.getGame().getPlayer(hp.getClient().getNickname());
 
             if (player != null)
             {
@@ -400,7 +400,7 @@ public class TradeOfferPanel extends Panel
                 offered = false;
             }
         
-            SOCGame ga = hp.getGame();
+            Game ga = hp.getGame();
             final int maxChars = (ga.maxPlayers > 4) ? 30 : 25;
             String names1 = "Offered to: ";
             String names2 = null;
@@ -452,7 +452,7 @@ public class TradeOfferPanel extends Panel
             toWhom2.setText(names2);
 
             /**
-             * Note: this only works if SOCResourceConstants.CLAY == 1
+             * Note: this only works if ResourceConstants.CLAY == 1
              */
             for (int i = 0; i < 5; i++)
             {
@@ -601,10 +601,10 @@ public class TradeOfferPanel extends Panel
             }
             else if (target == SEND)
             {
-                SOCGame game = hp.getGame();
-                SOCPlayer player = game.getPlayer(pi.getClient().getNickname());
+                Game game = hp.getGame();
+                Player player = game.getPlayer(pi.getClient().getNickname());
 
-                if (game.getGameState() == SOCGame.PLAY1)
+                if (game.getGameState() == Game.PLAY1)
                 {
                     // slot for each resource, plus one for 'unknown' (remains 0)
                     int[] give = new int[5];
@@ -619,8 +619,8 @@ public class TradeOfferPanel extends Panel
                         getSum += get[i];
                     }
 
-                    SOCResourceSet giveSet = new SOCResourceSet(give);
-                    SOCResourceSet getSet = new SOCResourceSet(get);
+                    ResourceSet giveSet = new ResourceSet(give);
+                    ResourceSet getSet = new ResourceSet(get);
                     
                     if (!player.getResources().contains(giveSet))
                     {
@@ -637,8 +637,8 @@ public class TradeOfferPanel extends Panel
                         // offer to the player that made the original offer
                         to[from] = true;
 
-                        SOCTradeOffer tradeOffer =
-                            new SOCTradeOffer (game.getName(),
+                        TradeOffer tradeOffer =
+                            new TradeOffer (game.getName(),
                                                player.getPlayerNumber(),
                                                to, giveSet, getSet);
                         hp.getClient().offerTrade(game, tradeOffer);
@@ -681,7 +681,7 @@ public class TradeOfferPanel extends Panel
             boolean haveResources = true;
             if(offered)
             {
-                SOCPlayer player = hp.getGame().getPlayer(hp.getClient().getNickname());
+                Player player = hp.getGame().getPlayer(hp.getClient().getNickname());
                 haveResources = player.getResources().contains(get);
             }
             giveLab2.setVisible(visible);
@@ -716,7 +716,7 @@ public class TradeOfferPanel extends Panel
      * don't change the visibility.
      * Otherwise, set the message text and show the Message.
      * If an offer/counteroffer were visible, they are
-     * not lost; call {@link #setOffer(SOCTradeOffer)} to
+     * not lost; call {@link #setOffer(TradeOffer)} to
      * show them again.
      *
      * @param  message  the message message to show, or null.
@@ -741,7 +741,7 @@ public class TradeOfferPanel extends Panel
      *
      * @param  currentOffer the trade being proposed
      */
-    public void setOffer(SOCTradeOffer currentOffer)
+    public void setOffer(TradeOffer currentOffer)
     {
         offerPanel.update(currentOffer);
         cardLayout.show(this, mode = OFFER_MODE);

@@ -49,8 +49,8 @@ public class ColorSquare extends Canvas implements MouseListener
      * and also used for the robber's "ghost" when
      * moving the robber, and fallback for missing hex graphics.
      *
-     * @see soc.client.SOCBoardPanel#drawRobber(Graphics, int, boolean)
-     * @see soc.client.SOCBoardPanel#drawHex(Graphics, int)
+     * @see soc.client.BoardPanel#drawRobber(Graphics, int, boolean)
+     * @see soc.client.BoardPanel#drawHex(Graphics, int)
      */
     public final static Color CLAY = new Color(204, 102, 102);
     public final static Color ORE = new Color(153, 153, 153);

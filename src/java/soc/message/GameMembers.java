@@ -1,0 +1,156 @@
+/**
+ * Open Settlers - an open implementation of the game Settlers of Catan
+ * Copyright (C) 2003  Robert S. Thomas
+ * Portions of this file Copyright (C) 2009-2010 Jeremy D Monin <jeremy@nand.net>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>. **/
+package soc.message;
+
+import soc.server.genericServer.StringConnection;
+
+import java.util.Enumeration;
+import java.util.StringTokenizer;
+import java.util.Vector;
+
+
+/**
+ * This message lists all the members of a game.
+ * The group of messages sent by server in response to JOINGAME ends
+ * with GAMEMEMBERS, SETTURN and GAMESTATE, and GAMEMEMBERS thus tells the client
+ * that the server's ready for its input.  Robots use GAMEMEMBERS as their cue to
+ * sit down at the game, if they've been asked to sit.
+ *
+ * @author Robert S Thomas
+ */
+public class GameMembers extends Message
+{
+    private static final long serialVersionUID = 4057903417445770245L;
+
+    /**
+     * List of members
+     */
+    private Vector members;
+
+    /**
+     * Name of game
+     */
+    private String game;
+
+    /**
+     * Create a GameMembers message.
+     *
+     * @param ga  name of game
+     * @param ml  list of members
+     */
+    public GameMembers(String ga, Vector ml)
+    {
+        messageType = GAMEMEMBERS;
+        members = ml;
+        game = ga;
+    }
+
+    /**
+     * @return the list of members
+     */
+    public Vector getMembers()
+    {
+        return members;
+    }
+
+    /**
+     * @return the game name
+     */
+    public String getGame()
+    {
+        return game;
+    }
+
+    /**
+     * GAMEMEMBERS sep game sep2 members
+     *
+     * @return the command String
+     */
+    public String toCmd()
+    {
+        return toCmd(game, members);
+    }
+
+    /**
+     * GAMEMEMBERS sep game sep2 members
+     *
+     * @param ga  the game name
+     * @param ml  the list of members
+     * @return    the command string
+     */
+    public static String toCmd(String ga, Vector ml)
+    {
+        String cmd = GAMEMEMBERS + sep + ga;
+
+        try
+        {
+            Enumeration mlEnum = ml.elements();
+
+            while (mlEnum.hasMoreElements())
+            {
+                StringConnection con = (StringConnection) mlEnum.nextElement();
+                cmd += (sep2 + (String) con.getData());
+            }
+        }
+        catch (Exception e) {}
+
+        return cmd;
+    }
+
+    /**
+     * Parse the command String into a Members message
+     *
+     * @param s   the String to parse
+     * @return    a Members message, or null of the data is garbled
+     */
+    public static GameMembers parseDataStr(String s)
+    {
+        String ga;
+        Vector ml = new Vector();
+        StringTokenizer st = new StringTokenizer(s, sep2);
+
+        try
+        {
+            ga = st.nextToken();
+
+            while (st.hasMoreTokens())
+            {
+                ml.addElement(st.nextToken());
+            }
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+
+        return new GameMembers(ga, ml);
+    }
+
+    /**
+     * @return a human readable form of the message
+     */
+    public String toString()
+    {
+        StringBuffer sb = new StringBuffer("GameMembers:game=");
+        sb.append(game);
+        sb.append("|members=");
+        if (members != null)
+            enumIntoStringBuf(members.elements(), sb);
+        return sb.toString();
+    }
+}

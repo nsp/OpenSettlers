@@ -31,7 +31,7 @@ import java.awt.event.MouseListener;
  *
  * @author Robert S Thomas
  * @version $Revision: 1.3 $
- * @see SOCHandPanel
+ * @see HandPanel
  * @see TradeOfferPanel
  */
 public class SquaresPanel extends Panel implements MouseListener, ColorSquareListener
@@ -51,7 +51,7 @@ public class SquaresPanel extends Panel implements MouseListener, ColorSquareLis
     private ColorSquare[] give, get;
     boolean interactive;
     boolean notAllZero;
-    SOCHandPanel parentHand;
+    HandPanel parentHand;
 
     /**
      * Creates a new SquaresPanel object.
@@ -64,12 +64,12 @@ public class SquaresPanel extends Panel implements MouseListener, ColorSquareLis
     }
 
     /**
-     * Creates a new SquaresPanel object, as part of a SOCHandPanel.
+     * Creates a new SquaresPanel object, as part of a HandPanel.
      *
      * @param in Interactive?
      * @param hand HandPanel containing this SquaresPanel
      */
-    public SquaresPanel(boolean in, SOCHandPanel hand)
+    public SquaresPanel(boolean in, HandPanel hand)
     {
         super(null);
 
@@ -246,7 +246,7 @@ public class SquaresPanel extends Panel implements MouseListener, ColorSquareLis
     /**
      * Called by colorsquare when clicked; if we're part of a HandPanel,
      * could enable/disable its buttons based on new value.
-     * If needed, also call {@link SOCHandPanel#sqPanelZerosChange(boolean)}
+     * If needed, also call {@link HandPanel#sqPanelZerosChange(boolean)}
      * if {@link #parentHand} is set.
      */
     public void squareChanged(ColorSquare sq, int oldValue, int newValue)

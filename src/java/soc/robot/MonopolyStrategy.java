@@ -19,10 +19,10 @@
  **/
 package soc.robot;
 
-import soc.game.SOCBoard;
-import soc.game.SOCGame;
-import soc.game.SOCPlayer;
-import soc.game.SOCResourceConstants;
+import soc.game.Board;
+import soc.game.Game;
+import soc.game.Player;
+import soc.game.ResourceConstants;
 
 public class MonopolyStrategy {
 
@@ -31,12 +31,12 @@ public class MonopolyStrategy {
      */
     protected int monopolyChoice;
     
-	public boolean decidePlayMonopoly(SOCGame game, SOCPlayer ourPlayerData){
+	public boolean decidePlayMonopoly(Game game, Player ourPlayerData){
 		int bestResourceCount = 0;
         int bestResource = 0;
 
-        for (int resource = SOCResourceConstants.CLAY;
-                resource <= SOCResourceConstants.WOOD; resource++)
+        for (int resource = ResourceConstants.CLAY;
+                resource <= ResourceConstants.WOOD; resource++)
         {
             //log.debug("$$ resource="+resource);
             int freeResourceCount = 0;
@@ -47,7 +47,7 @@ public class MonopolyStrategy {
             {
                 twoForOne = true;
             }
-            else if (ourPlayerData.getPortFlag(SOCBoard.MISC_PORT))
+            else if (ourPlayerData.getPortFlag(Board.MISC_PORT))
             {
                 threeForOne = true;
             }

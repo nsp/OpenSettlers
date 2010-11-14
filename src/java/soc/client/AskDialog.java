@@ -61,13 +61,13 @@ public abstract class AskDialog extends Dialog
     private static final long serialVersionUID = -3500941378830169918L;
 
     /** Player client; passed to constructor, not null */
-    protected final SOCPlayerClient pcli;
+    protected final PlayerClient pcli;
 
     /**
      * Player interface; passed to constructor; may be null if the
      * question is related to the entire client, and not to a specific game
      */
-    protected SOCPlayerInterface pi;
+    protected PlayerInterface pi;
 
     /** Prompt message Label, or Panel for multi-line prompt, or null */
     protected Component msg;
@@ -119,7 +119,7 @@ public abstract class AskDialog extends Dialog
      * @throws IllegalArgumentException If both default1 and default2 are true,
      *    or if any of these is null: cli, gamePI, prompt, choice1, choice2.
      */
-    public AskDialog(SOCPlayerClient cli, SOCPlayerInterface gamePI,
+    public AskDialog(PlayerClient cli, PlayerInterface gamePI,
         String titlebar, String prompt, String choice1, String choice2,
         boolean default1, boolean default2)
         throws IllegalArgumentException
@@ -139,7 +139,7 @@ public abstract class AskDialog extends Dialog
      * parentFr cannot be null; use {@link #getParentFrame(Component)} to find it.
      * @since 1.1.06
      */
-    protected AskDialog(SOCPlayerClient cli, Frame parentFr,
+    protected AskDialog(PlayerClient cli, Frame parentFr,
         String titlebar, String prompt, String btnText,
         boolean hasDefault)
         throws IllegalArgumentException
@@ -156,7 +156,7 @@ public abstract class AskDialog extends Dialog
      * Creates a new AskDialog with two buttons, not about a specific game.
      *
      * @param cli      Player client interface
-     * @param parentFr SOCPlayerClient or other parent frame
+     * @param parentFr PlayerClient or other parent frame
      * @param titlebar Title bar text
      * @param prompt   Prompting text shown above buttons, or null
      * @param choice1  First choice button text
@@ -167,7 +167,7 @@ public abstract class AskDialog extends Dialog
      * @throws IllegalArgumentException If both default1 and default2 are true,
      *    or if any of these is null: cli, gamePI, prompt, choice1, choice2.
      */
-    public AskDialog(SOCPlayerClient cli, Frame parentFr,
+    public AskDialog(PlayerClient cli, Frame parentFr,
         String titlebar, String prompt, String choice1, String choice2,
         boolean default1, boolean default2)
         throws IllegalArgumentException
@@ -197,7 +197,7 @@ public abstract class AskDialog extends Dialog
      *    or if any of these is null: cli, gamePI, prompt, choice1, choice2,
      *    or if choice3 is null and defaultChoice is 3.
      */
-    public AskDialog(SOCPlayerClient cli, SOCPlayerInterface gamePI,
+    public AskDialog(PlayerClient cli, PlayerInterface gamePI,
         String titlebar, String prompt, String choice1, String choice2, String choice3,
         int defaultChoice)
         throws IllegalArgumentException
@@ -216,7 +216,7 @@ public abstract class AskDialog extends Dialog
      * a specific game.
      *
      * @param cli      Player client interface
-     * @param parentFr SOCPlayerClient or other parent frame
+     * @param parentFr PlayerClient or other parent frame
      * @param titlebar Title bar text
      * @param prompt   Prompting text shown above buttons, or null.
      *              Can be multi-line, use "\n" within your string to separate them.
@@ -229,7 +229,7 @@ public abstract class AskDialog extends Dialog
      *    or if any of these is null: cli, parentFr, prompt, choice1, choice2,
      *    or if choice3 is null and defaultChoice is 3.
      */
-    public AskDialog(SOCPlayerClient cli, Frame parentFr,
+    public AskDialog(PlayerClient cli, Frame parentFr,
         String titlebar, String prompt, String choice1, String choice2, String choice3,
         int defaultChoice)
         throws IllegalArgumentException

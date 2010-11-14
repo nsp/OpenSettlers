@@ -51,14 +51,14 @@ public class ChannelFrame extends Frame
     public Canvas cnvs;
     public int ncols;
     public int npix = 1;
-    SOCPlayerClient cc;
+    PlayerClient cc;
     String cname;
     Vector history = new Vector();
     int historyCounter = 1;
     boolean down = false;
 
     /** build a frame with the given title, belonging to the given applet*/
-    public ChannelFrame(String t, SOCPlayerClient ccp)
+    public ChannelFrame(String t, PlayerClient ccp)
     {
         super("Channel: " + t);
         setBackground(ccp.getBackground());

@@ -12,9 +12,9 @@ public class CardsMessage {
 	
 	private String response;
 	private int discardcards;
-	private SOCResourceSet igive_resource_set;
+	private ResourceSet igive_resource_set;
 	private int resource;
-	private SOCResourceSet discovery_resource_set;
+	private ResourceSet discovery_resource_set;
 	private Vector edges_to_build_roads;
 	
 	public void setResponseHeader(String response) {
@@ -39,13 +39,13 @@ public class CardsMessage {
 		
 	}
 	
-	public void setDiscardResourceSet(SOCResourceSet igive_resource_set) {
+	public void setDiscardResourceSet(ResourceSet igive_resource_set) {
 		
 		this.igive_resource_set = igive_resource_set;
 		
 	}
 	
-	public SOCResourceSet getDiscardResourceSet() {
+	public ResourceSet getDiscardResourceSet() {
 		
 		return this.igive_resource_set;
 		
@@ -61,12 +61,12 @@ public class CardsMessage {
 		return this.resource;
 	}
 	
-	public void setDiscoveryResourceSet(SOCResourceSet discovery_resource_set) {
+	public void setDiscoveryResourceSet(ResourceSet discovery_resource_set) {
 		
 		this.discovery_resource_set = discovery_resource_set;
 	}
 	
-	public SOCResourceSet getDiscoveryResourceSet() {
+	public ResourceSet getDiscoveryResourceSet() {
 		
 		return this.discovery_resource_set;
 	}

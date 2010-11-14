@@ -26,8 +26,8 @@ import java.util.Random;
 // import org.apache.log4j.Logger;
 
 import soc.disableDebug.D;
-import soc.game.SOCGame;
-import soc.game.SOCPlayer;
+import soc.game.Game;
+import soc.game.Player;
 
 public class RobberStrategy {
 
@@ -38,7 +38,7 @@ public class RobberStrategy {
    /**
     * move the robber
     */
-   public int getBestRobberHex(SOCGame game, SOCPlayer ourPlayerData, HashMap playerTrackers)
+   public int getBestRobberHex(Game game, Player ourPlayerData, HashMap playerTrackers)
    {
        Random rand = new Random();
        D.debug("%%% MOVEROBBER");
@@ -57,7 +57,7 @@ public class RobberStrategy {
 
        while (trackersIter.hasNext())
        {
-           SOCPlayerTracker tracker = (SOCPlayerTracker) trackersIter.next();
+           PlayerTracker tracker = (PlayerTracker) trackersIter.next();
            D.debug("%%%%%%%%% TRACKER FOR PLAYER " + tracker.getPlayer().getPlayerNumber());
 
            try
@@ -98,8 +98,8 @@ public class RobberStrategy {
        /**
         * figure out the best way to thwart that player
         */
-       SOCPlayer victim = game.getPlayer(victimNum);
-       SOCBuildingSpeedEstimate estimate = new SOCBuildingSpeedEstimate();
+       Player victim = game.getPlayer(victimNum);
+       BuildingSpeedEstimate estimate = new BuildingSpeedEstimate();
        int bestHex = robberHex;
        int worstSpeed = 0;
 
@@ -116,8 +116,8 @@ public class RobberStrategy {
                int[] speeds = estimate.getEstimatesFromNothingFast(victim.getPortFlags());
                int totalSpeed = 0;
 
-               for (int j = SOCBuildingSpeedEstimate.MIN;
-                       j < SOCBuildingSpeedEstimate.MAXPLUSONE; j++)
+               for (int j = BuildingSpeedEstimate.MIN;
+                       j < BuildingSpeedEstimate.MAXPLUSONE; j++)
                {
                    totalSpeed += speeds[j];
                }
@@ -153,7 +153,7 @@ public class RobberStrategy {
     *
     * @param choices a boolean array representing which players are possible victims
     */
-   public int chooseRobberVictim(boolean[] choices, SOCGame game, HashMap playerTrackers)
+   public int chooseRobberVictim(boolean[] choices, Game game, HashMap playerTrackers)
    {
        int choice = -1;
 
@@ -172,8 +172,8 @@ public class RobberStrategy {
                    }
                    else
                    {
-                       SOCPlayerTracker tracker1 = (SOCPlayerTracker) playerTrackers.get(new Integer(i));
-                       SOCPlayerTracker tracker2 = (SOCPlayerTracker) playerTrackers.get(new Integer(choice));
+                       PlayerTracker tracker1 = (PlayerTracker) playerTrackers.get(new Integer(i));
+                       PlayerTracker tracker2 = (PlayerTracker) playerTrackers.get(new Integer(choice));
    
                        if ((tracker1 != null) && (tracker2 != null) && (tracker1.getWinGameETA() < tracker2.getWinGameETA()))
                        {
@@ -189,7 +189,7 @@ public class RobberStrategy {
         * choose victim at random
         *
           do {
-          choice = Math.abs(rand.nextInt() % SOCGame.MAXPLAYERS);
+          choice = Math.abs(rand.nextInt() % Game.MAXPLAYERS);
           } while (!choices[choice]);
         */
        return choice;

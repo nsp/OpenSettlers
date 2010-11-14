@@ -3,9 +3,9 @@ README.developer - Notes and current status of 2010 JSettlers development (versi
 	http://sourceforge.net/projects/jsettlers2/
 
 The main server class is soc.server.SOCServer.
-The client communication is soc.client.SOCPlayerClient, and in-game interface is in soc.client.SOCPlayerInterface.
-Game state is held at the server in soc.game.SOCGame and its fields.  Partial game state is known at clients.
-Communication is described in soc.message.SOCMessage.
+The client communication is soc.client.PlayerClient, and in-game interface is in soc.client.PlayerInterface.
+Game state is held at the server in soc.game.Game and its fields.  Partial game state is known at clients.
+Communication is described in soc.message.Message.
 Robots talk with the server like normal human clients.
 Most robot messages are per-game; instead of being handled in SOCRobotClient,
 these are handled in a loop in SOCRobotBrain.run().

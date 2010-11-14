@@ -29,7 +29,7 @@
   <property name="experiment.class"
             value="experiment.Experiment" />
   <property name="client.class"
-            value="soc.client.SOCPlayerClient" />
+            value="soc.client.PlayerClient" />
   <property name="server.class"
             value="soc.server.SOCServer" />
   <property name="main.class"

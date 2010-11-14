@@ -39,7 +39,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-import soc.game.SOCGame;
+import soc.game.Game;
 
 
 /**
@@ -49,7 +49,7 @@ import soc.game.SOCGame;
  *
  * @see soc.client.FaceChooserFrame.FaceChooserList#rowFacesWidth
  * @see soc.client.FaceChooserFrame.FaceChooserList#faceRowsHeight
- * @see soc.client.SOCFaceButton
+ * @see soc.client.FaceButton
  *
  * @author Jeremy D Monin <jeremy@nand.net>
  */
@@ -58,13 +58,13 @@ public class FaceChooserFrame extends Frame implements ActionListener, WindowLis
     private static final long serialVersionUID = -7158740122357339452L;
 
     /** Face button that launched us. Passed to constructor, not null. */
-    protected SOCFaceButton fb;
+    protected FaceButton fb;
 
     /** Player client. Passed to constructor, not null */
-    protected SOCPlayerClient pcli;
+    protected PlayerClient pcli;
 
     /** Player interface. Passed to constructor, not null */
-    protected SOCPlayerInterface pi;
+    protected PlayerInterface pi;
 
     /** Player number. Needed for bg color. */
     protected int pNumber;
@@ -100,10 +100,10 @@ public class FaceChooserFrame extends Frame implements ActionListener, WindowLis
      * @param faceWidth Width and height of one face button, in pixels. Assumes icon is square.
      *
      * @throws IllegalArgumentException If fbutton, cli, or gamePI is null, or faceWidth is 0 or negative,
-     *    or pnum is negative or more than SOCGame.MAXPLAYERS.
+     *    or pnum is negative or more than Game.MAXPLAYERS.
      */
-    public FaceChooserFrame(SOCFaceButton fbutton, SOCPlayerClient cli,
-            SOCPlayerInterface gamePI, int pnum, int faceID, int faceWidth)
+    public FaceChooserFrame(FaceButton fbutton, PlayerClient cli,
+            PlayerInterface gamePI, int pnum, int faceID, int faceWidth)
         throws IllegalArgumentException
     {
         super("Choose Face Icon: "
@@ -399,7 +399,7 @@ public class FaceChooserFrame extends Frame implements ActionListener, WindowLis
         /**
          *  How many rows to show?  Default 6.
          *  Do not change after creating an instance.
-         *  If all faces (SOCFaceButton.NUM_FACES) fit in fewer than
+         *  If all faces (FaceButton.NUM_FACES) fit in fewer than
          *  faceRowsHeight rows, the first instance's constructor will
          *  reduce faceRowsHeight to the proper value.
          */
@@ -452,11 +452,11 @@ public class FaceChooserFrame extends Frame implements ActionListener, WindowLis
             initialFaceId = selectedFaceId;
             currentFaceId = selectedFaceId;
 
-            // Padding between faces is done by SOCFaceButton.FACE_WIDTH_BORDERED_PX:
-            // the padding is internal to SOCFaceButton's component size.
+            // Padding between faces is done by FaceButton.FACE_WIDTH_BORDERED_PX:
+            // the padding is internal to FaceButton's component size.
 
             rowCount = (int) Math.ceil
-                ((SOCFaceButton.NUM_FACES - 1) / (float) rowFacesWidth);
+                ((FaceButton.NUM_FACES - 1) / (float) rowFacesWidth);
             if (rowCount < faceRowsHeight)
                 faceRowsHeight = rowCount;  // Reduce if number of "visible rows" would be too many.
 
@@ -506,8 +506,8 @@ public class FaceChooserFrame extends Frame implements ActionListener, WindowLis
                 faceSB.addKeyListener(fcf);  // Handle Enter, Esc keys on window's behalf
             }
 
-            wantW = rowFacesWidth * SOCFaceButton.FACE_WIDTH_BORDERED_PX;
-            wantH = faceRowsHeight * SOCFaceButton.FACE_WIDTH_BORDERED_PX;
+            wantW = rowFacesWidth * FaceButton.FACE_WIDTH_BORDERED_PX;
+            wantH = faceRowsHeight * FaceButton.FACE_WIDTH_BORDERED_PX;
             scrollW = 0;  // unknown before is visible
             padW = 10;  padH = 30;  // assumes. Will get actual at doLayout.
             wantSize = new Dimension (wantW + padW, wantH + padH);
@@ -520,13 +520,13 @@ public class FaceChooserFrame extends Frame implements ActionListener, WindowLis
          *
          * @param id  Face ID to select
          *
-         * @throws IllegalArgumentException if id <= 0 or id >= SOCFaceButton.NUM_FACES
+         * @throws IllegalArgumentException if id <= 0 or id >= FaceButton.NUM_FACES
          *
          * @see #moveCursor(int, int, KeyEvent)
          */
         public void selectFace(int id)
         {
-            if ((id <= 0) || (id >= SOCFaceButton.NUM_FACES))
+            if ((id <= 0) || (id >= FaceButton.NUM_FACES))
                 throw new IllegalArgumentException("id not within range: " + id);
 
             int prevFaceId = currentFaceId;
@@ -726,7 +726,7 @@ public class FaceChooserFrame extends Frame implements ActionListener, WindowLis
                 break;
 
             case +1:   // Right
-                if (currentFaceId < (SOCFaceButton.NUM_FACES - 1))
+                if (currentFaceId < (FaceButton.NUM_FACES - 1))
                 {
                     moved = true;
                     if (abs_c < (rowFacesWidth - 1))
@@ -784,8 +784,8 @@ public class FaceChooserFrame extends Frame implements ActionListener, WindowLis
             {
                 // re-calc currentFaceId, select it, and ensure visible.
                 int newId = abs_r * rowFacesWidth + abs_c + 1;
-                if (newId >= SOCFaceButton.NUM_FACES)
-                    newId = SOCFaceButton.NUM_FACES - 1;
+                if (newId >= FaceButton.NUM_FACES)
+                    newId = FaceButton.NUM_FACES - 1;
                 else if (newId < 1)
                     newId = 1;
                 selectFace(newId);
@@ -903,7 +903,7 @@ public class FaceChooserFrame extends Frame implements ActionListener, WindowLis
                 faceSB.setSize(scrollW, height);
             }
 
-            int rowHeightPx = SOCFaceButton.FACE_WIDTH_BORDERED_PX;
+            int rowHeightPx = FaceButton.FACE_WIDTH_BORDERED_PX;
             for (int r = 0; r < faceRowsHeight; ++r)
             {
                 visibleFaceGrid[r].setLocation(x, y);
@@ -930,8 +930,8 @@ public class FaceChooserFrame extends Frame implements ActionListener, WindowLis
 
             private int startFaceId;
 
-            /** Will not go past SOCFaceButton.NUM_FACES */
-            private SOCFaceButton[] faces;
+            /** Will not go past FaceButton.NUM_FACES */
+            private FaceButton[] faces;
 
             /**
              * If our FaceChooserList.currentFaceId is within our row, calls that
@@ -939,28 +939,28 @@ public class FaceChooserFrame extends Frame implements ActionListener, WindowLis
              * If we're at the end of the range, some gridlayout members may be left blank.
              *
              * @param startId  Starting face ID (ID of first face in row)
-             * @throws IllegalArgumentException if startId<=0 or startId >= SOCFaceButton.NUM_FACES
+             * @throws IllegalArgumentException if startId<=0 or startId >= FaceButton.NUM_FACES
              */
             public FaceChooserRow (int startId)
                 throws IllegalArgumentException
             {
-                if ((startId <= 0) || (startId >= SOCFaceButton.NUM_FACES))
+                if ((startId <= 0) || (startId >= FaceButton.NUM_FACES))
                     throw new IllegalArgumentException("startId not within range: " + startId);
 
                 startFaceId = startId;
 
                 int numFaces = FaceChooserList.rowFacesWidth;
-                if ((startId + numFaces) >= SOCFaceButton.NUM_FACES)
-                    numFaces = SOCFaceButton.NUM_FACES - startId;
+                if ((startId + numFaces) >= FaceButton.NUM_FACES)
+                    numFaces = FaceButton.NUM_FACES - startId;
 
-                faces = new SOCFaceButton[numFaces];  // At least 1 due to startId check above
+                faces = new FaceButton[numFaces];  // At least 1 due to startId check above
 
                 GridLayout glay = new GridLayout(1, FaceChooserList.rowFacesWidth, 0, 0);
                 setLayout(glay);
 
                 for (int i = 0; i < numFaces; ++i)
                 {
-                    SOCFaceButton fb = new SOCFaceButton(fcf.pi, fcf, startId + i);
+                    FaceButton fb = new FaceButton(fcf.pi, fcf, startId + i);
                     faces[i] = fb;
                     if (startId + i == currentFaceId)
                         fb.setHilightBorder(true);
@@ -986,7 +986,7 @@ public class FaceChooserFrame extends Frame implements ActionListener, WindowLis
              * @param faceId     Face ID - If outside our range, do nothing.
              * @param borderSet  Set or clear?
              *
-             * @see soc.client.SOCFaceButton#setHilightBorder(boolean)
+             * @see soc.client.FaceButton#setHilightBorder(boolean)
              */
             public void setFaceHilightBorder (int faceId, boolean borderSet)
             {

@@ -24,14 +24,14 @@ import java.util.StringTokenizer;
  * connection.  VERSION is the first message sent from client to server.
  * Version numbers are read via {@link soc.util.Version}.
  *<P>
- * Before 1.1.06, in SOCPlayerClient, was sent first from server to client, then client responds.
+ * Before 1.1.06, in PlayerClient, was sent first from server to client, then client responds.
  * Robot clients always sent first (since introduction in 1.1.00 of client-server versioning (2008-08-07)).
  *
  * @version 1.1.06
  * @since 1.1.00
  * @author Jeremy D. Monin <jeremy@nand.net>
  */
-public class SOCVersion extends SOCMessage
+public class SOCVersion extends Message
 {
     private static final long serialVersionUID = -4405230351462130706L;
 
