@@ -1,5 +1,7 @@
 package soc.common.board;
 
+import soc.common.annotations.SeaFarers;
+
 /*
  * Represents a group of LandHexes. A territory is useful for:
  * - Trade routes
@@ -7,6 +9,7 @@ package soc.common.board;
  * - Bonus island VPs
  * 
  */
+@SeaFarers
 public class Territory
 {
     private String name;

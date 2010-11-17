@@ -46,7 +46,7 @@ public class Board
     // list of hexes this board is made of
     public HexList hexes;
     
-    //Name of the creator of the board
+    // Name of the designer of the board
     private String _Creator = "Unknown player";
     
     // data fields

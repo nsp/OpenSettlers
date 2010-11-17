@@ -6,6 +6,7 @@ import soc.common.game.Player;
 
 public class YearOfPlenty extends DevelopmentCard 
 {
+    //actual picked resources by player
     private ResourceList goldPick = new ResourceList();
     
     @Override
@@ -15,7 +16,7 @@ public class YearOfPlenty extends DevelopmentCard
                 player.getName(), goldPick.toString());
             
         // give player the resources
-        player.getResources().addAll(goldPick);
+        player.getResources().swapResourcesFrom(goldPick, game.getBank());
 
         super.play(game, player);
     }

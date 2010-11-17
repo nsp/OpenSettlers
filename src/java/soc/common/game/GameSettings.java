@@ -3,28 +3,61 @@ package soc.common.game;
 import java.util.UUID;
 
 import soc.common.board.Board;
+import soc.common.board.BoardSettings;
 
 public class GameSettings
 {
-    // Minimum amount of players expected
-    private int minPlayers = 3;
+    // Game boardsettings may be overridden by the user
+    // This implies not having a ladder game (where settings should equal
+    // original boardsettings)
+    private BoardSettings boardSettings = BoardSettings.standard();
     
-    public int getMinPlayers()
+    /**
+     * @return the boardSettings
+     */
+    public BoardSettings getBoardSettings()
     {
-        return minPlayers;
+        return boardSettings;
     }
-    public void setMinPlayers(int minPlayers)
+    /**
+     * @param boardSettings the boardSettings to set
+     */
+    public void setBoardSettings(BoardSettings boardSettings)
     {
-        this.minPlayers = minPlayers;
+        this.boardSettings = boardSettings;
     }
-    public int getMaxPlayers()
-    {
-        return maxPlayers;
-    }
-    public void setMaxPlayers(int maxPlayers)
-    {
-        this.maxPlayers = maxPlayers;
-    }
+    // Whether or not deserts will be replaced by jungles
+    private boolean replaceDesertWithJungles = false;
+    
+    // Whether or not deserts will b replaces by volcanos
+    private boolean replaceDesertWithVolcanos = false;
+    
+    // If selected, the build phase's second town will be a city,
+    // and a third road is added
+    private boolean tournamentStart = false;
+    
+    // Whether or not first round has sevens
+    private int noSevensFirstRound = 0;
+    
+    // Whether or not robbing from players with 2vp is allowed
+    private boolean no2VPPlayersRobbing = false;
+    
+    // Whether or not players can trade after they entered the build phase
+    private boolean tradingAfterBuilding = false;
+    
+    // Players do not see the chitnumbers before initial placement
+    // TODO:implement
+    private boolean showChitsAfterPlacing = false;
+
+    private int maximumTradesPerTurn = 2;
+    private String mame = null;
+    private int host;
+
+    private UUID boardGuid;
+    private boolean isLadder = true;
+    private Board board;
+    
+    
     public boolean isReplaceDesertWithJungles()
     {
         return replaceDesertWithJungles;
@@ -41,14 +74,7 @@ public class GameSettings
     {
         this.replaceDesertWithVolcanos = replaceDesertWithVolcanos;
     }
-    public boolean isDoNotReplaceDeserts()
-    {
-        return doNotReplaceDeserts;
-    }
-    public void setDoNotReplaceDeserts(boolean doNotReplaceDeserts)
-    {
-        this.doNotReplaceDeserts = doNotReplaceDeserts;
-    }
+
     public boolean isTournamentStart()
     {
         return tournamentStart;
@@ -89,14 +115,7 @@ public class GameSettings
     {
         this.showChitsAfterPlacing = showChitsAfterPlacing;
     }
-    public int getMaximumCardsInHandWhenSeven()
-    {
-        return maximumCardsInHandWhenSeven;
-    }
-    public void setMaximumCardsInHandWhenSeven(int maximumCardsInHandWhenSeven)
-    {
-        this.maximumCardsInHandWhenSeven = maximumCardsInHandWhenSeven;
-    }
+
     public int getMaximumTradesPerTurn()
     {
         return maximumTradesPerTurn;
@@ -117,17 +136,10 @@ public class GameSettings
     {
         return host;
     }
+    
     public void setHost(int host)
     {
         this.host = host;
-    }
-    public int getVpToWin()
-    {
-        return vpToWin;
-    }
-    public void setVpToWin(int vpToWin)
-    {
-        this.vpToWin = vpToWin;
     }
 
     public UUID getBoardGuid()
@@ -154,39 +166,5 @@ public class GameSettings
     {
         this.board = board;
     }
-    // Maximum amount of players for this board
-    private int maxPlayers = 6;
-    
-    // Whether or not deserts will be replaced by jungles
-    private boolean replaceDesertWithJungles = false;
-    
-    // Whether or not deserts will b replaces by volcanos
-    private boolean replaceDesertWithVolcanos = false;
-    
-    // Whether or not any replacing os going on
-    private boolean doNotReplaceDeserts = true;
-    
-    // If selected, the build phase's second town will be a city,
-    // and a third road is added
-    private boolean tournamentStart = false;
-    
-    // Whether or not first round has sevens
-    private int noSevensFirstRound = 0;
-    
-    // Whether or not robbing from players with 2vp is allowed
-    private boolean no2VPPlayersRobbing = false;
-    
-    // Whether or not players can trade after they entered the build phase
-    private boolean tradingAfterBuilding = false;
-    
-    
-    private boolean showChitsAfterPlacing = false;
-    private int maximumCardsInHandWhenSeven = 7;
-    private int maximumTradesPerTurn = 2;
-    private String mame = null;
-    private int host;
-    private int vpToWin = 10;
-    private UUID boardGuid;
-    private boolean isLadder = true;
-    private Board board;
+
 }

@@ -1,6 +1,7 @@
 package soc.common.board.resources;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import soc.common.board.hexes.Hex;
 import soc.common.board.pieces.*;
@@ -50,6 +51,21 @@ public class ResourceList extends ArrayList<Resource>
             }
         }
         return result;
+    }    
+    
+    public List<Resource> ofType(Resource type)
+    {
+        List<Resource> result = new ArrayList<Resource>();
+        
+        for (Resource res : this)
+        {
+            if (res.getClass() == type.getClass())
+            {
+                result.add(res);                                                
+            }
+        }
+        
+        return result;
     }
     
     /*
@@ -58,11 +74,20 @@ public class ResourceList extends ArrayList<Resource>
     public boolean hasAtLeast(ResourceList toHave)
     {
         return
-            countOfType(new Timber()) >= toHave.countOfType(new Timber()) &&
-            countOfType(new Wheat()) >= toHave.countOfType(new Wheat()) &&
-            countOfType(new Ore()) >= toHave.countOfType(new Ore()) &&
-            countOfType(new Clay()) >= toHave.countOfType(new Clay()) &&
-            countOfType(new Sheep()) >= toHave.countOfType(new Sheep());
+            ofType(new Timber()).size() >= toHave.ofType(new Timber()).size() &&
+            ofType(new Wheat()).size() >= toHave.ofType(new Wheat()).size()   &&
+            ofType(new Ore()).size() >= toHave.ofType(new Ore()).size()       &&
+            ofType(new Clay()).size() >= toHave.ofType(new Clay()).size()     &&
+            ofType(new Sheep()).size() >= toHave.ofType(new Sheep()).size();
+    }
+    
+    public void swapResourcesFrom(ResourceList resourcesToAdd, ResourceList from)
+    {
+        // add the resources to this list...
+        this.addAll(resourcesToAdd);
+        
+        // ...and remove them at the "from source"
+        from.removeAll(resourcesToAdd);
     }
     
     /*
