@@ -3,7 +3,7 @@ package soc.common.game.gamePhase;
 import soc.common.actions.GameAction;
 import soc.common.game.Game;
 
-public class LobbyGamePhase implements IGamePhase
+public class LobbyGamePhase extends GamePhase
 {
 
     public void PerformAction(GameAction action, Game game)

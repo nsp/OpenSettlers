@@ -6,7 +6,7 @@ import soc.common.game.Game;
 import soc.common.game.IGame;
 import soc.common.game.Player;
 
-public class DetermineFirstPlayerGamePhase implements IGamePhase
+public class DetermineFirstPlayerGamePhase extends GamePhase
 {    
     @Override
     public void start(Game game)

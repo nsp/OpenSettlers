@@ -5,7 +5,7 @@ import java.util.List;
 import soc.common.board.Board;
 import soc.common.board.HexLocation;
 import soc.common.board.resources.ResourceList;
-import soc.common.game.gamePhase.IGamePhase;
+import soc.common.game.gamePhase.GamePhase;
 
 public interface IGame
 {
@@ -37,7 +37,7 @@ public interface IGame
     public Player getPlayer(int playerID);
     
     // Phase where the game is in
-    public IGamePhase getGamePhase();
+    public GamePhase getGamePhase();
     
     // Board with hextiles on it
     public Board getBoard();

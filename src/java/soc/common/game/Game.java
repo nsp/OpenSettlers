@@ -6,7 +6,7 @@ import java.util.List;
 
 import soc.common.board.HexLocation;
 import soc.common.board.resources.ResourceList;
-import soc.common.game.gamePhase.IGamePhase;
+import soc.common.game.gamePhase.GamePhase;
 import soc.common.game.gamePhase.LobbyGamePhase;
 import soc.common.game.rules.Pioneers;
 import soc.common.game.rules.RuleSet;
@@ -15,13 +15,13 @@ import soc.common.game.rules.Sea3D;
 public class Game
 {
     private RuleSet ruleSet;
-    private LinkedList<IGamePhase> gamePhases = new LinkedList<IGamePhase>();
+    private LinkedList<GamePhase> gamePhases = new LinkedList<GamePhase>();
     private IActionsQueue actionsQueue = new ActionsQueue();
     private ResourceList bank = new ResourceList();
     private List<Player> players = new ArrayList<Player>();
     private GameLog gameLog = new GameLog();
     private HexLocation pirate = new HexLocation(0,0);
-    private IGamePhase currentPhase = new LobbyGamePhase();
+    private GamePhase currentPhase = new LobbyGamePhase();
     
     Game()
     {
@@ -43,12 +43,12 @@ public class Game
         this.bank = bank;
     }
 
-    public LinkedList<IGamePhase> getGamePhases()
+    public LinkedList<GamePhase> getGamePhases()
     {
         return gamePhases;
     }
 
-    public void setGamePhases(LinkedList<IGamePhase> gamePhases)
+    public void setGamePhases(LinkedList<GamePhase> gamePhases)
     {
         this.gamePhases = gamePhases;
     }
@@ -103,12 +103,12 @@ public class Game
         this.pirate = pirate;
     }
 
-    public IGamePhase getCurrentPhase()
+    public GamePhase getCurrentPhase()
     {
         return currentPhase;
     }
 
-    public void setCurrentPhase(IGamePhase currentPhase)
+    public void setCurrentPhase(GamePhase currentPhase)
     {
         this.currentPhase = currentPhase;
     }  

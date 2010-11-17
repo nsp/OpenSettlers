@@ -2,6 +2,9 @@ package soc.common.game.developmentCards;
 
 import soc.common.game.Game;
 import soc.common.game.Player;
+import soc.common.game.gamePhase.GamePhase;
+import soc.common.game.gamePhase.turnPhase.TurnPhase;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class DevelopmentCard
 {
@@ -19,6 +22,22 @@ public class DevelopmentCard
     public boolean isValid(Game game)
     {
         return true;     
+    }
+    
+    /* 
+     * Returns true if player is allowed to play this card in given TurnPhase
+     */
+    public boolean isAllowed(TurnPhase turnPhase)
+    {
+        throw new NotImplementedException();
+    }
+    
+    /* 
+     * Returns true if player is allowed to play this card in given GamePhase
+     */
+    public boolean isAllowed(GamePhase turnPhase)
+    {
+        throw new NotImplementedException();
     }
     
     public String getInvalidMessage()
