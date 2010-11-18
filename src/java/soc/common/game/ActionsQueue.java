@@ -2,8 +2,7 @@ package soc.common.game;
 
 import java.util.ArrayList;
 
-import soc.common.actions.GameAction;
-import soc.common.actions.ingame.InGameAction;
+import soc.common.actions.gameAction.GameAction;
 
 /*
  * A list of queued actions. This aids the user in what to expect from them, they
@@ -12,8 +11,17 @@ import soc.common.actions.ingame.InGameAction;
 public class ActionsQueue extends ArrayList<GameAction> implements IActionsQueue
 {
     @Override
-    public void Enqueue(InGameAction inGameAction)
+    public void enqueue(GameAction inGameAction)
     {
         // TODO Auto-generated method stub   
     }
+
+    @Override
+    public GameAction peek()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+
 }

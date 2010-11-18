@@ -2,17 +2,36 @@ package soc.common.game;
 
 import soc.common.board.resources.ResourceList;
 
-public class Player
+public class Player extends User
 {
-    private int id;
-    private String name;
     private ResourceList resources;
     private int maximumCardsInHandWhenSeven;
     private int stockRoads = 15;
     private int stockShips = 15;
     private int stockTowns = 5;
     private int stockCities = 4;
+    private boolean isOnTurn=false;
     
+    /**
+     * @return the isOnTurn
+     */
+    public boolean isOnTurn()
+    {
+        return isOnTurn;
+    }
+
+    /**
+     * @param isOnTurn the isOnTurn to set
+     */
+    public Player setOnTurn(boolean isOnTurn)
+    {
+        this.isOnTurn = isOnTurn;
+    
+        // Enables fluent interface usage
+        // http://en.wikipedia.org/wiki/Fluent_interface
+        return this;
+    }
+
     public int getStockRoads()
     {
         return stockRoads;
@@ -71,26 +90,6 @@ public class Player
     public void setResources(ResourceList resources)
     {
         this.resources = resources;
-    }
-
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId(int id)
-    {
-        this.id = id;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName(String name)
-    {
-        this.name = name;
     }
     
 }

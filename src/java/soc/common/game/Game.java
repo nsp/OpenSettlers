@@ -22,7 +22,62 @@ public class Game
     private GameLog gameLog = new GameLog();
     private HexLocation pirate = new HexLocation(0,0);
     private GamePhase currentPhase = new LobbyGamePhase();
+    private GameSettings gameSettings = new GameSettings();
+    private Player playerOnTurn;
     
+    
+    public Player getPlayerByID(int id)
+    {
+        for (Player p : players)
+        {
+            if (p.getId() == id)
+                return p;
+        }
+        throw new RuntimeException(
+                "Trying to get non-existing player. ID " + id + " is unknown");
+    }
+    /**
+     * @return the playerOnTurn
+     */
+    public Player getPlayerOnTurn()
+    {
+        if (playerOnTurn == null)
+        {
+            playerOnTurn = players.get(0);
+        }
+        return playerOnTurn;
+    }
+
+    /**
+     * @param playerOnTurn the playerOnTurn to set
+     */
+    public Game setPlayerOnTurn(Player playerOnTurn)
+    {
+        playerOnTurn.setOnTurn(false);
+        this.playerOnTurn = playerOnTurn;
+        playerOnTurn.setOnTurn(true);
+    
+        // Enables fluent interface usage
+        // http://en.wikipedia.org/wiki/Fluent_interface
+        return this;
+    }
+
+    /**
+     * @return the gameSettings
+     */
+    public GameSettings getGameSettings()
+    {
+        return gameSettings;
+    }
+
+    /**
+     * @param gameSettings the gameSettings to set
+     */
+    public void setGameSettings(GameSettings gameSettings)
+    {
+        this.gameSettings = gameSettings;
+    }
+
     Game()
     {
         ruleSet = new RuleSet(this);

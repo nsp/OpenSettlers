@@ -1,7 +1,6 @@
 package soc.common.game.gamePhase;
 
-import soc.common.actions.GameAction;
-import soc.common.actions.ingame.InGameAction;
+import soc.common.actions.gameAction.GameAction;
 import soc.common.game.Game;
 import soc.common.game.IGame;
 import soc.common.game.Player;
@@ -13,7 +12,7 @@ public class DetermineFirstPlayerGamePhase extends GamePhase
     {
         for (Player player : game.getPlayers())
         {
-            game.getActionsQueue().Enqueue(null);
+            game.getActionsQueue().enqueue(null);
             /*
             new RollDiceAction()
             {
@@ -24,21 +23,7 @@ public class DetermineFirstPlayerGamePhase extends GamePhase
     }
     
     @Override
-    public Class endAction()
-    {
-        //return instanceof(InGameAction);
-        return null;
-    }
-
-    @Override
-    public void PerformAction(GameAction action, Game game)
-    {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void isAllowed(GameAction action)
+    public void performAction(GameAction action, Game game)
     {
         // TODO Auto-generated method stub
         

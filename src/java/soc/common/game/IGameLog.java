@@ -1,9 +1,9 @@
 package soc.common.game;
 
-import soc.common.actions.ingame.InGameAction;
+import soc.common.actions.gameAction.GameAction;
 
 public interface IGameLog
 {
-    public void add(InGameAction inGameAction);
+    public void addAction(GameAction inGameAction);
 
 }
