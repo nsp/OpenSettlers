@@ -13,5 +13,4 @@ public abstract class GamePhase
     public void performAction(GameAction action, Game game) {};
     public void start(Game game) {};
     public GamePhase next(Game game) { throw new NotImplementedException(); }
-
 }

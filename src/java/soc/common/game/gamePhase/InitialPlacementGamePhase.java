@@ -2,7 +2,6 @@ package soc.common.game.gamePhase;
 
 import soc.common.actions.gameAction.GameAction;
 import soc.common.actions.gameAction.GamePhaseHasEnded;
-import soc.common.actions.gameAction.GameAction.*;
 import soc.common.actions.gameAction.turnActions.BuildCity;
 import soc.common.actions.gameAction.turnActions.BuildRoad;
 import soc.common.actions.gameAction.turnActions.BuildShip;
@@ -26,7 +25,7 @@ public class InitialPlacementGamePhase extends GamePhase
             // If tournament starting rules are set, second building should be a city
             if (back && game.getGameSettings().isTournamentStart())
             {
-                // Tournamanet starting rules, add a city
+                // Tournament starting rules, add a city
                 game.getActionsQueue().enqueue
                 (
                     new BuildCity()
@@ -75,7 +74,7 @@ public class InitialPlacementGamePhase extends GamePhase
         }
     
 
-        // When in tournament phase, very player may build a third road
+        // When in tournament phase, every player may build a third road
         if (game.getGameSettings().isTournamentStart())
         {
             for (int j = 0; j < game.getPlayers().size(); j++)

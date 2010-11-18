@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import soc.common.board.Board;
 import soc.common.board.HexLocation;
 import soc.common.board.resources.ResourceList;
 import soc.common.game.gamePhase.GamePhase;
@@ -24,8 +25,45 @@ public class Game
     private GamePhase currentPhase = new LobbyGamePhase();
     private GameSettings gameSettings = new GameSettings();
     private Player playerOnTurn;
+    private Board board;
+    private Player gameStarter;
     
+    /**
+     * @return the gameStarter
+     */
+    public Player getGameStarter()
+    {
+        return gameStarter;
+    }
+    /**
+     * @param gameStarter the gameStarter to set
+     */
+    public Game setGameStarter(Player gameStarter)
+    {
+        this.gameStarter = gameStarter;
     
+        // Enables fluent interface usage
+        // http://en.wikipedia.org/wiki/Fluent_interface
+        return this;
+    }
+    /**
+     * @return the board
+     */
+    public Board getBoard()
+    {
+        return board;
+    }
+    /**
+     * @param board the board to set
+     */
+    public Game setBoard(Board board)
+    {
+        this.board = board;
+    
+        // Enables fluent interface usage
+        // http://en.wikipedia.org/wiki/Fluent_interface
+        return this;
+    }
     public Player getPlayerByID(int id)
     {
         for (Player p : players)
@@ -166,5 +204,14 @@ public class Game
     public void setCurrentPhase(GamePhase currentPhase)
     {
         this.currentPhase = currentPhase;
+    }
+    public Player getNextPlayer()
+    {
+        int index = players.indexOf(playerOnTurn) + 1;
+        if (index == players.size())
+        {
+            index = 0;
+        }
+        return players.get(index);
     }  
 }

@@ -19,6 +19,13 @@ public class GameAction
     private int sender;
     protected String invalidMessage;
     protected String toDoMessage;
+    protected String message;
+    
+    /*
+     * Should be omitted at hashCode calculation, since values differ at server
+     * and at client
+     */
+    protected Date dateTimeExecuted;
 
     /**
      * @return the toDoMessage
@@ -27,10 +34,7 @@ public class GameAction
     {
         return toDoMessage;
     }
-
-    protected String message;
-    protected Date dateTimeExecuted;
-
+    
     /**
      * @return the dateTimeExecuted
      */
@@ -56,7 +60,7 @@ public class GameAction
     
         // Enables fluent interface usage
         // http://en.wikipedia.org/wiki/Fluent_interface
-        return this;
+        return  this;
     }
 
     /**
@@ -108,7 +112,7 @@ public class GameAction
 
     public void perform(Game game)
     {
-        
+        dateTimeExecuted = new Date();
     }
 
     /* 

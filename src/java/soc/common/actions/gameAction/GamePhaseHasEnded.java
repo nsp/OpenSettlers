@@ -2,7 +2,9 @@ package soc.common.actions.gameAction;
 
 import soc.common.game.gamePhase.GamePhase;
 
-
+/*
+ * Announces a gamephase which has been ended
+ */
 public class GamePhaseHasEnded extends GameAction
 {
     private GamePhase endedGamePhase;
